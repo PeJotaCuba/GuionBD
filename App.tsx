@@ -9,7 +9,7 @@ import {
   Settings, Moon, Sun, FilePlus, Database,
   RefreshCw, ChevronDown, ChevronUp, Radio
 } from 'lucide-react';
-// CORRECCIÓN: Usamos el archivo .ts en lugar del .json para evitar errores de resolución
+// IMPORTANTE: Importamos desde el archivo .ts, no .json, y usamos ruta relativa simple
 import { guionBase } from './guionbase';
 
 export default function App() {
@@ -160,7 +160,7 @@ export default function App() {
     if (!confirmUpdate) return;
 
     try {
-      // Nota: Seguimos apuntando a biblio.json en el repo remoto, ya que es la fuente de verdad esperada
+      // URL corregida para apuntar al archivo biblio.json en el repositorio
       const response = await fetch('https://raw.githubusercontent.com/PeJotaCuba/GuionBD/refs/heads/main/biblio.json');
       if (!response.ok) throw new Error('Error al conectar con GitHub');
       
