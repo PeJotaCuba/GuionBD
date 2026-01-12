@@ -1,0 +1,5 @@
+{
+  "name": "GuionBD",
+  "description": "Gestor inteligente de guiones y programas de radio. Organiza, analiza y visualiza tu producción de guiones.",
+  "requestFramePermissions": []
+}
