@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Script, ScriptStatus } from './types';
 import { ScriptCard } from './components/ScriptCard';
 import { StatsView } from './components/StatsView';
@@ -6,18 +6,34 @@ import { UploadModal } from './components/UploadModal';
 import { ScriptCarousel } from './components/ScriptCarousel';
 import { 
   Upload, Search, LayoutGrid, FileStack, BarChart3, 
-  Settings, Moon, Sun, Filter, FilePlus 
+  Settings, Moon, Sun, Filter, FilePlus, Download, Database
 } from 'lucide-react';
-// Import static database from TS file
-import { guionBase } from './guionbase';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'active' | 'inactive' | 'reports'>('active');
-  // Initialize with data from TS file
-  const [scripts, setScripts] = useState<Script[]>(guionBase);
+  // Inicializamos vacío como se solicitó. 
+  // Si quisieras datos de prueba iniciales, se podrían hardcodear aquí.
+  const [scripts, setScripts] = useState<Script[]>([]);
   const [uploadTarget, setUploadTarget] = useState<ScriptStatus | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [darkMode, setDarkMode] = useState(false);
+  
+  // Estado para el menú de ajustes
+  const [showSettings, setShowSettings] = useState(false);
+  const settingsRef = useRef<HTMLDivElement>(null);
+
+  // Cerrar menú de ajustes al hacer clic fuera
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (settingsRef.current && !settingsRef.current.contains(event.target as Node)) {
+        setShowSettings(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // Filter main list scripts
   const filteredScripts = useMemo(() => {
@@ -37,14 +53,12 @@ export default function App() {
   const carouselScripts = useMemo(() => {
     if (activeTab === 'reports') return [];
     
-    // Logic: Scripts from exactly 1 year ago based on current year
     const currentYear = new Date().getFullYear();
     const prevYear = currentYear - 1;
 
     return scripts.filter(s => {
        try {
          const scriptYear = new Date(s.dateAdded).getFullYear();
-         // Match status and year = prevYear
          return s.status === activeTab && scriptYear === prevYear;
        } catch (e) {
          return false;
@@ -53,6 +67,7 @@ export default function App() {
   }, [scripts, activeTab]);
 
   const handleAddScripts = (newScripts: Script[]) => {
+    // Evitar duplicados basados en ID o Título+Fecha si es necesario
     setScripts(prev => [...newScripts, ...prev]);
     if (uploadTarget) {
         setActiveTab(uploadTarget === 'active' ? 'active' : 'inactive');
@@ -69,6 +84,20 @@ export default function App() {
     if (window.confirm('¿Estás seguro de que quieres eliminar este registro?')) {
       setScripts(prev => prev.filter(s => s.id !== id));
     }
+  };
+
+  // Función para descargar la base de datos actual como biblio.json
+  const downloadDatabase = () => {
+    const dataStr = JSON.stringify(scripts, null, 2);
+    const blob = new Blob([dataStr], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = "biblio.json";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setShowSettings(false);
   };
 
   useEffect(() => {
@@ -97,12 +126,39 @@ export default function App() {
               <button 
                 onClick={() => setDarkMode(!darkMode)}
                 className="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"
+                title={darkMode ? "Modo Claro" : "Modo Oscuro"}
               >
                 {darkMode ? <Sun size={20} /> : <Moon size={20} />}
               </button>
-              <button className="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
-                <Settings size={20} />
-              </button>
+              
+              {/* Menú de Ajustes */}
+              <div className="relative" ref={settingsRef}>
+                <button 
+                  onClick={() => setShowSettings(!showSettings)}
+                  className={`p-2 rounded-full transition-colors ${showSettings ? 'bg-indigo-100 text-indigo-600 dark:bg-slate-700 dark:text-indigo-400' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
+                  title="Ajustes"
+                >
+                  <Settings size={20} />
+                </button>
+
+                {/* Dropdown */}
+                {showSettings && (
+                  <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 py-2 animate-fade-in transform origin-top-right z-50">
+                    <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-700">
+                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Base de Datos</p>
+                    </div>
+                    <button 
+                      onClick={downloadDatabase}
+                      className="w-full text-left px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/50 flex items-center gap-2 transition-colors"
+                    >
+                      <Database size={16} className="text-indigo-500" />
+                      <span>Guardar como <strong>biblio.json</strong></span>
+                    </button>
+                    {/* Aquí se podrían añadir más opciones futuras */}
+                  </div>
+                )}
+              </div>
+
               <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 ml-2"></div>
             </div>
           </div>
@@ -195,10 +251,12 @@ export default function App() {
         ) : (
           <div className="pb-20">
             {/* Carousel for One Year Ago Scripts */}
-            <ScriptCarousel 
-              scripts={carouselScripts} 
-              title="Hace un Año" 
-            />
+            {carouselScripts.length > 0 && (
+                <ScriptCarousel 
+                scripts={carouselScripts} 
+                title="Hace un Año" 
+                />
+            )}
 
             {/* List of current filter scripts */}
             {filteredScripts.length > 0 ? (
@@ -221,13 +279,15 @@ export default function App() {
             ) : (
               <div className="flex flex-col items-center justify-center py-20 text-center">
                 <div className="bg-slate-100 dark:bg-slate-800 p-6 rounded-full mb-4">
-                  <Search size={40} className="text-slate-400" />
+                  {scripts.length === 0 ? <Database size={40} className="text-slate-400" /> : <Search size={40} className="text-slate-400" />}
                 </div>
                 <h3 className="text-xl font-bold text-slate-700 dark:text-white mb-2">
-                  No se encontraron registros
+                  {scripts.length === 0 ? "Base de datos vacía" : "No se encontraron registros"}
                 </h3>
-                <p className="text-slate-500 dark:text-slate-400 max-w-sm">
-                  Carga un archivo TXT con el listado de guiones para comenzar.
+                <p className="text-slate-500 dark:text-slate-400 max-w-sm mb-6">
+                  {scripts.length === 0 
+                    ? "Carga tus guiones usando los botones de arriba para comenzar a gestionar tu programación." 
+                    : "Intenta con otros términos de búsqueda o cambia de pestaña."}
                 </p>
                 {searchQuery && (
                    <button 
