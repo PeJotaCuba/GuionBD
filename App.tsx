@@ -9,6 +9,8 @@ import {
   Settings, Moon, Sun, FilePlus, Database,
   RefreshCw, ChevronDown, ChevronUp, Radio
 } from 'lucide-react';
+// CORRECCIÓN: Usamos el archivo .ts en lugar del .json para evitar errores de resolución
+import { guionBase } from './guionbase';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'active' | 'inactive' | 'reports'>('active');
@@ -23,6 +25,30 @@ export default function App() {
   // Estado para el menú de ajustes
   const [showSettings, setShowSettings] = useState(false);
   const settingsRef = useRef<HTMLDivElement>(null);
+
+  // Cargar datos iniciales
+  useEffect(() => {
+    // Intentar cargar desde localStorage
+    const saved = localStorage.getItem('guionbd_data');
+    if (saved) {
+      try {
+        setScripts(JSON.parse(saved));
+      } catch (e) {
+        console.error("Error cargando caché, usando datos base", e);
+        setScripts(guionBase);
+      }
+    } else {
+      // Si no hay localStorage, usar los datos base del archivo .ts
+      setScripts(guionBase);
+    }
+  }, []);
+
+  // Guardar en localStorage cuando cambian los scripts
+  useEffect(() => {
+    if (scripts.length > 0) {
+      localStorage.setItem('guionbd_data', JSON.stringify(scripts));
+    }
+  }, [scripts]);
 
   // Cerrar menú de ajustes al hacer clic fuera
   useEffect(() => {
@@ -63,7 +89,7 @@ export default function App() {
     });
   }, [scripts, activeTab, searchQuery]);
 
-  // Agrupar por Programa (Genre)
+  // Agrupar por Programa (Genre) para el Acordeón
   const groupedScripts = useMemo<Record<string, Script[]>>(() => {
     const groups: Record<string, Script[]> = {};
     filteredScripts.forEach(script => {
@@ -130,10 +156,11 @@ export default function App() {
 
   // Función para actualizar desde GitHub
   const updateFromGithub = async () => {
-    const confirmUpdate = window.confirm("Esto actualizará tu base de datos con la versión más reciente de GitHub. ¿Continuar?");
+    const confirmUpdate = window.confirm("Esto descargará la última versión de biblio.json desde GitHub y actualizará tu base de datos local. ¿Continuar?");
     if (!confirmUpdate) return;
 
     try {
+      // Nota: Seguimos apuntando a biblio.json en el repo remoto, ya que es la fuente de verdad esperada
       const response = await fetch('https://raw.githubusercontent.com/PeJotaCuba/GuionBD/refs/heads/main/biblio.json');
       if (!response.ok) throw new Error('Error al conectar con GitHub');
       
@@ -142,13 +169,13 @@ export default function App() {
       if (Array.isArray(data)) {
         const validScripts = data as Script[];
         setScripts(validScripts);
-        alert(`Base de datos actualizada con éxito (${validScripts.length} registros).`);
+        alert(`Base de datos actualizada con éxito. ${validScripts.length} registros cargados.`);
       } else {
-        throw new Error('Formato de datos inválido');
+        throw new Error('Formato de datos inválido en GitHub');
       }
     } catch (error) {
       console.error(error);
-      alert('Error al actualizar la base de datos. Revisa tu conexión a internet.');
+      alert('Error al actualizar: No se pudo conectar o el archivo está dañado.');
     } finally {
         setShowSettings(false);
     }
@@ -298,7 +325,7 @@ export default function App() {
                 <ScriptCarousel scripts={carouselScripts} title="Hace un Año" />
             )}
 
-            {/* List Grouped by Program */}
+            {/* List Grouped by Program (Acordeón Restaurado) */}
             {Object.keys(groupedScripts).length > 0 ? (
               <div className="space-y-3">
                  {Object.entries(groupedScripts).map(([programName, programScripts]: [string, Script[]]) => {
