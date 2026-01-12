@@ -1,6 +1,6 @@
 import React from 'react';
 import { Script } from '../types';
-import { Calendar, Hash, Trash2, Archive, ArchiveRestore, FileText, Clock } from 'lucide-react';
+import { Calendar, Hash, Trash2, Archive, ArchiveRestore, FileText } from 'lucide-react';
 
 interface ScriptCardProps {
   script: Script;
