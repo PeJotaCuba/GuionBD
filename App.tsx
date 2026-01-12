@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { Script, ScriptStatus } from './types';
 import { ScriptCard } from './components/ScriptCard';
 import { StatsView } from './components/StatsView';
@@ -6,7 +6,7 @@ import { UploadModal } from './components/UploadModal';
 import { ScriptCarousel } from './components/ScriptCarousel';
 import { 
   Upload, Search, LayoutGrid, FileStack, BarChart3, 
-  Settings, Moon, Sun, Filter, FilePlus, Download, Database
+  Settings, Moon, Sun, Filter, FilePlus, Database
 } from 'lucide-react';
 
 export default function App() {

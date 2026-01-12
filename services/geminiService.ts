@@ -3,7 +3,7 @@
 
 import { ScriptAnalysis, Script } from "../types";
 
-export const analyzeScriptContent = async (text: string): Promise<ScriptAnalysis> => {
+export const analyzeScriptContent = async (_text: string): Promise<ScriptAnalysis> => {
   console.warn("AI Analysis is disabled.");
   return {
     title: "Sin Título (AI Desactivada)",
@@ -14,7 +14,7 @@ export const analyzeScriptContent = async (text: string): Promise<ScriptAnalysis
   };
 };
 
-export const generateGlobalReport = async (scripts: Script[]): Promise<string> => {
+export const generateGlobalReport = async (_scripts: Script[]): Promise<string> => {
   console.warn("AI Reporting is disabled.");
   return "La generación de informes con IA está desactivada.";
 };

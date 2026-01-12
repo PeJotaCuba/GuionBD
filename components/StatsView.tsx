@@ -160,7 +160,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ scripts }) => {
                   dataKey="value"
                   label={({name, percent}) => `${name} ${(percent * 100).toFixed(0)}%`}
                 >
-                  {programData.map((entry, index) => (
+                  {programData.map((_, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>

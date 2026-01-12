@@ -12,9 +12,9 @@ export const ScriptCarousel: React.FC<ScriptCarouselProps> = ({ scripts, title }
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
-      const { current } = scrollRef.current;
+      const element = scrollRef.current;
       const scrollAmount = direction === 'left' ? -300 : 300;
-      current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      element.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   };
 
