@@ -177,18 +177,19 @@ export const StatsView: React.FC<StatsViewProps> = ({ scripts }) => {
       {/* Chart */}
       <div className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
         <h3 className="text-base font-bold text-slate-800 dark:text-white mb-4">Guiones por Programa</h3>
-        <div className="h-64">
+        {/* Increased height to accommodate the bottom legend */}
+        <div className="h-96 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
               <Pie
                 data={programData}
                 cx="50%"
-                cy="50%"
+                cy="45%"
                 innerRadius={60}
                 outerRadius={90}
                 paddingAngle={4}
                 dataKey="value"
-                label={({name, percent}) => `${name} ${(percent * 100).toFixed(0)}%`}
+                label={({ percent}) => `${(percent * 100).toFixed(0)}%`}
                 labelLine={false}
               >
                 {programData.map((_, index) => (
@@ -197,6 +198,13 @@ export const StatsView: React.FC<StatsViewProps> = ({ scripts }) => {
               </Pie>
               <Tooltip 
                 contentStyle={{ borderRadius: '8px', border: 'none', fontSize: '12px' }}
+              />
+              <Legend 
+                verticalAlign="bottom" 
+                align="center"
+                height={36} 
+                iconType="circle"
+                wrapperStyle={{ fontSize: '12px', paddingTop: '20px' }}
               />
             </PieChart>
           </ResponsiveContainer>

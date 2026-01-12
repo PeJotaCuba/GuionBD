@@ -7,9 +7,9 @@ import { ScriptCarousel } from './components/ScriptCarousel';
 import { 
   Upload, Search, FileStack, 
   Settings, Moon, Sun, FilePlus, Database,
-  RefreshCw, ChevronDown, ChevronUp, Radio
+  RefreshCw, ChevronDown, ChevronUp, Radio, X
 } from 'lucide-react';
-// IMPORTANTE: Importamos desde el archivo .ts, no .json, y usamos ruta relativa simple
+// IMPORTANTE: Importamos desde el archivo .ts, no .json
 import { guionBase } from './guionbase';
 
 export default function App() {
@@ -18,6 +18,7 @@ export default function App() {
   const [uploadTarget, setUploadTarget] = useState<ScriptStatus | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [darkMode, setDarkMode] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false); // Flag para evitar guardar antes de cargar
   
   // Estado para programas expandidos (Acordeón)
   const [expandedPrograms, setExpandedPrograms] = useState<Record<string, boolean>>({});
@@ -28,11 +29,11 @@ export default function App() {
 
   // Cargar datos iniciales
   useEffect(() => {
-    // Intentar cargar desde localStorage
     const saved = localStorage.getItem('guionbd_data');
     if (saved) {
       try {
-        setScripts(JSON.parse(saved));
+        const parsedData = JSON.parse(saved);
+        setScripts(parsedData);
       } catch (e) {
         console.error("Error cargando caché, usando datos base", e);
         setScripts(guionBase);
@@ -41,14 +42,16 @@ export default function App() {
       // Si no hay localStorage, usar los datos base del archivo .ts
       setScripts(guionBase);
     }
+    setIsLoaded(true);
   }, []);
 
   // Guardar en localStorage cuando cambian los scripts
+  // Se ejecuta solo después de la carga inicial para evitar sobrescribir con array vacío al inicio
   useEffect(() => {
-    if (scripts.length > 0) {
+    if (isLoaded) {
       localStorage.setItem('guionbd_data', JSON.stringify(scripts));
     }
-  }, [scripts]);
+  }, [scripts, isLoaded]);
 
   // Cerrar menú de ajustes al hacer clic fuera
   useEffect(() => {
@@ -105,17 +108,23 @@ export default function App() {
     return groups;
   }, [filteredScripts]);
 
-  // Filter scripts for carousel (One year ago)
+  // Filtro para el Carrusel: Exactamente hace un año
   const carouselScripts = useMemo<Script[]>(() => {
     if (activeTab === 'reports') return [];
     
-    const currentYear = new Date().getFullYear();
-    const prevYear = currentYear - 1;
+    const today = new Date();
+    const currentDay = today.getDate();
+    const currentMonth = today.getMonth(); // 0-indexed
+    const prevYear = today.getFullYear() - 1;
 
     return scripts.filter(s => {
        try {
-         const scriptYear = new Date(s.dateAdded).getFullYear();
-         return s.status === activeTab && scriptYear === prevYear;
+         const d = new Date(s.dateAdded);
+         // Coincidencia estricta: Mismo día, Mismo mes, Año anterior
+         return s.status === activeTab && 
+                d.getFullYear() === prevYear &&
+                d.getMonth() === currentMonth &&
+                d.getDate() === currentDay;
        } catch (e) {
          return false;
        }
@@ -154,22 +163,47 @@ export default function App() {
     setShowSettings(false);
   };
 
-  // Función para actualizar desde GitHub
+  // Función para actualizar desde GitHub (Ahora con lógica de Fusión/Merge)
   const updateFromGithub = async () => {
-    const confirmUpdate = window.confirm("Esto descargará la última versión de biblio.json desde GitHub y actualizará tu base de datos local. ¿Continuar?");
+    const confirmUpdate = window.confirm("Esto descargará datos de GitHub y los combinará con tu base de datos local. Tus registros creados manualmente se conservarán. ¿Continuar?");
     if (!confirmUpdate) return;
 
     try {
-      // URL corregida para apuntar al archivo biblio.json en el repositorio
       const response = await fetch('https://raw.githubusercontent.com/PeJotaCuba/GuionBD/refs/heads/main/biblio.json');
       if (!response.ok) throw new Error('Error al conectar con GitHub');
       
       const data = await response.json() as unknown;
       
       if (Array.isArray(data)) {
-        const validScripts = data as Script[];
-        setScripts(validScripts);
-        alert(`Base de datos actualizada con éxito. ${validScripts.length} registros cargados.`);
+        const remoteScripts = data as Script[];
+        
+        setScripts(prevScripts => {
+            // Creamos un mapa con los scripts actuales para acceso rápido por ID
+            const scriptMap = new Map(prevScripts.map(s => [s.id, s]));
+
+            let newCount = 0;
+            let updateCount = 0;
+
+            // Procesamos los scripts remotos
+            remoteScripts.forEach(remoteScript => {
+                if (scriptMap.has(remoteScript.id)) {
+                    // Si existe, actualizamos los datos (opcional: podrías decidir no sobrescribir)
+                    // Aquí decidimos que GitHub tiene la autoridad sobre sus propios IDs
+                    scriptMap.set(remoteScript.id, remoteScript);
+                    updateCount++;
+                } else {
+                    // Si no existe, lo agregamos
+                    scriptMap.set(remoteScript.id, remoteScript);
+                    newCount++;
+                }
+            });
+            
+            // Convertimos el mapa de vuelta a array
+            const mergedScripts = Array.from(scriptMap.values());
+            alert(`Sincronización completada.\nAgregados: ${newCount}\nActualizados: ${updateCount}\nTotal: ${mergedScripts.length}`);
+            return mergedScripts;
+        });
+
       } else {
         throw new Error('Formato de datos inválido en GitHub');
       }
@@ -211,6 +245,7 @@ export default function App() {
             </div>
             
             <div className="flex items-center gap-1">
+              {/* Botón en navbar visible solo en desktop */}
               <button 
                 onClick={updateFromGithub}
                 className="p-2 text-indigo-600 hover:bg-indigo-50 dark:text-indigo-400 dark:hover:bg-slate-800 rounded-full transition-colors hidden sm:block"
@@ -236,9 +271,10 @@ export default function App() {
 
                 {showSettings && (
                   <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 py-2 z-50 animate-fade-in">
+                    {/* Botón Sincronizar SIEMPRE visible en el menú desplegable */}
                     <button 
                       onClick={updateFromGithub}
-                      className="w-full text-left px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/50 flex items-center gap-3 sm:hidden"
+                      className="w-full text-left px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/50 flex items-center gap-3"
                     >
                       <RefreshCw size={16} className="text-green-500" />
                       <div>
@@ -300,15 +336,23 @@ export default function App() {
 
             {/* Flexible Search */}
             {activeTab !== 'reports' && (
-              <div className="relative">
-                <Search size={16} className="absolute left-3 top-2.5 text-slate-400" />
+              <div className="relative group">
+                <Search size={18} className="absolute left-3 top-2.5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
                 <input
                   type="text"
-                  placeholder="Buscar programa, tema o fecha..."
+                  placeholder="Buscar programa, tema, fecha o palabra clave..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                  className="w-full pl-10 pr-10 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 outline-none shadow-sm transition-all"
                 />
+                {searchQuery && (
+                  <button 
+                    onClick={() => setSearchQuery('')}
+                    className="absolute right-3 top-2.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                  >
+                    <X size={16} />
+                  </button>
+                )}
               </div>
             )}
           </div>
@@ -320,7 +364,7 @@ export default function App() {
         ) : (
           <div className="pb-20 space-y-6">
             
-            {/* Carousel (Only shows if there are scripts from 1 year ago) */}
+            {/* Carousel (Only shows if there are scripts from exactly 1 year ago) */}
             {carouselScripts.length > 0 && (
                 <ScriptCarousel scripts={carouselScripts} title="Hace un Año" />
             )}
