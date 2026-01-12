@@ -5,19 +5,21 @@ import { StatsView } from './components/StatsView';
 import { UploadModal } from './components/UploadModal';
 import { ScriptCarousel } from './components/ScriptCarousel';
 import { 
-  Upload, Search, LayoutGrid, FileStack, BarChart3, 
-  Settings, Moon, Sun, Filter, FilePlus, Database
+  Upload, Search, FileStack, 
+  Settings, Moon, Sun, FilePlus, Database,
+  RefreshCw, ChevronDown, ChevronUp, Radio
 } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'active' | 'inactive' | 'reports'>('active');
-  // Inicializamos vacío como se solicitó. 
-  // Si quisieras datos de prueba iniciales, se podrían hardcodear aquí.
   const [scripts, setScripts] = useState<Script[]>([]);
   const [uploadTarget, setUploadTarget] = useState<ScriptStatus | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [darkMode, setDarkMode] = useState(false);
   
+  // Estado para programas expandidos (Acordeón)
+  const [expandedPrograms, setExpandedPrograms] = useState<Record<string, boolean>>({});
+
   // Estado para el menú de ajustes
   const [showSettings, setShowSettings] = useState(false);
   const settingsRef = useRef<HTMLDivElement>(null);
@@ -35,22 +37,50 @@ export default function App() {
     };
   }, []);
 
-  // Filter main list scripts
-  const filteredScripts = useMemo(() => {
+  // Normalización de texto para búsqueda flexible (quita acentos y hace minúsculas)
+  const normalizeText = (text: string) => {
+    return text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  };
+
+  // Búsqueda flexible (tokenizada y normalizada)
+  const filteredScripts = useMemo<Script[]>(() => {
+    const normalizedQuery = normalizeText(searchQuery);
+    const searchTerms = normalizedQuery.trim().split(/\s+/).filter(Boolean);
+
     return scripts.filter(script => {
-      const matchesSearch = 
-        script.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        script.themes.some(t => t.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        script.genre.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        script.summary.toLowerCase().includes(searchQuery.toLowerCase());
-      
-      if (activeTab === 'reports') return true; 
-      return matchesSearch && script.status === activeTab;
+      if (activeTab !== 'reports' && script.status !== activeTab) return false;
+      if (searchTerms.length === 0) return true;
+
+      const searchableText = normalizeText(`
+        ${script.title} 
+        ${script.genre} 
+        ${script.themes.join(' ')} 
+        ${script.summary}
+      `);
+
+      // Todas las palabras buscadas deben estar presentes
+      return searchTerms.every(term => searchableText.includes(term));
     });
   }, [scripts, activeTab, searchQuery]);
 
+  // Agrupar por Programa (Genre)
+  const groupedScripts = useMemo<Record<string, Script[]>>(() => {
+    const groups: Record<string, Script[]> = {};
+    filteredScripts.forEach(script => {
+      if (!groups[script.genre]) {
+        groups[script.genre] = [];
+      }
+      groups[script.genre].push(script);
+    });
+    // Ordenar scripts por fecha dentro de cada grupo
+    Object.keys(groups).forEach(key => {
+        groups[key].sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime());
+    });
+    return groups;
+  }, [filteredScripts]);
+
   // Filter scripts for carousel (One year ago)
-  const carouselScripts = useMemo(() => {
+  const carouselScripts = useMemo<Script[]>(() => {
     if (activeTab === 'reports') return [];
     
     const currentYear = new Date().getFullYear();
@@ -67,7 +97,6 @@ export default function App() {
   }, [scripts, activeTab]);
 
   const handleAddScripts = (newScripts: Script[]) => {
-    // Evitar duplicados basados en ID o Título+Fecha si es necesario
     setScripts(prev => [...newScripts, ...prev]);
     if (uploadTarget) {
         setActiveTab(uploadTarget === 'active' ? 'active' : 'inactive');
@@ -86,7 +115,6 @@ export default function App() {
     }
   };
 
-  // Función para descargar la base de datos actual como biblio.json
   const downloadDatabase = () => {
     const dataStr = JSON.stringify(scripts, null, 2);
     const blob = new Blob([dataStr], { type: "application/json" });
@@ -100,6 +128,39 @@ export default function App() {
     setShowSettings(false);
   };
 
+  // Función para actualizar desde GitHub
+  const updateFromGithub = async () => {
+    const confirmUpdate = window.confirm("Esto actualizará tu base de datos con la versión más reciente de GitHub. ¿Continuar?");
+    if (!confirmUpdate) return;
+
+    try {
+      const response = await fetch('https://raw.githubusercontent.com/PeJotaCuba/GuionBD/refs/heads/main/biblio.json');
+      if (!response.ok) throw new Error('Error al conectar con GitHub');
+      
+      const data = await response.json() as unknown;
+      
+      if (Array.isArray(data)) {
+        const validScripts = data as Script[];
+        setScripts(validScripts);
+        alert(`Base de datos actualizada con éxito (${validScripts.length} registros).`);
+      } else {
+        throw new Error('Formato de datos inválido');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('Error al actualizar la base de datos. Revisa tu conexión a internet.');
+    } finally {
+        setShowSettings(false);
+    }
+  };
+
+  const toggleProgramGroup = (programName: string) => {
+    setExpandedPrograms(prev => ({
+      ...prev,
+      [programName]: !prev[programName]
+    }));
+  };
+
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
@@ -109,192 +170,185 @@ export default function App() {
   }, [darkMode]);
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'dark:bg-slate-900' : 'bg-slate-50'}`}>
+    <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'dark:bg-slate-950' : 'bg-slate-50'}`}>
       
-      {/* Navbar */}
-      <nav className="sticky top-0 z-30 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+      {/* Navbar Compacta Mobile-First */}
+      <nav className="sticky top-0 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="flex justify-between items-center h-14">
             <div className="flex items-center gap-2">
-              <div className="bg-indigo-600 p-2 rounded-lg">
-                <FileStack className="text-white h-5 w-5" />
+              <div className="bg-indigo-600 p-1.5 rounded-lg">
+                <FileStack className="text-white h-4 w-4" />
               </div>
-              <span className="font-bold text-xl text-slate-800 dark:text-white tracking-tight">GuionBD</span>
+              <span className="font-bold text-lg text-slate-800 dark:text-white tracking-tight">GuionBD</span>
             </div>
             
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1">
+              <button 
+                onClick={updateFromGithub}
+                className="p-2 text-indigo-600 hover:bg-indigo-50 dark:text-indigo-400 dark:hover:bg-slate-800 rounded-full transition-colors hidden sm:block"
+                title="Sincronizar BD desde GitHub"
+              >
+                <RefreshCw size={18} />
+              </button>
+
               <button 
                 onClick={() => setDarkMode(!darkMode)}
                 className="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"
-                title={darkMode ? "Modo Claro" : "Modo Oscuro"}
               >
-                {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+                {darkMode ? <Sun size={18} /> : <Moon size={18} />}
               </button>
               
-              {/* Menú de Ajustes */}
               <div className="relative" ref={settingsRef}>
                 <button 
                   onClick={() => setShowSettings(!showSettings)}
-                  className={`p-2 rounded-full transition-colors ${showSettings ? 'bg-indigo-100 text-indigo-600 dark:bg-slate-700 dark:text-indigo-400' : 'text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
-                  title="Ajustes"
+                  className="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full"
                 >
-                  <Settings size={20} />
+                  <Settings size={18} />
                 </button>
 
-                {/* Dropdown */}
                 {showSettings && (
-                  <div className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 py-2 animate-fade-in transform origin-top-right z-50">
-                    <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-700">
-                      <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Base de Datos</p>
-                    </div>
+                  <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-100 dark:border-slate-700 py-2 z-50 animate-fade-in">
+                    <button 
+                      onClick={updateFromGithub}
+                      className="w-full text-left px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/50 flex items-center gap-3 sm:hidden"
+                    >
+                      <RefreshCw size={16} className="text-green-500" />
+                      <div>
+                        <span className="font-medium block">Sincronizar BD</span>
+                        <span className="text-[10px] text-slate-400">Desde Github (biblio.json)</span>
+                      </div>
+                    </button>
                     <button 
                       onClick={downloadDatabase}
-                      className="w-full text-left px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/50 flex items-center gap-2 transition-colors"
+                      className="w-full text-left px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/50 flex items-center gap-3"
                     >
                       <Database size={16} className="text-indigo-500" />
-                      <span>Guardar como <strong>biblio.json</strong></span>
+                      <div>
+                        <span className="font-medium block">Guardar copia local</span>
+                        <span className="text-[10px] text-slate-400">Descargar biblio.json</span>
+                      </div>
                     </button>
-                    {/* Aquí se podrían añadir más opciones futuras */}
                   </div>
                 )}
               </div>
-
-              <div className="h-8 w-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 ml-2"></div>
             </div>
           </div>
         </div>
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-4xl mx-auto px-4 py-6">
         
-        {/* Header Section */}
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
-          <div>
-            <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white">
-              {activeTab === 'active' && 'Guiones Activos'}
-              {activeTab === 'inactive' && 'Guiones Inactivos'}
-              {activeTab === 'reports' && 'Centro de Informes'}
-            </h1>
-            <p className="text-slate-500 dark:text-slate-400 mt-1">Gestión de programación y temáticas radiales.</p>
-          </div>
-          
-          <div className="flex flex-col sm:flex-row gap-3">
-             <button 
-                onClick={() => setUploadTarget('active')}
-                className="group flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-xl font-semibold shadow-lg shadow-indigo-500/30 transition-all hover:scale-105 active:scale-95"
-              >
-                <FilePlus size={20} />
-                <span>Cargar Activos</span>
-              </button>
-              <button 
-                onClick={() => setUploadTarget('inactive')}
-                className="group flex items-center justify-center gap-2 bg-slate-700 hover:bg-slate-800 text-white px-5 py-3 rounded-xl font-semibold shadow-lg shadow-slate-500/30 transition-all hover:scale-105 active:scale-95"
-              >
-                <Upload size={20} />
-                <span>Cargar Inactivos</span>
-              </button>
-          </div>
-        </div>
-
-        {/* Controls & Search */}
-        <div className="flex flex-col lg:flex-row gap-6 mb-8 items-start lg:items-center justify-between">
-          
-          {/* Tabs */}
-          <div className="flex p-1 bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-slate-200 dark:border-slate-700">
-            <button 
-              onClick={() => setActiveTab('active')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'active' ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
-            >
-              <LayoutGrid size={16} />
-              Activos
-            </button>
-            <button 
-              onClick={() => setActiveTab('inactive')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'inactive' ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
-            >
-              <FileStack size={16} />
-              Inactivos
-            </button>
-            <button 
-              onClick={() => setActiveTab('reports')}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === 'reports' ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 shadow-sm' : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'}`}
-            >
-              <BarChart3 size={16} />
-              Informes
-            </button>
-          </div>
-
-          {/* Search Bar */}
-          {activeTab !== 'reports' && (
-            <div className="relative w-full lg:w-96 group">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search size={18} className="text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
-              </div>
-              <input
-                type="text"
-                placeholder="Buscar programa, tema o fecha..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="block w-full pl-10 pr-4 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl leading-5 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all shadow-sm"
-              />
-              <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                 <Filter size={16} className="text-slate-300" />
-              </div>
+        {/* Mobile-First Header */}
+        <div className="mb-6 space-y-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+                {activeTab === 'active' ? 'En Emisión' : activeTab === 'inactive' ? 'Archivados' : 'Informes'}
+              </h1>
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                {scripts.length} registros totales
+              </p>
             </div>
-          )}
+            
+            <div className="flex gap-2 w-full sm:w-auto">
+               <button onClick={() => setUploadTarget('active')} className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm active:scale-95 transition-transform">
+                  <FilePlus size={16} /> <span className="sm:hidden">Cargar</span> <span className="hidden sm:inline">Cargar Activos</span>
+               </button>
+               <button onClick={() => setUploadTarget('inactive')} className="flex-1 sm:flex-none flex items-center justify-center gap-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 px-4 py-2 rounded-lg text-sm font-medium shadow-sm active:scale-95 transition-transform">
+                  <Upload size={16} /> <span className="sm:hidden">Archivar</span> <span className="hidden sm:inline">Cargar Inactivos</span>
+               </button>
+            </div>
+          </div>
+
+          {/* Controls */}
+          <div className="flex flex-col gap-3">
+            {/* Tabs */}
+            <div className="flex p-1 bg-slate-200/50 dark:bg-slate-800/50 rounded-lg">
+              <button onClick={() => setActiveTab('active')} className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-all ${activeTab === 'active' ? 'bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-white' : 'text-slate-500'}`}>Activos</button>
+              <button onClick={() => setActiveTab('inactive')} className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-all ${activeTab === 'inactive' ? 'bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-white' : 'text-slate-500'}`}>Inactivos</button>
+              <button onClick={() => setActiveTab('reports')} className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-all ${activeTab === 'reports' ? 'bg-white dark:bg-slate-700 shadow-sm text-indigo-600 dark:text-white' : 'text-slate-500'}`}>Informes</button>
+            </div>
+
+            {/* Flexible Search */}
+            {activeTab !== 'reports' && (
+              <div className="relative">
+                <Search size={16} className="absolute left-3 top-2.5 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Buscar programa, tema o fecha..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-9 pr-4 py-2 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none"
+                />
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Content Area */}
         {activeTab === 'reports' ? (
           <StatsView scripts={scripts} />
         ) : (
-          <div className="pb-20">
-            {/* Carousel for One Year Ago Scripts */}
+          <div className="pb-20 space-y-6">
+            
+            {/* Carousel (Only shows if there are scripts from 1 year ago) */}
             {carouselScripts.length > 0 && (
-                <ScriptCarousel 
-                scripts={carouselScripts} 
-                title="Hace un Año" 
-                />
+                <ScriptCarousel scripts={carouselScripts} title="Hace un Año" />
             )}
 
-            {/* List of current filter scripts */}
-            {filteredScripts.length > 0 ? (
-              <>
-                 <h2 className="text-lg font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
-                   <LayoutGrid size={20} className="text-indigo-500"/>
-                   Todos los Guiones
-                 </h2>
-                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredScripts.map(script => (
-                    <ScriptCard 
-                      key={script.id} 
-                      script={script} 
-                      onToggleStatus={toggleStatus}
-                      onDelete={deleteScript}
-                    />
-                  ))}
-                </div>
-              </>
+            {/* List Grouped by Program */}
+            {Object.keys(groupedScripts).length > 0 ? (
+              <div className="space-y-3">
+                 {Object.entries(groupedScripts).map(([programName, programScripts]: [string, Script[]]) => {
+                   const isExpanded = expandedPrograms[programName] || searchQuery.length > 0; // Auto expand on search
+                   
+                   return (
+                     <div key={programName} className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 overflow-hidden shadow-sm transition-all">
+                        <button 
+                          onClick={() => toggleProgramGroup(programName)}
+                          className="w-full px-4 py-3 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/50 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors text-left"
+                        >
+                          <div className="flex items-center gap-3">
+                             <div className="bg-indigo-100 dark:bg-indigo-900/30 p-2 rounded-full text-indigo-600 dark:text-indigo-400">
+                                <Radio size={18} />
+                             </div>
+                             <div>
+                               <h3 className="font-bold text-slate-800 dark:text-white text-sm sm:text-base">{programName}</h3>
+                               <p className="text-xs text-slate-500">{programScripts.length} guiones</p>
+                             </div>
+                          </div>
+                          {isExpanded ? <ChevronUp size={18} className="text-slate-400"/> : <ChevronDown size={18} className="text-slate-400"/>}
+                        </button>
+                        
+                        {isExpanded && (
+                          <div className="divide-y divide-slate-100 dark:divide-slate-700/50">
+                            {programScripts.map(script => (
+                              <ScriptCard 
+                                key={script.id} 
+                                script={script} 
+                                onToggleStatus={toggleStatus}
+                                onDelete={deleteScript}
+                              />
+                            ))}
+                          </div>
+                        )}
+                     </div>
+                   );
+                 })}
+              </div>
             ) : (
-              <div className="flex flex-col items-center justify-center py-20 text-center">
-                <div className="bg-slate-100 dark:bg-slate-800 p-6 rounded-full mb-4">
-                  {scripts.length === 0 ? <Database size={40} className="text-slate-400" /> : <Search size={40} className="text-slate-400" />}
+              <div className="flex flex-col items-center justify-center py-12 text-center">
+                <div className="bg-slate-100 dark:bg-slate-800 p-4 rounded-full mb-3">
+                   <Search size={24} className="text-slate-400" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-700 dark:text-white mb-2">
-                  {scripts.length === 0 ? "Base de datos vacía" : "No se encontraron registros"}
-                </h3>
-                <p className="text-slate-500 dark:text-slate-400 max-w-sm mb-6">
-                  {scripts.length === 0 
-                    ? "Carga tus guiones usando los botones de arriba para comenzar a gestionar tu programación." 
-                    : "Intenta con otros términos de búsqueda o cambia de pestaña."}
+                <p className="text-slate-500 dark:text-slate-400 text-sm">
+                  {scripts.length === 0 ? "No hay guiones cargados." : "No se encontraron coincidencias."}
                 </p>
-                {searchQuery && (
-                   <button 
-                     onClick={() => setSearchQuery('')}
-                     className="mt-4 text-indigo-600 dark:text-indigo-400 font-medium hover:underline"
-                   >
-                     Limpiar búsqueda
+                {scripts.length === 0 && (
+                   <button onClick={updateFromGithub} className="mt-4 text-indigo-600 dark:text-indigo-400 text-sm font-medium hover:underline">
+                      Cargar desde GitHub
                    </button>
                 )}
               </div>
