@@ -9,18 +9,41 @@ interface StatsViewProps {
   scripts: Script[];
 }
 
-const COLORS = ['#6366f1', '#a855f7', '#ec4899', '#3b82f6', '#14b8a6', '#f59e0b', '#ef4444', '#22c55e'];
+// Colores principales. El último (Slate) se reserva para "OTROS" si es necesario.
+const COLORS = ['#6366f1', '#a855f7', '#ec4899', '#3b82f6', '#14b8a6', '#f59e0b', '#ef4444', '#22c55e', '#64748b'];
 
 export const StatsView: React.FC<StatsViewProps> = ({ scripts }) => {
 
   const programData = useMemo(() => {
     const counts: Record<string, number> = {};
+    
+    // 1. Contar normalizando nombres (quitar paréntesis para agrupar)
     scripts.forEach(s => {
-      counts[s.genre] = (counts[s.genre] || 0) + 1;
+      // Normalización igual que en App.tsx para consistencia
+      const normalizedName = s.genre.replace(/\s*\(.*?\)/g, "").trim().toUpperCase();
+      counts[normalizedName] = (counts[normalizedName] || 0) + 1;
     });
-    return Object.entries(counts)
+
+    // 2. Convertir a array y ordenar descendente
+    const sortedData = Object.entries(counts)
       .map(([name, value]) => ({ name, value }))
       .sort((a, b) => b.value - a.value);
+
+    // 3. Aplicar lógica TOP 5 + OTROS
+    if (sortedData.length <= 5) {
+      return sortedData;
+    }
+
+    const top5 = sortedData.slice(0, 5);
+    const others = sortedData.slice(5);
+    
+    const othersCount = others.reduce((acc, curr) => acc + curr.value, 0);
+    
+    if (othersCount > 0) {
+      top5.push({ name: 'OTROS', value: othersCount });
+    }
+
+    return top5;
   }, [scripts]);
 
   // Fix: Added explicit CSS for word wrapping in the generated HTML table
@@ -176,7 +199,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ scripts }) => {
     <div className="space-y-6 pb-20 animate-fade-in">
       {/* Chart */}
       <div className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
-        <h3 className="text-base font-bold text-slate-800 dark:text-white mb-4">Guiones por Programa</h3>
+        <h3 className="text-base font-bold text-slate-800 dark:text-white mb-4">Top 5 Programas (+ Otros)</h3>
         {/* Increased height to accommodate the bottom legend */}
         <div className="h-96 w-full">
           <ResponsiveContainer width="100%" height="100%">
@@ -192,9 +215,11 @@ export const StatsView: React.FC<StatsViewProps> = ({ scripts }) => {
                 label={({ percent}) => `${(percent * 100).toFixed(0)}%`}
                 labelLine={false}
               >
-                {programData.map((_, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
+                {programData.map((entry, index) => {
+                  // Si el nombre es 'OTROS', usar color gris (asumiendo que es el último color o uno específico)
+                  const fill = entry.name === 'OTROS' ? '#94a3b8' : COLORS[index % (COLORS.length - 1)];
+                  return <Cell key={`cell-${index}`} fill={fill} />;
+                })}
               </Pie>
               <Tooltip 
                 contentStyle={{ borderRadius: '8px', border: 'none', fontSize: '12px' }}

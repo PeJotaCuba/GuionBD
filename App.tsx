@@ -53,7 +53,10 @@ export default function App() {
 
   // Función específica para normalizar nombres de programas (ignora puntuación para agrupar)
   const normalizeProgramName = (name: string) => {
-    return name
+    // Primero eliminamos contenido entre paréntesis, ej: "Leyendo y Cantando (A)" -> "Leyendo y Cantando"
+    const cleanName = name.replace(/\s*\(.*?\)/g, "");
+    
+    return cleanName
       .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Quitar acentos
       .replace(/[.,;:\-]/g, "") // Quitar puntuación
       .replace(/\s+/g, " ") // Colapsar espacios
@@ -88,9 +91,11 @@ export default function App() {
       const normalizedKey = normalizeProgramName(script.genre);
       
       if (!groups[normalizedKey]) {
-        // Usamos el primer nombre que encontremos como el "nombre para mostrar"
+        // Usamos el nombre original limpio (sin paréntesis) o formateado como el "nombre para mostrar"
+        const display = script.genre.replace(/\s*\(.*?\)/g, "").trim().toUpperCase();
+        
         groups[normalizedKey] = { 
-          displayName: script.genre.toUpperCase(), // Forzamos mayúsculas para consistencia visual
+          displayName: display, 
           scripts: [] 
         };
       }
