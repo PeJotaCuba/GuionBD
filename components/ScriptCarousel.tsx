@@ -139,7 +139,7 @@ export const ScriptCarousel: React.FC<ScriptCarouselProps> = ({ scripts, title }
                 {/* Content */}
                 <div className="p-3 flex flex-col h-24 justify-between">
                    <div>
-                      <p className="text-[9px] font-bold text-indigo-500 dark:text-indigo-400 uppercase tracking-wider mb-1 truncate">
+                      <p className="text-[9px] font-bold text-indigo-500 dark:text-indigo-300 uppercase tracking-wider mb-1 truncate">
                         {script.genre}
                       </p>
                       <h4 className="text-xs font-semibold text-slate-800 dark:text-slate-100 leading-snug line-clamp-2">
@@ -149,9 +149,9 @@ export const ScriptCarousel: React.FC<ScriptCarouselProps> = ({ scripts, title }
                    
                    <div className="flex items-center gap-1.5 mt-2">
                      <Calendar size={10} className="text-slate-400" />
-                     <p className="text-[10px] font-medium text-slate-500 dark:text-slate-400">
+                     <p className="text-[10px] font-medium text-slate-500 dark:text-slate-300">
                        {scriptDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}
-                       <span className="text-slate-300 mx-1">|</span>
+                       <span className="text-slate-300 dark:text-slate-600 mx-1">|</span>
                        {scriptDate.getFullYear()}
                      </p>
                    </div>

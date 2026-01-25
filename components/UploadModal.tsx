@@ -116,7 +116,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSav
               <p className="text-lg font-semibold text-slate-700 dark:text-slate-200 mb-1">
                 Toca para subir o arrastra aquí
               </p>
-              <p className="text-sm text-slate-400">
+              <p className="text-sm text-slate-500 dark:text-slate-400">
                 Sube tu archivo .txt con la lista de programas
               </p>
             </div>
@@ -128,7 +128,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSav
               <p className="text-lg font-bold text-slate-800 dark:text-white mb-1 truncate max-w-full px-4">
                 {file.name}
               </p>
-              <p className="text-sm text-slate-500 mb-6">
+              <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
                 {(file.size / 1024).toFixed(2)} KB
               </p>
 
@@ -153,7 +153,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSav
               {!isProcessing && (
                 <button 
                   onClick={() => setFile(null)}
-                  className="mt-3 text-sm text-slate-500 hover:text-red-500 transition-colors"
+                  className="mt-3 text-sm text-slate-500 dark:text-slate-400 hover:text-red-500 dark:hover:text-red-400 transition-colors"
                 >
                   Cancelar selección
                 </button>
@@ -170,7 +170,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSav
 
         {/* Footer info */}
         <div className="px-6 py-3 bg-slate-50 dark:bg-slate-900/50 text-center">
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             El sistema detectará automáticamente programas, temas y fechas.
           </p>
         </div>

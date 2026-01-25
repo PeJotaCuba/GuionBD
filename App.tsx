@@ -372,7 +372,7 @@ export default function App() {
                   className={`flex-1 md:w-32 py-2 text-sm font-semibold rounded-lg transition-all duration-200 ${
                     activeTab === tab.id 
                       ? 'bg-white dark:bg-slate-700 text-indigo-600 dark:text-white shadow-sm ring-1 ring-black/5' 
-                      : 'text-slate-500 hover:text-slate-700 dark:hover:text-slate-300'
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'
                   }`}
                 >
                   {tab.label}
