@@ -8,7 +8,7 @@ import {
   Upload, Search, FileStack, 
   Moon, Sun, FilePlus, 
   RefreshCw, ChevronDown, Radio, X,
-  Download
+  Download, Trash2
 } from 'lucide-react';
 import { guionBase } from './guionbase';
 
@@ -143,7 +143,43 @@ export default function App() {
   }, [scripts, activeTab]);
 
   const handleAddScripts = (newScripts: Script[]) => {
-    setScripts(prev => [...newScripts, ...prev]);
+    setScripts(prev => {
+      const updatedList = [...prev];
+
+      newScripts.forEach(newScript => {
+        // Normalizamos los datos clave para determinar si es el mismo guion:
+        // 1. Fecha (YYYY-MM-DD)
+        // 2. Programa (Normalizado)
+        // 3. Título/Tema (Texto normalizado)
+        
+        const newDate = new Date(newScript.dateAdded).toISOString().split('T')[0];
+        const newProgram = normalizeProgramName(newScript.genre);
+        const newTitle = normalizeText(newScript.title);
+
+        const existingIndex = updatedList.findIndex(existing => {
+          const existingDate = new Date(existing.dateAdded).toISOString().split('T')[0];
+          const existingProgram = normalizeProgramName(existing.genre);
+          const existingTitle = normalizeText(existing.title);
+
+          return existingProgram === newProgram && 
+                 existingDate === newDate && 
+                 existingTitle === newTitle;
+        });
+
+        if (existingIndex !== -1) {
+          // Si existe, SOBRESCRIBIMOS los datos.
+          // Mantenemos el ID original para consistencia interna si fuera necesario, 
+          // pero actualizamos todo el contenido.
+          updatedList[existingIndex] = { ...newScript, id: updatedList[existingIndex].id };
+        } else {
+          // Si no existe, lo agregamos al principio como nuevo.
+          updatedList.unshift(newScript);
+        }
+      });
+
+      return updatedList;
+    });
+
     if (uploadTarget) {
         setActiveTab(uploadTarget === 'active' ? 'active' : 'inactive');
     }
@@ -158,6 +194,12 @@ export default function App() {
   const deleteScript = (id: string) => {
     if (window.confirm('¿Estás seguro de que quieres eliminar este registro?')) {
       setScripts(prev => prev.filter(s => s.id !== id));
+    }
+  };
+
+  const clearDatabase = () => {
+    if (window.confirm('¿Estás seguro de que quieres eliminar TODOS los guiones cargados (activos e inactivos)? Esta acción no se puede deshacer.')) {
+      setScripts([]);
     }
   };
 
@@ -249,6 +291,14 @@ export default function App() {
             
             {/* Acciones */}
             <div className="flex items-center gap-1 sm:gap-2">
+              <button 
+                onClick={clearDatabase}
+                className="p-2 text-slate-600 hover:text-red-600 hover:bg-red-50 dark:text-slate-400 dark:hover:text-red-400 dark:hover:bg-slate-800/50 rounded-lg transition-all"
+                title="Eliminar todos los datos"
+              >
+                <Trash2 size={20} />
+              </button>
+
               <button 
                 onClick={updateFromGithub}
                 className="p-2 text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 dark:text-slate-400 dark:hover:text-indigo-400 dark:hover:bg-slate-800/50 rounded-lg transition-all"
