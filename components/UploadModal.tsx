@@ -86,7 +86,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSav
             Cargar Guiones {statusLabel}
           </h2>
           <button onClick={onClose} className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
-            <X size={20} className="text-slate-500" />
+            <X size={20} className="text-slate-500 dark:text-slate-300" />
           </button>
         </div>
 

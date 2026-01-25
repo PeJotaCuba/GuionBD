@@ -37,7 +37,7 @@ export const ScriptCard: React.FC<ScriptCardProps> = ({ script, onToggleStatus, 
               <h4 className="text-base sm:text-lg font-bold text-slate-800 dark:text-slate-100 leading-snug mb-1">
                 {script.title}
               </h4>
-              <p className="text-sm text-slate-500 dark:text-slate-300 font-medium truncate">
+              <p className="text-sm text-slate-500 dark:text-slate-400 font-medium truncate">
                 {script.summary}
               </p>
             </div>
@@ -63,14 +63,14 @@ export const ScriptCard: React.FC<ScriptCardProps> = ({ script, onToggleStatus, 
 
           {/* Metadata Footer */}
           <div className="flex flex-wrap items-center gap-3 mt-3">
-            <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-md">
+            <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-md">
                <Calendar size={12} className="text-slate-400" /> {formattedDate}
             </span>
             
             {script.themes.length > 0 && (
               <div className="flex flex-wrap gap-2">
                  {script.themes.slice(0, 3).map((theme, idx) => (
-                   <span key={idx} className="inline-flex items-center gap-1 text-[11px] font-medium text-indigo-600 dark:text-indigo-200 bg-indigo-50 dark:bg-indigo-900/20 px-2 py-1 rounded-md border border-indigo-100 dark:border-indigo-800/30">
+                   <span key={idx} className="inline-flex items-center gap-1 text-[11px] font-medium text-indigo-600 dark:text-indigo-300 bg-indigo-50 dark:bg-slate-800 border border-indigo-100 dark:border-indigo-500/20 px-2 py-1 rounded-md">
                      <Hash size={10} className="opacity-50" /> {theme}
                    </span>
                  ))}
