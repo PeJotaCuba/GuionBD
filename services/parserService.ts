@@ -6,28 +6,29 @@ const MONTHS: Record<string, number> = {
 };
 
 export const parseScriptsFromText = (text: string, status: ScriptStatus): Script[] => {
-  // Split by the separator line defined in the sample
   const entries = text.split(/-{5,}/).map(e => e.trim()).filter(e => e);
   
   return entries.map(entry => {
-    // Extract fields using Regex
-    // Matches "PROGRAMA: Value" until newline or another keyword like "EMISIÓN:"
+    // Extraer campos
     const programaMatch = entry.match(/PROGRAMA:\s*([^:\n]+?)(?:\s+(?:EMISIÓN|ESCRIBE|ARCHIVO|FECHA|TEMA):|$|\n)/i);
     const archivoMatch = entry.match(/Archivo:\s*(.+)/i);
     const fechaMatch = entry.match(/Fecha:\s*(.+)/i);
     const temaMatch = entry.match(/Tema:\s*(.+)/i);
 
-    // Clean up Program Name (remove "1. ", etc)
-    const rawPrograma = programaMatch ? programaMatch[1].trim() : "Desconocido";
-    const programa = rawPrograma.replace(/^\d+\.\s*/, '').trim();
+    // Limpiar nombre del programa (quitar numeración inicial "1. ", "2. ", etc)
+    let programa = "Desconocido";
+    if (programaMatch) {
+       programa = programaMatch[1].replace(/^\d+\.\s*/, '').trim();
+       // Opcional: Capitalizar primera letra de cada palabra para visualización
+       programa = programa.charAt(0).toUpperCase() + programa.slice(1);
+    }
     
     const archivo = archivoMatch ? archivoMatch[1].trim() : "";
     
-    // Clean up Date
+    // Parseo de fecha
     const rawFecha = fechaMatch ? fechaMatch[1].trim() : "";
     let dateAdded = new Date().toISOString();
     
-    // Parse Spanish Date
     try {
         const dayMatch = rawFecha.match(/(\d{1,2})/);
         const yearMatch = rawFecha.match(/(\d{4})/);
@@ -38,9 +39,7 @@ export const parseScriptsFromText = (text: string, status: ScriptStatus): Script
             const day = parseInt(dayMatch[1]);
             const year = parseInt(yearMatch[1]);
             const month = MONTHS[monthMatch[1]];
-            // Create date object
             const d = new Date(year, month, day);
-            // Check if valid
             if (!isNaN(d.getTime())) {
               dateAdded = d.toISOString();
             }
@@ -51,19 +50,19 @@ export const parseScriptsFromText = (text: string, status: ScriptStatus): Script
 
     const tema = temaMatch ? temaMatch[1].trim() : "Sin Tema";
 
-    // Generate pseudo-themes from the topic title for searching
-    const ignoredWords = ['DE', 'LA', 'EL', 'EN', 'Y', 'LOS', 'LAS', 'DEL', 'UN', 'UNA', 'PARA', 'POR', 'CON', 'SOBRE'];
+    // Generar pseudo-temas para búsqueda
+    const ignoredWords = ['DE', 'LA', 'EL', 'EN', 'Y', 'LOS', 'LAS', 'DEL', 'UN', 'UNA', 'PARA', 'POR', 'CON', 'SOBRE', 'SUS', 'LAS'];
     const themes = tema
       .split(/[\s,.:;]+/)
       .filter(w => w.length > 3 && !ignoredWords.includes(w.toUpperCase()))
-      .slice(0, 5); // Take top 5 keywords
+      .slice(0, 5); 
 
     return {
       id: crypto.randomUUID(),
       title: tema,
-      genre: programa || "General",
+      genre: programa,
       summary: archivo ? `Archivo: ${archivo}` : "Sin archivo asociado",
-      content: entry, // Store the full record text
+      content: entry, 
       themes: themes.length > 0 ? themes : ["General"],
       tone: "Informativo",
       dateAdded,
