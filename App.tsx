@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Script, ScriptStatus } from './types';
 import { ScriptCard } from './components/ScriptCard';
 import { StatsView } from './components/StatsView';
@@ -6,9 +6,9 @@ import { UploadModal } from './components/UploadModal';
 import { ScriptCarousel } from './components/ScriptCarousel';
 import { 
   Upload, Search, FileStack, 
-  Settings, Moon, Sun, FilePlus, Database,
-  RefreshCw, ChevronDown, ChevronUp, Radio, X,
-  Github, Download
+  Moon, Sun, FilePlus, 
+  RefreshCw, ChevronDown, Radio, X,
+  Download
 } from 'lucide-react';
 import { guionBase } from './guionbase';
 
@@ -22,10 +22,6 @@ export default function App() {
   
   // Estado para programas expandidos
   const [expandedPrograms, setExpandedPrograms] = useState<Record<string, boolean>>({});
-
-  // Estado para el menú de ajustes
-  const [showSettings, setShowSettings] = useState(false);
-  const settingsRef = useRef<HTMLDivElement>(null);
 
   // Cargar datos
   useEffect(() => {
@@ -49,18 +45,6 @@ export default function App() {
       localStorage.setItem('guionbd_data', JSON.stringify(scripts));
     }
   }, [scripts, isLoaded]);
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (settingsRef.current && !settingsRef.current.contains(event.target as Node)) {
-        setShowSettings(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
 
   // --- Lógica de Normalización ---
   const normalizeText = (text: string) => {
@@ -123,20 +107,34 @@ export default function App() {
 
   const carouselScripts = useMemo<Script[]>(() => {
     if (activeTab === 'reports') return [];
+    
     const today = new Date();
-    const currentDay = today.getDate();
-    const currentMonth = today.getMonth();
-    const prevYear = today.getFullYear() - 1;
+    const targetYear = today.getFullYear() - 1;
+    
+    // Generar un Set con las fechas objetivo (Mes-Día) para búsqueda rápida
+    // Rango: Hoy - 2 días ... Hoy + 2 días
+    const targetDateStrings = new Set<string>();
+    
+    for (let i = -2; i <= 2; i++) {
+        const d = new Date(today);
+        d.setDate(today.getDate() + i);
+        // Formato "M-D" (e.g., "0-28" para Enero 28)
+        targetDateStrings.add(`${d.getMonth()}-${d.getDate()}`);
+    }
 
     return scripts.filter(s => {
        try {
          const d = new Date(s.dateAdded);
-         return s.status === activeTab && 
-                d.getFullYear() === prevYear &&
-                d.getMonth() === currentMonth &&
-                d.getDate() === currentDay;
+         
+         // 1. Debe ser del año pasado
+         if (d.getFullYear() !== targetYear) return false;
+
+         // 2. Debe estar en el rango de +/- 2 días
+         const dateString = `${d.getMonth()}-${d.getDate()}`;
+         return targetDateStrings.has(dateString);
+         
        } catch (e) { return false; }
-    });
+    }).sort((a, b) => new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime()); // Ordenar cronológicamente
   }, [scripts, activeTab]);
 
   const handleAddScripts = (newScripts: Script[]) => {
@@ -168,7 +166,6 @@ export default function App() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    setShowSettings(false);
   };
 
   const updateFromGithub = async () => {
@@ -211,8 +208,6 @@ export default function App() {
     } catch (error) {
       console.error(error);
       alert('Error al actualizar: No se pudo leer el archivo biblio.json del repositorio.');
-    } finally {
-        setShowSettings(false);
     }
   };
 
@@ -251,61 +246,27 @@ export default function App() {
             <div className="flex items-center gap-1 sm:gap-2">
               <button 
                 onClick={updateFromGithub}
-                className="hidden sm:flex p-2 text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 dark:text-slate-400 dark:hover:text-indigo-400 dark:hover:bg-slate-800/50 rounded-lg transition-all"
+                className="p-2 text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 dark:text-slate-400 dark:hover:text-indigo-400 dark:hover:bg-slate-800/50 rounded-lg transition-all"
                 title="Sincronizar desde GitHub"
               >
                 <RefreshCw size={20} />
               </button>
 
               <button 
+                onClick={downloadDatabase}
+                className="p-2 text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 dark:text-slate-400 dark:hover:text-indigo-400 dark:hover:bg-slate-800/50 rounded-lg transition-all"
+                title="Guardar copia local (biblio.json)"
+              >
+                <Download size={20} />
+              </button>
+
+              <button 
                 onClick={() => setDarkMode(!darkMode)}
                 className="p-2 text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 rounded-lg transition-colors"
+                title={darkMode ? "Modo Claro" : "Modo Oscuro"}
               >
                 {darkMode ? <Sun size={20} /> : <Moon size={20} />}
               </button>
-              
-              <div className="relative" ref={settingsRef}>
-                <button 
-                  onClick={() => setShowSettings(!showSettings)}
-                  className={`p-2 rounded-lg transition-all duration-200 ${showSettings ? 'bg-indigo-50 text-indigo-600 dark:bg-slate-800 dark:text-indigo-400' : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800'}`}
-                >
-                  <Settings size={20} />
-                </button>
-
-                {showSettings && (
-                  <div className="absolute right-0 mt-3 w-72 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-800 py-2 z-50 animate-fade-in origin-top-right ring-1 ring-black/5">
-                     <div className="px-4 py-2 border-b border-slate-100 dark:border-slate-800">
-                        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Base de Datos</p>
-                     </div>
-                    
-                    <button 
-                      onClick={updateFromGithub}
-                      className="w-full text-left px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/50 flex items-start gap-3 transition-colors"
-                    >
-                      <div className="p-1.5 bg-green-100 dark:bg-green-900/30 rounded-md text-green-600 dark:text-green-400">
-                        <Github size={16} />
-                      </div>
-                      <div>
-                        <span className="font-medium block">Actualizar desde GitHub</span>
-                        <span className="text-xs text-slate-400">Combina con biblio.json remoto</span>
-                      </div>
-                    </button>
-                    
-                    <button 
-                      onClick={downloadDatabase}
-                      className="w-full text-left px-4 py-3 text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/50 flex items-start gap-3 transition-colors"
-                    >
-                      <div className="p-1.5 bg-indigo-100 dark:bg-indigo-900/30 rounded-md text-indigo-600 dark:text-indigo-400">
-                        <Download size={16} />
-                      </div>
-                      <div>
-                        <span className="font-medium block">Guardar copia (biblio.json)</span>
-                        <span className="text-xs text-slate-400">Descarga para subir a GitHub</span>
-                      </div>
-                    </button>
-                  </div>
-                )}
-              </div>
             </div>
           </div>
         </div>
@@ -396,7 +357,7 @@ export default function App() {
             
             {/* Carrusel (Efemérides) */}
             {carouselScripts.length > 0 && (
-                <ScriptCarousel scripts={carouselScripts} title="Tal día como hoy (hace un año)" />
+                <ScriptCarousel scripts={carouselScripts} title="Hace un año (± 2 días)" />
             )}
 
             {/* Lista Agrupada (Acordeón) */}
