@@ -3,7 +3,7 @@ import { Script } from '../types';
 import { 
   Calendar, ChevronLeft, ChevronRight, 
   Mic2, Music, Palette, BookOpen, Sun, 
-  Coffee, Users, Sparkles, FileText, Leaf
+  Users, FileText, Leaf
 } from 'lucide-react';
 
 interface ScriptCarouselProps {
