@@ -292,14 +292,6 @@ export default function App() {
             {/* Acciones */}
             <div className="flex items-center gap-1 sm:gap-2">
               <button 
-                onClick={clearDatabase}
-                className="p-2 text-slate-600 hover:text-red-600 hover:bg-red-50 dark:text-slate-400 dark:hover:text-red-400 dark:hover:bg-slate-800/50 rounded-lg transition-all"
-                title="Eliminar todos los datos"
-              >
-                <Trash2 size={20} />
-              </button>
-
-              <button 
                 onClick={updateFromGithub}
                 className="p-2 text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 dark:text-slate-400 dark:hover:text-indigo-400 dark:hover:bg-slate-800/50 rounded-lg transition-all"
                 title="Sincronizar desde GitHub"
@@ -321,6 +313,14 @@ export default function App() {
                 title={darkMode ? "Modo Claro" : "Modo Oscuro"}
               >
                 {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
+
+              <button 
+                onClick={clearDatabase}
+                className="p-2 text-slate-600 hover:text-red-600 hover:bg-red-50 dark:text-slate-400 dark:hover:text-red-400 dark:hover:bg-slate-800/50 rounded-lg transition-all"
+                title="Eliminar todos los datos"
+              >
+                <Trash2 size={20} />
               </button>
             </div>
           </div>
