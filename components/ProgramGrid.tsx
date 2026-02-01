@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef } from 'react';
-import { Search, Radio, Music, BookOpen, Users, Leaf, Newspaper, Home, Activity, Palette, Upload, Loader2, FileText } from 'lucide-react';
+import { Search, Radio, Music, BookOpen, Users, Leaf, Newspaper, Home, Activity, Palette, Upload, Loader2 } from 'lucide-react';
 import { User, Script } from '../types';
 import { parseScriptsFromText } from '../services/parserService';
 
@@ -182,6 +182,13 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
           );
         })}
       </div>
+
+      {filteredPrograms.length === 0 && (
+        <div className="text-center py-20 bg-slate-100/50 dark:bg-slate-900/50 rounded-[3rem] border-2 border-dashed border-slate-200 dark:border-slate-800">
+           <Search size={48} className="mx-auto mb-4 text-slate-300" />
+           <p className="text-slate-500 font-medium">No se encontraron programas o guiones con los términos buscados.</p>
+        </div>
+      )}
     </div>
   );
 };
