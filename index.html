@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="google" content="notranslate" />
     <title>GuionBD - Gestor de Guiones</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Recuperamos el CDN para asegurar que el diseño se vea perfecto sin depender del build -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Configuración visual del tema -->
     <script>
       tailwind.config = {
         darkMode: 'class',
@@ -34,10 +32,11 @@
     </script>
 
     <style>
-      /* Estilos críticos base */
       body {
         font-family: 'Inter', sans-serif;
       }
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
   <script type="importmap">
 {
@@ -55,7 +54,7 @@
 }
 </script>
 </head>
-  <body class="notranslate bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white transition-colors duration-300">
+  <body class="notranslate bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white transition-colors duration-300 overflow-x-hidden">
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>

@@ -1,0 +1,29 @@
+[
+  {
+    "id": "admin",
+    "fullName": "Pedro José Reyes Acuña",
+    "username": "admin",
+    "mobile": "54413935",
+    "password": "Guion26",
+    "role": "Administrador",
+    "allowedPrograms": []
+  },
+  {
+    "id": "dir-1",
+    "fullName": "Director de Ejemplo",
+    "username": "director",
+    "mobile": "50000000",
+    "password": "Director26",
+    "role": "Director",
+    "allowedPrograms": []
+  },
+  {
+    "id": "u-2",
+    "fullName": "Lissell Fontelo Danta",
+    "username": "lissell",
+    "mobile": "58841705",
+    "password": "RadioCiudad0226",
+    "role": "Guionista",
+    "allowedPrograms": ["BUENOS DÍAS BAYAMO", "TODOS EN CASA"]
+  }
+]

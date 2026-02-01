@@ -34,7 +34,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSav
     
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       const droppedFile = e.dataTransfer.files[0];
-      if (droppedFile.type === 'text/plain') {
+      if (droppedFile.type === 'text/plain' || droppedFile.name.endsWith('.txt')) {
         setFile(droppedFile);
         setError(null);
       } else {
@@ -56,7 +56,6 @@ export const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSav
     setIsProcessing(true);
     try {
       const text = await file.text();
-      // Use the parser service specifically for the formatted text file
       const scripts = parseScriptsFromText(text, targetStatus);
       
       if (scripts.length === 0) {
@@ -74,23 +73,19 @@ export const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSav
     }
   };
 
-  const statusLabel = targetStatus === 'active' ? 'Activos' : 'Inactivos';
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
       <div className="bg-white dark:bg-slate-800 rounded-3xl w-full max-w-lg shadow-2xl border border-white/10 overflow-hidden transform transition-all scale-100">
         
-        {/* Header */}
         <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50">
           <h2 className="text-xl font-bold text-slate-800 dark:text-white">
-            Cargar Guiones {statusLabel}
+            Cargar Base de Datos
           </h2>
           <button onClick={onClose} className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
             <X size={20} className="text-slate-500 dark:text-slate-300" />
           </button>
         </div>
 
-        {/* Body */}
         <div className="p-8">
           {!file ? (
             <div 
@@ -117,7 +112,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSav
                 Toca para subir o arrastra aquí
               </p>
               <p className="text-sm text-slate-500 dark:text-slate-400">
-                Sube tu archivo .txt con la lista de programas
+                Sube tu archivo .txt con la lista de guiones
               </p>
             </div>
           ) : (
@@ -140,12 +135,12 @@ export const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSav
                 {isProcessing ? (
                   <>
                     <Loader2 size={20} className="animate-spin" />
-                    Procesando lista...
+                    Procesando guiones...
                   </>
                 ) : (
                   <>
                     <CheckCircle size={20} />
-                    Cargar en {statusLabel}
+                    Cargar Información
                   </>
                 )}
               </button>
@@ -168,10 +163,9 @@ export const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSav
           )}
         </div>
 
-        {/* Footer info */}
         <div className="px-6 py-3 bg-slate-50 dark:bg-slate-900/50 text-center">
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            El sistema detectará automáticamente programas, temas y fechas.
+            Asegúrate de que el archivo .txt siga el formato: PROGRAMA, Archivo, Fecha, Tema.
           </p>
         </div>
       </div>

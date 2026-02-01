@@ -1,4 +1,4 @@
-import { Script, ScriptStatus } from "../types";
+import { Script, ScriptStatus, User, UserRole } from "../types";
 
 const MONTHS: Record<string, number> = {
   ENERO: 0, FEBRERO: 1, MARZO: 2, ABRIL: 3, MAYO: 4, JUNIO: 5,
@@ -6,27 +6,22 @@ const MONTHS: Record<string, number> = {
 };
 
 export const parseScriptsFromText = (text: string, status: ScriptStatus): Script[] => {
+  // Separar por líneas de guiones o entradas claras (asumimos separador de líneas vacías o guiones)
   const entries = text.split(/-{5,}/).map(e => e.trim()).filter(e => e);
   
   return entries.map(entry => {
-    // Extraer campos
-    const programaMatch = entry.match(/PROGRAMA:\s*([^:\n]+?)(?:\s+(?:EMISIÓN|ESCRIBE|ARCHIVO|FECHA|TEMA):|$|\n)/i);
-    const archivoMatch = entry.match(/Archivo:\s*(.+)/i);
+    const programaMatch = entry.match(/Programa:\s*(.+)/i);
     const fechaMatch = entry.match(/Fecha:\s*(.+)/i);
+    const escritorMatch = entry.match(/Escritor:\s*(.+)/i);
+    const asesorMatch = entry.match(/Asesor:\s*(.+)/i);
     const temaMatch = entry.match(/Tema:\s*(.+)/i);
 
-    // Limpiar nombre del programa (quitar numeración inicial "1. ", "2. ", etc)
-    let programa = "Desconocido";
-    if (programaMatch) {
-       programa = programaMatch[1].replace(/^\d+\.\s*/, '').trim();
-       // Opcional: Capitalizar primera letra de cada palabra para visualización
-       programa = programa.charAt(0).toUpperCase() + programa.slice(1);
-    }
-    
-    const archivo = archivoMatch ? archivoMatch[1].trim() : "";
-    
-    // Parseo de fecha
+    const programa = programaMatch ? programaMatch[1].trim() : "Desconocido";
+    const escritor = escritorMatch ? escritorMatch[1].trim() : "N/A";
+    const asesor = asesorMatch ? asesorMatch[1].trim() : "N/A";
+    const tema = temaMatch ? temaMatch[1].trim() : "Sin Tema";
     const rawFecha = fechaMatch ? fechaMatch[1].trim() : "";
+    
     let dateAdded = new Date().toISOString();
     
     try {
@@ -43,31 +38,56 @@ export const parseScriptsFromText = (text: string, status: ScriptStatus): Script
             if (!isNaN(d.getTime())) {
               dateAdded = d.toISOString();
             }
+        } else if (rawFecha.includes('/')) {
+            const parts = rawFecha.split('/');
+            if (parts.length === 3) {
+                const d = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
+                if (!isNaN(d.getTime())) dateAdded = d.toISOString();
+            }
         }
     } catch (e) {
-        console.warn("Date parse error", rawFecha);
+        console.warn("Error parseando fecha:", rawFecha);
     }
 
-    const tema = temaMatch ? temaMatch[1].trim() : "Sin Tema";
-
-    // Generar pseudo-temas para búsqueda
-    const ignoredWords = ['DE', 'LA', 'EL', 'EN', 'Y', 'LOS', 'LAS', 'DEL', 'UN', 'UNA', 'PARA', 'POR', 'CON', 'SOBRE', 'SUS', 'LAS'];
     const themes = tema
       .split(/[\s,.:;]+/)
-      .filter(w => w.length > 3 && !ignoredWords.includes(w.toUpperCase()))
+      .filter(w => w.length > 3)
       .slice(0, 5); 
 
     return {
       id: crypto.randomUUID(),
       title: tema,
       genre: programa,
-      summary: archivo ? `Archivo: ${archivo}` : "Sin archivo asociado",
+      summary: `Escritor: ${escritor} | Asesor: ${asesor}`,
+      writer: escritor,
+      advisor: asesor,
       content: entry, 
       themes: themes.length > 0 ? themes : ["General"],
       tone: "Informativo",
       dateAdded,
       status,
       wordCount: entry.split(/\s+/).length
+    };
+  });
+};
+
+export const parseUsersFromText = (text: string): User[] => {
+  const lines = text.split('\n').map(l => l.trim()).filter(l => l && l.includes(':'));
+  
+  return lines.map(line => {
+    const fullName = line.match(/Nombre completo:\s*([^,]+)/)?.[1]?.trim() || "";
+    const username = line.match(/Nombre de usuario:\s*([^,]+)/)?.[1]?.trim() || "";
+    const mobile = line.match(/Número de móvil:\s*([^,]+)/)?.[1]?.trim() || "";
+    const password = line.match(/Contraseña:\s*(.+)/)?.[1]?.trim() || "";
+
+    return {
+      id: username === 'admin' ? 'admin' : crypto.randomUUID(),
+      fullName,
+      username,
+      mobile,
+      password,
+      role: username === 'admin' ? 'Administrador' : 'Guionista',
+      allowedPrograms: []
     };
   });
 };
