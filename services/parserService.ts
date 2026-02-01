@@ -6,29 +6,31 @@ const MONTHS: Record<string, number> = {
 };
 
 export const parseScriptsFromText = (text: string, status: ScriptStatus): Script[] => {
-  // Separar por líneas de guiones o entradas claras (asumimos separador de líneas vacías o guiones)
-  const entries = text.split(/-{5,}/).map(e => e.trim()).filter(e => e);
+  // Separar por el marcador >>> que indica el inicio de cada entrada de archivo
+  const entries = text.split(/>>>/).map(e => e.trim()).filter(e => e);
   
   return entries.map(entry => {
-    const programaMatch = entry.match(/Programa:\s*(.+)/i);
-    const fechaMatch = entry.match(/Fecha:\s*(.+)/i);
-    const escritorMatch = entry.match(/Escritor:\s*(.+)/i);
-    const asesorMatch = entry.match(/Asesor:\s*(.+)/i);
-    const temaMatch = entry.match(/Tema:\s*(.+)/i);
+    // Función auxiliar para extraer campos de forma robusta
+    const getField = (name: string) => {
+      const regex = new RegExp(`${name}:\\s*(.+?)(?=\\n|Escritor:|Asesor:|Tema:|Fecha:|Programa:|$)`, 'i');
+      const match = entry.match(regex);
+      return match ? match[1].trim() : "";
+    };
 
-    const programa = programaMatch ? programaMatch[1].trim() : "Desconocido";
-    const escritor = escritorMatch ? escritorMatch[1].trim() : "N/A";
-    const asesor = asesorMatch ? asesorMatch[1].trim() : "N/A";
-    const tema = temaMatch ? temaMatch[1].trim() : "Sin Tema";
-    const rawFecha = fechaMatch ? fechaMatch[1].trim() : "";
+    const programa = getField('Programa') || "NO ESPECIFICADO";
+    const escritor = getField('Escritor') || "NO ESPECIFICADO";
+    const asesor = getField('Asesor') || "NO ESPECIFICADO";
+    const tema = getField('Tema') || "Sin Tema";
+    const rawFecha = getField('Fecha') || "";
     
     let dateAdded = new Date().toISOString();
     
     try {
-        const dayMatch = rawFecha.match(/(\d{1,2})/);
-        const yearMatch = rawFecha.match(/(\d{4})/);
+        const upperFecha = rawFecha.toUpperCase();
+        const dayMatch = upperFecha.match(/(\d{1,2})/);
+        const yearMatch = upperFecha.match(/(\d{4})/);
         const monthNames = Object.keys(MONTHS).join("|");
-        const monthMatch = rawFecha.toUpperCase().match(new RegExp(`(${monthNames})`));
+        const monthMatch = upperFecha.match(new RegExp(`(${monthNames})`));
 
         if (dayMatch && yearMatch && monthMatch) {
             const day = parseInt(dayMatch[1]);
@@ -39,7 +41,7 @@ export const parseScriptsFromText = (text: string, status: ScriptStatus): Script
               dateAdded = d.toISOString();
             }
         } else if (rawFecha.includes('/')) {
-            const parts = rawFecha.split('/');
+            const parts = rawFecha.replace(/[^\d/]/g, '').split('/');
             if (parts.length === 3) {
                 const d = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
                 if (!isNaN(d.getTime())) dateAdded = d.toISOString();
@@ -49,9 +51,10 @@ export const parseScriptsFromText = (text: string, status: ScriptStatus): Script
         console.warn("Error parseando fecha:", rawFecha);
     }
 
+    // Extraer palabras clave del tema para tags
     const themes = tema
       .split(/[\s,.:;]+/)
-      .filter(w => w.length > 3)
+      .filter(w => w.length > 3 && !['PARA', 'DELL', 'ESTA', 'COMO'].includes(w.toUpperCase()))
       .slice(0, 5); 
 
     return {

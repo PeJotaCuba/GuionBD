@@ -31,7 +31,14 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
   const [isProcessing, setIsProcessing] = useState(false);
   const globalUploadRef = useRef<HTMLInputElement>(null);
 
-  // Función para obtener guiones de un programa desde localStorage
+  // Normalización para comparación flexible de nombres
+  const normalize = (str: string) => 
+    str.normalize("NFD")
+       .replace(/[\u0300-\u036f]/g, "")
+       .replace(/[^\w\s]/gi, '')
+       .toUpperCase()
+       .trim();
+
   const getProgramScripts = (prog: typeof PROGRAMS[0]): Script[] => {
     const key = `guionbd_data_${prog.file}`;
     const saved = localStorage.getItem(key);
@@ -39,7 +46,6 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
   };
 
   const filteredPrograms = useMemo(() => {
-    // 1. Filtrar programas permitidos según el rol
     let allowed = PROGRAMS;
     if (currentUser.role === 'Guionista' && currentUser.allowedPrograms) {
       allowed = PROGRAMS.filter(p => currentUser.allowedPrograms?.includes(p.name));
@@ -48,12 +54,8 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
     const q = searchQuery.toLowerCase().trim();
     if (!q) return allowed;
 
-    // 2. Búsqueda Global: Nombre, Fecha, Tema, Escritor o Asesor
     return allowed.filter(p => {
-      // Coincidencia con nombre del programa
       if (p.name.toLowerCase().includes(q)) return true;
-
-      // Coincidencia con datos dentro de sus guiones
       const scripts = getProgramScripts(p);
       return scripts.some(s => 
         s.title.toLowerCase().includes(q) || 
@@ -76,44 +78,47 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
       const allParsedScripts = parseScriptsFromText(text, 'active');
       
       if (allParsedScripts.length === 0) {
-        alert("No se encontraron registros válidos.");
+        alert("No se encontraron registros válidos. Verifica que el archivo use >>> como separador.");
         return;
       }
 
-      // Agrupar guiones por programa
       const groupedByProgram: Record<string, Script[]> = {};
-      allParsedScripts.forEach(script => {
-        // Normalizar el nombre del programa del script para buscar coincidencias
-        const matchedProg = PROGRAMS.find(p => 
-          p.name.toUpperCase() === script.genre.toUpperCase() || 
-          script.genre.toUpperCase().includes(p.name.toUpperCase())
-        );
+      let ignoredCount = 0;
 
-        const progFile = matchedProg ? matchedProg.file : 'otros.json';
-        if (!groupedByProgram[progFile]) groupedByProgram[progFile] = [];
-        groupedByProgram[progFile].push(script);
+      allParsedScripts.forEach(script => {
+        const scriptProgNorm = normalize(script.genre);
+        const matchedProg = PROGRAMS.find(p => {
+          const pNorm = normalize(p.name);
+          return pNorm === scriptProgNorm || scriptProgNorm.includes(pNorm) || pNorm.includes(scriptProgNorm);
+        });
+
+        if (matchedProg) {
+          const progFile = matchedProg.file;
+          if (!groupedByProgram[progFile]) groupedByProgram[progFile] = [];
+          // Actualizamos el género al nombre oficial del programa
+          script.genre = matchedProg.name;
+          groupedByProgram[progFile].push(script);
+        } else {
+          ignoredCount++;
+        }
       });
 
-      // Guardar cada grupo en su respectiva base de datos de programa
-      let count = 0;
+      let totalSaved = 0;
       Object.entries(groupedByProgram).forEach(([file, newScripts]) => {
         const key = `guionbd_data_${file}`;
         const existing = JSON.parse(localStorage.getItem(key) || '[]');
-        
-        // Mezclar evitando duplicados (mismo tema y fecha)
         const merged = [...newScripts, ...existing];
         const unique = merged.filter((v, i, a) => 
           a.findIndex(t => t.title === v.title && t.dateAdded === v.dateAdded) === i
         );
 
         localStorage.setItem(key, JSON.stringify(unique));
-        count += newScripts.length;
+        totalSaved += newScripts.length;
       });
 
-      alert(`Carga global completada. Se procesaron ${count} guiones en total.`);
-      window.location.reload(); // Refrescar para actualizar la búsqueda y contadores
+      alert(`Proceso completado:\n- ${totalSaved} guiones cargados.\n- ${ignoredCount} registros ignorados (programas no registrados).`);
+      window.location.reload();
     } catch (error) {
-      console.error(error);
       alert("Error al procesar el archivo masivo.");
     } finally {
       setIsProcessing(false);
@@ -125,14 +130,14 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
     <div className="space-y-8 animate-fade-in">
       <div className="text-center max-w-2xl mx-auto space-y-4">
         <h2 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">Programas de Radio</h2>
-        <p className="text-slate-500 dark:text-slate-400">Busca por programa, fecha, tema, escritor o asesor.</p>
+        <p className="text-slate-500 dark:text-slate-400">Búsqueda avanzada por programa, fecha, tema o personal.</p>
         
         <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
           <div className="relative group flex-grow max-w-md w-full">
             <Search size={20} className="absolute left-4 top-3.5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
             <input
               type="text"
-              placeholder="Ej: Juan Pérez, 20/05/2024, José Martí..."
+              placeholder="Ej: Juan Pérez, 2026, Medioambiente..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-12 pr-4 py-3.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all text-slate-900 dark:text-white"
@@ -144,18 +149,12 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
               <button 
                 onClick={() => globalUploadRef.current?.click()}
                 disabled={isProcessing}
-                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3.5 rounded-2xl text-sm font-bold shadow-lg shadow-indigo-500/20 transition-all active:scale-95 disabled:opacity-50"
+                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3.5 rounded-2xl text-sm font-bold shadow-lg shadow-indigo-500/20 transition-all disabled:opacity-50"
               >
                 {isProcessing ? <Loader2 size={18} className="animate-spin" /> : <Upload size={18} />}
-                <span className="hidden sm:inline">Carga Global (TXT)</span>
+                <span>Carga Global</span>
               </button>
-              <input 
-                type="file" 
-                ref={globalUploadRef} 
-                className="hidden" 
-                accept=".txt" 
-                onChange={handleGlobalUpload} 
-              />
+              <input type="file" ref={globalUploadRef} className="hidden" accept=".txt" onChange={handleGlobalUpload} />
             </div>
           )}
         </div>
@@ -183,13 +182,6 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
           );
         })}
       </div>
-      
-      {filteredPrograms.length === 0 && (
-        <div className="text-center py-20 bg-slate-100/50 dark:bg-slate-900/50 rounded-[3rem] border-2 border-dashed border-slate-200 dark:border-slate-800">
-           <FileText size={48} className="mx-auto mb-4 text-slate-300" />
-           <p className="text-slate-500 font-medium">No se encontraron programas o guiones con los términos buscados.</p>
-        </div>
-      )}
     </div>
   );
 };
