@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { User, Script } from './types';
+import { User } from './types';
 import { Login } from './components/Login';
 import { ProgramGrid } from './components/ProgramGrid';
 import { ProgramDetail } from './components/ProgramDetail';

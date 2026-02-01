@@ -1,4 +1,4 @@
-import { Script, ScriptStatus, User, UserRole } from "../types";
+import { Script, ScriptStatus, User } from "../types";
 
 const MONTHS: Record<string, number> = {
   ENERO: 0, FEBRERO: 1, MARZO: 2, ABRIL: 3, MAYO: 4, JUNIO: 5,

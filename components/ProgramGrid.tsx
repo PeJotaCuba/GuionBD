@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef } from 'react';
-import { Search, Radio, Music, BookOpen, Users, Leaf, Mic2, Newspaper, Home, Activity, Palette, Upload, Loader2, FileText } from 'lucide-react';
+import { Search, Radio, Music, BookOpen, Users, Leaf, Newspaper, Home, Activity, Palette, Upload, Loader2, FileText } from 'lucide-react';
 import { User, Script } from '../types';
 import { parseScriptsFromText } from '../services/parserService';
 

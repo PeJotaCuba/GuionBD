@@ -4,11 +4,10 @@ import { Calendar, Hash, Trash2, FileText, UserCircle } from 'lucide-react';
 
 interface ScriptCardProps {
   script: Script;
-  onToggleStatus: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
-export const ScriptCard: React.FC<ScriptCardProps> = ({ script, onToggleStatus, onDelete }) => {
+export const ScriptCard: React.FC<ScriptCardProps> = ({ script, onDelete }) => {
   const formattedDate = new Date(script.dateAdded).toLocaleDateString('es-ES', {
     day: 'numeric',
     month: 'long',

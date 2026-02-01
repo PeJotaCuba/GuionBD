@@ -3,7 +3,7 @@ import { User, UserRole } from '../types';
 import { PROGRAMS } from './ProgramGrid';
 import { 
   UserPlus, Trash2, ShieldCheck, UserCheck, 
-  Search, Edit2, Download, Upload, FileText, X, Check, Globe
+  Edit2, Download, FileText, X, Globe
 } from 'lucide-react';
 import { parseUsersFromText } from '../services/parserService';
 
@@ -21,7 +21,6 @@ export const AdminSettings: React.FC = () => {
   });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const jsonInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const saved = localStorage.getItem('guionbd_users');

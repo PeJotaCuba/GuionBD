@@ -6,7 +6,7 @@ import { UploadModal } from './UploadModal';
 import { PROGRAMS } from './ProgramGrid';
 import { 
   Upload, Search, Radio, ChevronLeft, 
-  Trash2, RefreshCw, Download, FileText, X
+  Trash2, RefreshCw, Download, FileText
 } from 'lucide-react';
 
 interface ProgramDetailProps {
@@ -176,7 +176,6 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
               <ScriptCard 
                 key={script.id} 
                 script={script} 
-                onToggleStatus={() => {}} 
                 onDelete={(id) => {
                    if(userRole === 'Administrador' && window.confirm('¿Eliminar guion?')) {
                      setScripts(prev => prev.filter(s => s.id !== id))
