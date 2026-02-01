@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useRef } from 'react';
-import { Search, Radio, Music, BookOpen, Users, Leaf, Newspaper, Home, Activity, Palette, Upload, Loader2 } from 'lucide-react';
+import { Search, Radio, Music, BookOpen, Users, Leaf, Newspaper, Home, Activity, Palette, Upload, Loader2, RefreshCw, Download, Database } from 'lucide-react';
 import { User, Script } from '../types';
 import { parseScriptsFromText } from '../services/parserService';
 
@@ -137,6 +137,35 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
     }
   };
 
+  const handleDownloadDatabase = () => {
+    const allData: any[] = [];
+    
+    // Calcular la fecha límite (hace 7 días)
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - 7);
+    const cutoffTime = cutoffDate.getTime();
+
+    PROGRAMS.forEach(prog => {
+       const key = `guionbd_data_${prog.file}`;
+       const data: Script[] = JSON.parse(localStorage.getItem(key) || '[]');
+       
+       // Filtrar solo los guiones de los últimos 7 días
+       const recentScripts = data.filter(script => {
+         const d = new Date(script.dateAdded);
+         return !isNaN(d.getTime()) && d.getTime() >= cutoffTime;
+       });
+
+       allData.push(...recentScripts);
+    });
+
+    const blob = new Blob([JSON.stringify(allData, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = "global.json";
+    link.click();
+  };
+
   return (
     <div className="space-y-8 animate-fade-in">
       <div className="text-center max-w-2xl mx-auto space-y-4">
@@ -155,19 +184,40 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
             />
           </div>
 
-          {currentUser.role === 'Administrador' && (
-            <div className="shrink-0">
-              <button 
-                onClick={() => globalUploadRef.current?.click()}
-                disabled={isProcessing}
-                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3.5 rounded-2xl text-sm font-bold shadow-lg shadow-indigo-500/20 transition-all disabled:opacity-50"
-              >
-                {isProcessing ? <Loader2 size={18} className="animate-spin" /> : <Upload size={18} />}
-                <span>Carga Global</span>
-              </button>
-              <input type="file" ref={globalUploadRef} className="hidden" accept=".txt" onChange={handleGlobalUpload} />
-            </div>
-          )}
+          <div className="flex gap-2">
+            <button
+               onClick={() => window.location.reload()}
+               className="p-3.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-slate-600 dark:text-slate-400 hover:text-indigo-600 hover:border-indigo-300 transition-all shadow-sm"
+               title="Actualizar datos recientes"
+            >
+               <RefreshCw size={18} />
+            </button>
+
+            {currentUser.role === 'Administrador' && (
+              <>
+                <button
+                  onClick={handleDownloadDatabase}
+                  className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-5 py-3.5 rounded-2xl text-sm font-bold shadow-sm transition-all"
+                  title="Descargar base de datos (últimos 7 días)"
+                >
+                  <Database size={18} />
+                  <span className="hidden sm:inline">BD Global</span>
+                </button>
+
+                <div className="shrink-0 relative">
+                  <button 
+                    onClick={() => globalUploadRef.current?.click()}
+                    disabled={isProcessing}
+                    className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3.5 rounded-2xl text-sm font-bold shadow-lg shadow-indigo-500/20 transition-all disabled:opacity-50 h-full"
+                  >
+                    {isProcessing ? <Loader2 size={18} className="animate-spin" /> : <Upload size={18} />}
+                    <span className="hidden sm:inline">Carga Global</span>
+                  </button>
+                  <input type="file" ref={globalUploadRef} className="hidden" accept=".txt" onChange={handleGlobalUpload} />
+                </div>
+              </>
+            )}
+          </div>
         </div>
       </div>
 

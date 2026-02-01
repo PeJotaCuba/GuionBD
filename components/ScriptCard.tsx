@@ -1,14 +1,15 @@
 import React from 'react';
 import { Script } from '../types';
-import { Calendar, Trash2, User, PenTool, Radio, Hash, Sparkles } from 'lucide-react';
+import { Calendar, Trash2, User, PenTool, Radio, Hash, Edit } from 'lucide-react';
 
 interface ScriptCardProps {
   script: Script;
   isAdmin: boolean;
   onDelete: (id: string) => void;
+  onEdit?: (script: Script) => void;
 }
 
-export const ScriptCard: React.FC<ScriptCardProps> = ({ script, isAdmin, onDelete }) => {
+export const ScriptCard: React.FC<ScriptCardProps> = ({ script, isAdmin, onDelete, onEdit }) => {
   const formattedDate = new Date(script.dateAdded).toLocaleDateString('es-ES', {
     weekday: 'long',
     day: 'numeric',
@@ -87,15 +88,24 @@ export const ScriptCard: React.FC<ScriptCardProps> = ({ script, isAdmin, onDelet
             )}
           </div>
 
-          {/* Botón Eliminar (Solo Admin) */}
+          {/* Botones de Acción (Solo Admin) */}
           {isAdmin && (
-            <button 
-              onClick={(e) => { e.stopPropagation(); onDelete(script.id); }}
-              className="group-hover:opacity-100 opacity-0 transition-opacity p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl flex-shrink-0"
-              title="Eliminar Guion"
-            >
-              <Trash2 size={20} />
-            </button>
+            <div className="flex flex-col gap-2">
+              <button 
+                onClick={(e) => { e.stopPropagation(); if (onEdit) onEdit(script); }}
+                className="group-hover:opacity-100 opacity-0 transition-opacity p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 rounded-xl flex-shrink-0"
+                title="Editar Guion"
+              >
+                <Edit size={20} />
+              </button>
+              <button 
+                onClick={(e) => { e.stopPropagation(); onDelete(script.id); }}
+                className="group-hover:opacity-100 opacity-0 transition-opacity p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl flex-shrink-0"
+                title="Eliminar Guion"
+              >
+                <Trash2 size={20} />
+              </button>
+            </div>
           )}
         </div>
       </div>

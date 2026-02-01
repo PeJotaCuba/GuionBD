@@ -3,6 +3,7 @@ import { Script, UserRole } from '../types';
 import { ScriptCard } from './ScriptCard';
 import { StatsView } from './StatsView';
 import { UploadModal } from './UploadModal';
+import { EditScriptModal } from './EditScriptModal';
 import { PROGRAMS } from './ProgramGrid';
 import { 
   Upload, Search, Radio, ChevronLeft, 
@@ -20,6 +21,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [editingScript, setEditingScript] = useState<Script | null>(null);
   const [view, setView] = useState<'list' | 'stats'>('list');
 
   const isAdmin = userRole === 'Administrador';
@@ -67,6 +69,10 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
       );
       return unique;
     });
+  };
+
+  const handleUpdateScript = (updatedScript: Script) => {
+    setScripts(prev => prev.map(s => s.id === updatedScript.id ? updatedScript : s));
   };
 
   const clearData = () => {
@@ -185,6 +191,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
                      setScripts(prev => prev.filter(s => s.id !== id))
                    }
                 }}
+                onEdit={(s) => setEditingScript(s)}
               />
             ))}
           </div>
@@ -201,6 +208,13 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
         onClose={() => setIsUploading(false)} 
         onSave={handleAddScripts}
         targetStatus="active" 
+      />
+
+      <EditScriptModal
+        isOpen={!!editingScript}
+        onClose={() => setEditingScript(null)}
+        script={editingScript}
+        onSave={handleUpdateScript}
       />
     </div>
   );
