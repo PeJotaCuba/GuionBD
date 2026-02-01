@@ -31,13 +31,14 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
   const [isProcessing, setIsProcessing] = useState(false);
   const globalUploadRef = useRef<HTMLInputElement>(null);
 
-  // Normalización para comparación flexible de nombres
+  // Normalización mejorada: reemplaza puntuación por espacios y colapsa espacios
   const normalize = (str: string) => 
     str.normalize("NFD")
-       .replace(/[\u0300-\u036f]/g, "")
-       .replace(/[^\w\s]/gi, '')
-       .toUpperCase()
-       .trim();
+       .replace(/[\u0300-\u036f]/g, "") // Quitar acentos
+       .replace(/[^\w\s]/gi, ' ')      // Cambiar puntuación por espacio
+       .replace(/\s+/g, ' ')           // Quitar espacios múltiples
+       .trim()
+       .toUpperCase();
 
   const getProgramScripts = (prog: typeof PROGRAMS[0]): Script[] => {
     const key = `guionbd_data_${prog.file}`;
@@ -89,13 +90,13 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
         const scriptProgNorm = normalize(script.genre);
         const matchedProg = PROGRAMS.find(p => {
           const pNorm = normalize(p.name);
+          // Coincidencia exacta o contenida (para casos como "BUENOS DIAS BAYAMO" vs "BUENOS DIAS")
           return pNorm === scriptProgNorm || scriptProgNorm.includes(pNorm) || pNorm.includes(scriptProgNorm);
         });
 
         if (matchedProg) {
           const progFile = matchedProg.file;
           if (!groupedByProgram[progFile]) groupedByProgram[progFile] = [];
-          // Actualizamos el género al nombre oficial del programa
           script.genre = matchedProg.name;
           groupedByProgram[progFile].push(script);
         } else {

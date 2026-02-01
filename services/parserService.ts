@@ -1,32 +1,47 @@
 import { Script, ScriptStatus, User } from "../types";
 
 const MONTHS: Record<string, number> = {
-  ENERO: 0, FEBRERO: 1, MARZO: 2, ABRIL: 3, MAYO: 4, JUNIO: 5,
+  ENERO: 0, ANERO: 0, FEBRERO: 1, MARZO: 2, ABRIL: 3, MAYO: 4, JUNIO: 5,
   JULIO: 6, AGOSTO: 7, SEPTIEMBRE: 8, OCTUBRE: 9, NOVIEMBRE: 10, DICIEMBRE: 11
 };
 
 export const parseScriptsFromText = (text: string, status: ScriptStatus): Script[] => {
-  // Separar por el marcador >>> que indica el inicio de cada entrada de archivo
+  // Separar por el marcador >>> que indica el inicio de cada entrada
   const entries = text.split(/>>>/).map(e => e.trim()).filter(e => e);
   
   return entries.map(entry => {
-    // Función auxiliar para extraer campos de forma robusta
     const getField = (name: string) => {
       const regex = new RegExp(`${name}:\\s*(.+?)(?=\\n|Escritor:|Asesor:|Tema:|Fecha:|Programa:|$)`, 'i');
       const match = entry.match(regex);
       return match ? match[1].trim() : "";
     };
 
-    const programa = getField('Programa') || "NO ESPECIFICADO";
-    const escritor = getField('Escritor') || "NO ESPECIFICADO";
-    const asesor = getField('Asesor') || "NO ESPECIFICADO";
+    let programa = getField('Programa') || "NO ESPECIFICADO";
+    let escritor = getField('Escritor') || "NO ESPECIFICADO";
+    let asesor = getField('Asesor') || "NO ESPECIFICADO";
     const tema = getField('Tema') || "Sin Tema";
     const rawFecha = getField('Fecha') || "";
     
+    // Limpieza específica para "Asesor" si tiene demasiado texto
+    if (asesor.length > 40) {
+      // Buscar patrones como "do por [Nombre],", "es [Nombre],"
+      const nameMatch = asesor.match(/(?:por|es)\s+([A-Z][a-zñáéíóú]+\s+[A-Z][a-zñáéíóú]+(?:\s+[A-Z][a-zñáéíóú]+)?)/i);
+      if (nameMatch) {
+        asesor = nameMatch[1].trim();
+      } else {
+        // Si no hay patrón, tomar hasta la primera coma o punto
+        asesor = asesor.split(/[,\.]/)[0].replace(/^(do por|es)\s+/i, '').trim();
+      }
+    }
+
+    // Limpieza básica de otros campos
+    escritor = escritor.replace(/^:\s*/, '').trim();
+    programa = programa.replace(/^(PROG\.?\s*|BOLETIN\s*\d*\s*)/i, '').trim();
+
     let dateAdded = new Date().toISOString();
     
     try {
-        const upperFecha = rawFecha.toUpperCase();
+        const upperFecha = rawFecha.toUpperCase().replace(/\./g, '');
         const dayMatch = upperFecha.match(/(\d{1,2})/);
         const yearMatch = upperFecha.match(/(\d{4})/);
         const monthNames = Object.keys(MONTHS).join("|");
@@ -51,15 +66,14 @@ export const parseScriptsFromText = (text: string, status: ScriptStatus): Script
         console.warn("Error parseando fecha:", rawFecha);
     }
 
-    // Extraer palabras clave del tema para tags
     const themes = tema
       .split(/[\s,.:;]+/)
-      .filter(w => w.length > 3 && !['PARA', 'DELL', 'ESTA', 'COMO'].includes(w.toUpperCase()))
+      .filter(w => w.length > 3 && !['PARA', 'DELL', 'ESTA', 'COMO', 'UNOS', 'COMO'].includes(w.toUpperCase()))
       .slice(0, 5); 
 
     return {
       id: crypto.randomUUID(),
-      title: tema,
+      title: tema.replace(/^[,.\s]+/, '').trim(),
       genre: programa,
       summary: `Escritor: ${escritor} | Asesor: ${asesor}`,
       writer: escritor,
