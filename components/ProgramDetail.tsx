@@ -22,6 +22,8 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
   const [isUploading, setIsUploading] = useState(false);
   const [view, setView] = useState<'list' | 'stats'>('list');
 
+  const isAdmin = userRole === 'Administrador';
+
   const programInfo = PROGRAMS.find(p => p.name === programName);
   const fileName = programInfo?.file || `${programName.replace(/\s+/g, '_').toLowerCase()}.json`;
   const storageKey = `guionbd_data_${fileName}`;
@@ -68,7 +70,8 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
   };
 
   const clearData = () => {
-    if (window.confirm('¿Eliminar toda la base de datos de este programa?')) {
+    if (!isAdmin) return;
+    if (window.confirm('¿Eliminar toda la base de datos de este programa? Esta acción no se puede deshacer.')) {
       setScripts([]);
     }
   };
@@ -102,7 +105,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
         </div>
 
         <div className="flex flex-wrap gap-2 w-full md:w-auto">
-          {userRole === 'Administrador' ? (
+          {isAdmin ? (
             <>
               <button 
                 onClick={() => setIsUploading(true)} 
@@ -176,8 +179,9 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
               <ScriptCard 
                 key={script.id} 
                 script={script} 
+                isAdmin={isAdmin}
                 onDelete={(id) => {
-                   if(userRole === 'Administrador' && window.confirm('¿Eliminar guion?')) {
+                   if(isAdmin && window.confirm('¿Eliminar guion?')) {
                      setScripts(prev => prev.filter(s => s.id !== id))
                    }
                 }}

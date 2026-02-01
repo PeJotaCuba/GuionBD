@@ -1,74 +1,102 @@
 import React from 'react';
 import { Script } from '../types';
-import { Calendar, Hash, Trash2, FileText, UserCircle } from 'lucide-react';
+import { Calendar, Trash2, User, PenTool, Radio, Hash, Sparkles } from 'lucide-react';
 
 interface ScriptCardProps {
   script: Script;
+  isAdmin: boolean;
   onDelete: (id: string) => void;
 }
 
-export const ScriptCard: React.FC<ScriptCardProps> = ({ script, onDelete }) => {
+export const ScriptCard: React.FC<ScriptCardProps> = ({ script, isAdmin, onDelete }) => {
   const formattedDate = new Date(script.dateAdded).toLocaleDateString('es-ES', {
+    weekday: 'long',
     day: 'numeric',
     month: 'long',
     year: 'numeric'
   });
 
   return (
-    <div className="group relative bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-400 hover:shadow-md transition-all duration-200">
-      <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-        
-        {/* Icon / Status Indicator */}
-        <div className="flex-shrink-0">
-           <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-indigo-50 text-indigo-600 dark:bg-indigo-900/20 dark:text-indigo-400">
-              <FileText size={20} strokeWidth={2} />
-           </div>
+    <div className="group relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-lg hover:border-indigo-300 dark:hover:border-indigo-700 transition-all duration-300 overflow-hidden">
+      
+      {/* Header: Programa y Fecha */}
+      <div className="bg-slate-50 dark:bg-slate-800/50 px-5 py-3 border-b border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <div className="bg-indigo-100 dark:bg-indigo-900/30 p-1.5 rounded-lg text-indigo-600 dark:text-indigo-400">
+            <Radio size={14} />
+          </div>
+          <span className="text-xs font-black tracking-widest text-indigo-600 dark:text-indigo-400 uppercase">
+            {script.genre}
+          </span>
         </div>
+        <div className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
+          <Calendar size={14} />
+          <span className="text-xs font-bold capitalize">{formattedDate}</span>
+        </div>
+      </div>
 
-        {/* Main Content */}
-        <div className="flex-grow min-w-0">
-          <div className="flex justify-between items-start gap-4">
-            <div className="min-w-0">
-              <h4 className="text-base sm:text-lg font-bold text-slate-800 dark:text-slate-100 leading-snug mb-1 truncate uppercase">
+      <div className="p-5">
+        <div className="flex justify-between items-start gap-4">
+          <div className="space-y-4 w-full">
+            
+            {/* Tema */}
+            <div>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1 block">Tema</span>
+              <h3 className="text-lg md:text-xl font-bold text-slate-800 dark:text-slate-100 leading-snug">
                 {script.title}
-              </h4>
-              <div className="flex flex-col gap-0.5 mb-2">
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-bold flex items-center gap-1">
-                  <UserCircle size={12} className="text-indigo-500" /> Escritor: <span className="text-slate-700 dark:text-slate-300">{script.writer || 'N/A'}</span>
-                </p>
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-bold flex items-center gap-1">
-                  <UserCircle size={12} className="text-amber-500" /> Asesor: <span className="text-slate-700 dark:text-slate-300">{script.advisor || 'N/A'}</span>
-                </p>
+              </h3>
+            </div>
+
+            {/* Grid: Escritor y Asesor */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 dark:bg-slate-800/30 rounded-xl p-3 border border-slate-100 dark:border-slate-800/50">
+              <div className="flex items-start gap-3">
+                <div className="mt-1 p-1.5 bg-white dark:bg-slate-800 rounded-full shadow-sm text-emerald-500">
+                  <PenTool size={14} />
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Escritor</span>
+                  <p className="text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase line-clamp-1" title={script.writer}>
+                    {script.writer || 'No especificado'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <div className="mt-1 p-1.5 bg-white dark:bg-slate-800 rounded-full shadow-sm text-amber-500">
+                  <User size={14} />
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Asesor</span>
+                  <p className="text-sm font-semibold text-slate-700 dark:text-slate-200 uppercase line-clamp-1" title={script.advisor}>
+                    {script.advisor || 'No especificado'}
+                  </p>
+                </div>
               </div>
             </div>
-            
-            <div className="flex items-center gap-1">
-              <button 
-                onClick={(e) => { e.stopPropagation(); onDelete(script.id); }}
-                className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded-lg transition-colors"
-                title="Eliminar"
-              >
-                <Trash2 size={18} />
-              </button>
-            </div>
-          </div>
 
-          {/* Metadata Footer */}
-          <div className="flex flex-wrap items-center gap-3 mt-3">
-            <span className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full">
-               <Calendar size={12} className="text-slate-400" /> {formattedDate}
-            </span>
-            
-            {script.themes.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                 {script.themes.slice(0, 3).map((theme, idx) => (
-                   <span key={idx} className="inline-flex items-center gap-1 text-[11px] font-bold text-indigo-600 dark:text-indigo-300 bg-indigo-50 dark:bg-slate-800 border border-indigo-100 dark:border-indigo-500/20 px-2.5 py-1 rounded-lg">
-                     <Hash size={10} className="opacity-50" /> {theme}
-                   </span>
-                 ))}
+            {/* Tags / Palabras Clave */}
+            {script.themes && script.themes.length > 0 && (
+              <div className="flex flex-wrap gap-2 pt-1">
+                {script.themes.slice(0, 4).map((tag, i) => (
+                  <span key={i} className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700">
+                    <Hash size={10} className="opacity-50" />
+                    {tag}
+                  </span>
+                ))}
               </div>
             )}
           </div>
+
+          {/* Botón Eliminar (Solo Admin) */}
+          {isAdmin && (
+            <button 
+              onClick={(e) => { e.stopPropagation(); onDelete(script.id); }}
+              className="group-hover:opacity-100 opacity-0 transition-opacity p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl flex-shrink-0"
+              title="Eliminar Guion"
+            >
+              <Trash2 size={20} />
+            </button>
+          )}
         </div>
       </div>
     </div>
