@@ -10,42 +10,70 @@ export const parseScriptsFromText = (text: string, status: ScriptStatus): Script
   const entries = text.split(/>>>/).map(e => e.trim()).filter(e => e);
   
   return entries.map(entry => {
+    // Marcadores de inicio de campo
+    const markers = ["Programa:", "Fecha:", "Escritor:", "Asesor:", "Tema:"];
+    
+    // Función para extraer contenido entre marcadores de forma segura
     const getField = (name: string) => {
-      const regex = new RegExp(`${name}:\\s*(.+?)(?=\\n|Escritor:|Asesor:|Tema:|Fecha:|Programa:|$)`, 'i');
-      const match = entry.match(regex);
-      return match ? match[1].trim() : "";
+      const startIdx = entry.indexOf(name);
+      if (startIdx === -1) return "";
+      
+      const contentStart = startIdx + name.length;
+      let endIdx = entry.length;
+      
+      // El final del campo es el inicio del siguiente marcador o el final de la cadena
+      markers.forEach(m => {
+        const mIdx = entry.indexOf(m, contentStart);
+        if (mIdx !== -1 && mIdx < endIdx) {
+          endIdx = mIdx;
+        }
+      });
+      
+      return entry.slice(contentStart, endIdx).trim();
     };
 
-    let programa = getField('Programa') || "NO ESPECIFICADO";
-    let escritor = getField('Escritor') || "NO ESPECIFICADO";
-    let asesor = getField('Asesor') || "NO ESPECIFICADO";
-    const tema = getField('Tema') || "Sin Tema";
-    const rawFecha = getField('Fecha') || "";
+    let programa = getField('Programa:');
+    let escritor = getField('Escritor:');
+    let asesor = getField('Asesor:');
+    let tema = getField('Tema:');
+    const rawFecha = getField('Fecha:');
+
+    // Si el programa dice "NO ESPECIFICADO", intentamos buscarlo en la cabecera (primera línea)
+    if (!programa || programa.toUpperCase().includes("NO ESPECIFICADO")) {
+      const header = entry.split('\n')[0].toUpperCase();
+      // Buscamos siglas comunes o nombres en el nombre del archivo
+      if (header.includes("BDB")) programa = "BUENOS DÍAS BAYAMO";
+      else if (header.includes("TC")) programa = "TODOS EN CASA";
+      else if (header.includes("PJ")) programa = "PARADA JOVEN";
+      else if (header.includes("AB")) programa = "ARTE BAYAMO";
+    }
     
-    // Limpieza específica para "Asesor" si tiene demasiado texto
-    if (asesor.length > 40) {
-      // Buscar patrones como "do por [Nombre],", "es [Nombre],"
-      const nameMatch = asesor.match(/(?:por|es)\s+([A-Z][a-zñáéíóú]+\s+[A-Z][a-zñáéíóú]+(?:\s+[A-Z][a-zñáéíóú]+)?)/i);
+    // Limpieza específica para "Asesor"
+    if (asesor) {
+      // Intentar extraer el nombre después de "por" o "es" (manejando errores de espacio como LisellFontelo)
+      const nameMatch = asesor.match(/(?:por|es)\s*([A-Z][a-zñáéíóú]+\s*[A-Z][a-zñáéíóú]+(?:\s*[A-Z][a-zñáéíóú]+)?)/i);
       if (nameMatch) {
         asesor = nameMatch[1].trim();
       } else {
-        // Si no hay patrón, tomar hasta la primera coma o punto
-        asesor = asesor.split(/[,\.]/)[0].replace(/^(do por|es)\s+/i, '').trim();
+        // Limpiar puntos iniciales y tomar hasta la primera coma o salto de línea
+        asesor = asesor.replace(/^[.\s]+/, '').split(/[,\n]/)[0].trim();
       }
     }
 
-    // Limpieza básica de otros campos
-    escritor = escritor.replace(/^:\s*/, '').trim();
-    programa = programa.replace(/^(PROG\.?\s*|BOLETIN\s*\d*\s*)/i, '').trim();
+    // Limpieza de Escritor
+    escritor = escritor.replace(/^[:\s.-]+/, '').trim();
+    
+    // Limpieza de Programa (eliminar prefijos basura)
+    programa = programa.replace(/^(PROG\.?\s*|BOLETIN\s*\d*\s*|de trabajo de\s*)/i, '').trim();
 
     let dateAdded = new Date().toISOString();
     
     try {
-        const upperFecha = rawFecha.toUpperCase().replace(/\./g, '');
-        const dayMatch = upperFecha.match(/(\d{1,2})/);
-        const yearMatch = upperFecha.match(/(\d{4})/);
+        const cleanFecha = rawFecha.toUpperCase().replace(/\./g, ' ').replace(/\s+/g, ' ');
+        const dayMatch = cleanFecha.match(/(\d{1,2})/);
+        const yearMatch = cleanFecha.match(/(\d{4})/);
         const monthNames = Object.keys(MONTHS).join("|");
-        const monthMatch = upperFecha.match(new RegExp(`(${monthNames})`));
+        const monthMatch = cleanFecha.match(new RegExp(`(${monthNames})`));
 
         if (dayMatch && yearMatch && monthMatch) {
             const day = parseInt(dayMatch[1]);
@@ -66,18 +94,18 @@ export const parseScriptsFromText = (text: string, status: ScriptStatus): Script
         console.warn("Error parseando fecha:", rawFecha);
     }
 
-    const themes = tema
+    const themes = (tema || "")
       .split(/[\s,.:;]+/)
       .filter(w => w.length > 3 && !['PARA', 'DELL', 'ESTA', 'COMO', 'UNOS', 'COMO'].includes(w.toUpperCase()))
       .slice(0, 5); 
 
     return {
       id: crypto.randomUUID(),
-      title: tema.replace(/^[,.\s]+/, '').trim(),
-      genre: programa,
-      summary: `Escritor: ${escritor} | Asesor: ${asesor}`,
-      writer: escritor,
-      advisor: asesor,
+      title: tema ? tema.replace(/^[,.\s]+/, '').trim() : "Sin Tema",
+      genre: programa || "OTRO",
+      summary: `Escritor: ${escritor || 'N/A'} | Asesor: ${asesor || 'N/A'}`,
+      writer: escritor || "N/A",
+      advisor: asesor || "N/A",
       content: entry, 
       themes: themes.length > 0 ? themes : ["General"],
       tone: "Informativo",

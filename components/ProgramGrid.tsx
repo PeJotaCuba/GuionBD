@@ -88,10 +88,20 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
 
       allParsedScripts.forEach(script => {
         const scriptProgNorm = normalize(script.genre);
+        
+        // Búsqueda de coincidencia flexible
         const matchedProg = PROGRAMS.find(p => {
           const pNorm = normalize(p.name);
-          // Coincidencia exacta o contenida (para casos como "BUENOS DIAS BAYAMO" vs "BUENOS DIAS")
-          return pNorm === scriptProgNorm || scriptProgNorm.includes(pNorm) || pNorm.includes(scriptProgNorm);
+          // Coincidencia exacta, contenida o por siglas
+          if (pNorm === scriptProgNorm) return true;
+          if (scriptProgNorm.length > 3 && pNorm.includes(scriptProgNorm)) return true;
+          if (pNorm.length > 3 && scriptProgNorm.includes(pNorm)) return true;
+          
+          // Soporte para siglas comunes (BDB, TC, PJ, etc.)
+          const initials = pNorm.split(' ').map(w => w[0]).join('');
+          if (scriptProgNorm === initials) return true;
+          
+          return false;
         });
 
         if (matchedProg) {
