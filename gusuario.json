@@ -4,26 +4,166 @@
     "fullName": "Pedro José Reyes Acuña",
     "username": "admin",
     "mobile": "54413935",
-    "password": "Guion26",
+    "password": "RCMM26",
     "role": "Administrador",
     "allowedPrograms": []
   },
   {
-    "id": "dir-1",
-    "fullName": "Director de Ejemplo",
-    "username": "director",
-    "mobile": "50000000",
-    "password": "Director26",
-    "role": "Director",
-    "allowedPrograms": []
-  },
-  {
-    "id": "u-2",
+    "id": "2a9c8aed-2bee-4e32-9438-1ccd80c32568",
     "fullName": "Lissell Fontelo Danta",
     "username": "lissell",
     "mobile": "58841705",
     "password": "RadioCiudad0226",
+    "role": "Asesor",
+    "allowedPrograms": []
+  },
+  {
+    "id": "f3f9686a-ab5e-45dd-8317-b86c7635a70c",
+    "fullName": "Ernesto José Parra Muñoz",
+    "username": "ernesto",
+    "mobile": "52137105",
+    "password": "RadioCiudad0326",
+    "role": "Director",
+    "allowedPrograms": []
+  },
+  {
+    "id": "0899b78a-0ea6-45ad-9207-ccc267289933",
+    "fullName": "Jorge Luis Rosales Sánchez",
+    "username": "jorge",
+    "mobile": "55326426",
+    "password": "RadioCiudad0426",
     "role": "Guionista",
-    "allowedPrograms": ["BUENOS DÍAS BAYAMO", "TODOS EN CASA"]
+    "allowedPrograms": []
+  },
+  {
+    "id": "d4779896-fdf2-4477-9b35-067185c8e039",
+    "fullName": "Susel López Jiménez",
+    "username": "susel",
+    "mobile": "54778270",
+    "password": "RadioCiudad0526",
+    "role": "Guionista",
+    "allowedPrograms": []
+  },
+  {
+    "id": "c7b28a04-fcaa-4279-9234-591fec82bcce",
+    "fullName": "Arnaldo Ernesto Torres García",
+    "username": "arnaldo",
+    "mobile": "53924841",
+    "password": "RadioCiudad0626",
+    "role": "Guionista",
+    "allowedPrograms": []
+  },
+  {
+    "id": "2f69aafb-cc5e-40c4-9336-c45e2fcb758d",
+    "fullName": "Beatriz Ganado Arias",
+    "username": "beatriz",
+    "mobile": "54777754",
+    "password": "RadioCiudad0726",
+    "role": "Guionista",
+    "allowedPrograms": []
+  },
+  {
+    "id": "73251922-2c37-47a7-a11c-6f3cb7520fde",
+    "fullName": "Rosa Aracelis Chi Cedeño",
+    "username": "rosa",
+    "mobile": "54275723",
+    "password": "RadioCiudad0826",
+    "role": "Director",
+    "allowedPrograms": [
+      "BUENOS DÍAS BAYAMO",
+      "TODOS EN CASA"
+    ]
+  },
+  {
+    "id": "0896b840-a52a-4952-b580-0eaed3b8e5aa",
+    "fullName": "Abel Girardo Guerrero Castro",
+    "username": "abel",
+    "mobile": "59195045",
+    "password": "RadioCiudad0926",
+    "role": "Director",
+    "allowedPrograms": []
+  },
+  {
+    "id": "81de82d3-8360-4df5-a379-d0b8bb35fa8b",
+    "fullName": "Maylén Leyanis Pérez Chi",
+    "username": "maylen",
+    "mobile": "58702380",
+    "password": "RadioCiudad1026",
+    "role": "Director",
+    "allowedPrograms": []
+  },
+  {
+    "id": "7db186e0-2194-4f91-98fd-631aa6349b23",
+    "fullName": "Daylén Zalazar Maceo",
+    "username": "daylen",
+    "mobile": "56540207",
+    "password": "RadioCiudad1126",
+    "role": "Director",
+    "allowedPrograms": []
+  },
+  {
+    "id": "530322f3-fb10-499a-be26-09dfecbb6bdb",
+    "fullName": "Beatriz González Rondón",
+    "username": "beatrizgonzalez",
+    "mobile": "58390181",
+    "password": "RadioCiudad1226",
+    "role": "Director",
+    "allowedPrograms": []
+  },
+  {
+    "id": "e4daabdc-a1ed-464a-a194-1a151cf8b1fa",
+    "fullName": "Johan Rey Escalona Naranjo",
+    "username": "johan",
+    "mobile": "59996914",
+    "password": "RadioCiudad1326",
+    "role": "Guionista",
+    "allowedPrograms": [
+      "ARTE BAYAMO",
+      "PARADA JOVEN",
+      "SIGUE A TU RITMO",
+      "CÓMPLICES"
+    ]
+  },
+  {
+    "id": "23b7f32f-583c-4501-8135-a91c7686c4ed",
+    "fullName": "Leipzig del Carmen Vázquez García",
+    "username": "leipzig",
+    "mobile": "58401306",
+    "password": "RadioCiudad1426",
+    "role": "Director",
+    "allowedPrograms": []
+  },
+  {
+    "id": "aa7543d8-bea6-4d6d-97ec-4d8be1c2999a",
+    "fullName": "Rafael Traba Bordón",
+    "username": "rafael",
+    "mobile": "52143905",
+    "password": "RadioCiudad1526",
+    "role": "Director",
+    "allowedPrograms": []
+  },
+  {
+    "id": "4a0165ad-09a4-4613-a49d-71846352a12c",
+    "fullName": "Caridad Aguilar Rosabal",
+    "username": "caridad",
+    "mobile": "56350265",
+    "password": "RadioCiudad1626",
+    "role": "Asesor",
+    "allowedPrograms": []
+  },
+  {
+    "id": "ab4b1821-4aec-49ef-b9e1-a058b632b390",
+    "fullName": "Rosana María Fernández Verdecia",
+    "username": "rosana",
+    "mobile": "53535793",
+    "password": "RadioCiudad1826",
+    "role": "Guionista",
+    "allowedPrograms": [
+      "BUENOS DÍAS BAYAMO",
+      "ARTE BAYAMO",
+      "HABLANDO CON JUANA",
+      "AL SON DE LA RADIO",
+      "PALCO DE DOMINGO"
+    ]
   }
 ]
