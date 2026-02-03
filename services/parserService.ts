@@ -1,119 +1,99 @@
 import { Script, ScriptStatus, User } from "../types";
 
 const MONTHS: Record<string, number> = {
-  ENERO: 0, ANERO: 0, FEBRERO: 1, MARZO: 2, ABRIL: 3, MAYO: 4, JUNIO: 5,
+  ENERO: 0, FEBRERO: 1, MARZO: 2, ABRIL: 3, MAYO: 4, JUNIO: 5,
   JULIO: 6, AGOSTO: 7, SEPTIEMBRE: 8, OCTUBRE: 9, NOVIEMBRE: 10, DICIEMBRE: 11
 };
 
 export const parseScriptsFromText = (text: string, status: ScriptStatus): Script[] => {
-  // Separar por el marcador >>> que indica el inicio de cada entrada
-  const entries = text.split(/>>>/).map(e => e.trim()).filter(e => e);
+  // Separar por el marcador ____ (4 o más guiones bajos)
+  const entries = text.split(/_{4,}/).map(e => e.trim()).filter(e => e);
   
   return entries.map(entry => {
-    // Marcadores de inicio de campo
-    const markers = ["Programa:", "Fecha:", "Escritor:", "Asesor:", "Tema:"];
-    
-    // Función para extraer contenido entre marcadores de forma segura
-    const getField = (name: string) => {
-      const startIdx = entry.indexOf(name);
-      if (startIdx === -1) return "";
-      
-      const contentStart = startIdx + name.length;
-      let endIdx = entry.length;
-      
-      // El final del campo es el inicio del siguiente marcador o el final de la cadena
-      markers.forEach(m => {
-        const mIdx = entry.indexOf(m, contentStart);
-        if (mIdx !== -1 && mIdx < endIdx) {
-          endIdx = mIdx;
-        }
-      });
-      
-      return entry.slice(contentStart, endIdx).trim();
+    // Función auxiliar para extraer el valor de un campo
+    const extractField = (label: string): string => {
+      const regex = new RegExp(`${label}\\s*:?\\s*(.*?)(?=(?:\\n|$))`, 'i');
+      const match = entry.match(regex);
+      return match ? match[1].trim() : "";
     };
 
-    let programa = getField('Programa:');
-    let escritor = getField('Escritor:');
-    let asesor = getField('Asesor:');
-    let tema = getField('Tema:');
-    const rawFecha = getField('Fecha:');
+    // Extraer campos principales
+    let programa = extractField("Programa");
+    let fechaRaw = extractField("Fecha");
+    let escritor = extractField("Escritor");
+    let asesor = extractField("Asesor");
+    let tema = extractField("Tema");
 
-    // Si el programa dice "NO ESPECIFICADO", intentamos buscarlo en la cabecera (primera línea)
-    if (!programa || programa.toUpperCase().includes("NO ESPECIFICADO")) {
-      const header = entry.split('\n')[0].toUpperCase();
-      // Buscamos siglas comunes o nombres en el nombre del archivo
-      if (header.includes("BDB")) programa = "BUENOS DÍAS BAYAMO";
-      else if (header.includes("TC")) programa = "TODOS EN CASA";
-      else if (header.includes("PJ")) programa = "PARADA JOVEN";
-      else if (header.includes("AB")) programa = "ARTE BAYAMO";
+    // Limpieza de campos si vienen vacíos o con datos residuales
+    // Buscar multilinea para Tema si es muy largo y no capturó todo
+    if (!tema) {
+       const temaMatch = entry.match(/Tema:\s*([\s\S]*?)(?=$)/i);
+       if (temaMatch) tema = temaMatch[1].trim();
     }
-    
-    // Limpieza específica para "Asesor"
-    if (asesor) {
-      // Intentar extraer el nombre después de "por" o "es" (manejando errores de espacio como LisellFontelo)
-      const nameMatch = asesor.match(/(?:por|es)\s*([A-Z][a-zñáéíóú]+\s*[A-Z][a-zñáéíóú]+(?:\s*[A-Z][a-zñáéíóú]+)?)/i);
-      if (nameMatch) {
-        asesor = nameMatch[1].trim();
-      } else {
-        // Limpiar puntos iniciales y tomar hasta la primera coma o salto de línea
-        asesor = asesor.replace(/^[.\s]+/, '').split(/[,\n]/)[0].trim();
+
+    // Si el programa no está especificado o es genérico, intentar deducirlo
+    if (!programa || programa.toUpperCase().includes("NO ESPECIFICADO")) {
+      if (entry.toUpperCase().includes("BDB")) programa = "BUENOS DÍAS BAYAMO";
+      else if (entry.toUpperCase().includes("HCJ")) programa = "HABLANDO CON JUANA";
+    }
+
+    // Procesamiento de Fecha
+    let dateAdded = new Date().toISOString();
+    if (fechaRaw) {
+      // Normalizar fecha (quitar "DE", ".", espacios extra)
+      const cleanDate = fechaRaw.toUpperCase()
+        .replace(/\./g, '')
+        .replace(/,/g, '')
+        .replace(/\s+DE\s+/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+      // Intentar patrón: DIA MES AÑO (ej: 01 ABRIL 2024)
+      const parts = cleanDate.split(' ');
+      let day, month, year;
+
+      for (const part of parts) {
+        if (!isNaN(parseInt(part))) {
+          const num = parseInt(part);
+          if (num > 31) year = num;
+          else if (!day) day = num;
+        } else {
+          // Buscar mes
+          const monthKey = Object.keys(MONTHS).find(m => part.includes(m));
+          if (monthKey) month = MONTHS[monthKey];
+        }
+      }
+
+      if (day !== undefined && month !== undefined && year !== undefined) {
+        // Fijar a las 12:00 del mediodía para evitar problemas de zona horaria
+        const d = new Date(year, month, day, 12, 0, 0);
+        if (!isNaN(d.getTime())) {
+          dateAdded = d.toISOString();
+        }
       }
     }
 
-    // Limpieza de Escritor
-    escritor = escritor.replace(/^[:\s.-]+/, '').trim();
-    
-    // Limpieza de Programa (eliminar prefijos basura)
-    programa = programa.replace(/^(PROG\.?\s*|BOLETIN\s*\d*\s*|de trabajo de\s*)/i, '').trim();
-
-    let dateAdded = new Date().toISOString();
-    
-    try {
-        const cleanFecha = rawFecha.toUpperCase().replace(/\./g, ' ').replace(/\s+/g, ' ');
-        const dayMatch = cleanFecha.match(/(\d{1,2})/);
-        const yearMatch = cleanFecha.match(/(\d{4})/);
-        const monthNames = Object.keys(MONTHS).join("|");
-        const monthMatch = cleanFecha.match(new RegExp(`(${monthNames})`));
-
-        if (dayMatch && yearMatch && monthMatch) {
-            const day = parseInt(dayMatch[1]);
-            const year = parseInt(yearMatch[1]);
-            const month = MONTHS[monthMatch[1]];
-            const d = new Date(year, month, day);
-            if (!isNaN(d.getTime())) {
-              dateAdded = d.toISOString();
-            }
-        } else if (rawFecha.includes('/')) {
-            const parts = rawFecha.replace(/[^\d/]/g, '').split('/');
-            if (parts.length === 3) {
-                const d = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[0]));
-                if (!isNaN(d.getTime())) dateAdded = d.toISOString();
-            }
-        }
-    } catch (e) {
-        console.warn("Error parseando fecha:", rawFecha);
-    }
-
+    // Procesamiento de Temas (Tags)
     const themes = (tema || "")
       .split(/[\s,.:;]+/)
-      .filter(w => w.length > 3 && !['PARA', 'DELL', 'ESTA', 'COMO', 'UNOS', 'COMO'].includes(w.toUpperCase()))
-      .slice(0, 5); 
+      .filter(w => w.length > 3 && !['PARA', 'SOBRE', 'COMO', 'CUANDO', 'DONDE', 'ESTE', 'ESTA'].includes(w.toUpperCase()))
+      .slice(0, 5);
 
     return {
       id: crypto.randomUUID(),
-      title: tema ? tema.replace(/^[,.\s]+/, '').trim() : "Sin Tema",
+      title: tema || "Sin Tema",
       genre: programa || "OTRO",
       summary: `Escritor: ${escritor || 'N/A'} | Asesor: ${asesor || 'N/A'}`,
-      writer: escritor || "N/A",
-      advisor: asesor || "N/A",
-      content: entry, 
+      writer: escritor || "",
+      advisor: asesor || "",
+      content: entry,
       themes: themes.length > 0 ? themes : ["General"],
       tone: "Informativo",
       dateAdded,
       status,
       wordCount: entry.split(/\s+/).length
     };
-  });
+  }).filter(s => s.title !== "Sin Tema"); // Filtrar entradas vacías si quedaron
 };
 
 export const parseUsersFromText = (text: string): User[] => {

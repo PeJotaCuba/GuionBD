@@ -90,7 +90,7 @@ export const EditScriptModal: React.FC<EditScriptModalProps> = ({ isOpen, onClos
   const dateValue = formData.dateAdded ? new Date(formData.dateAdded).toLocaleDateString('en-CA') : '';
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-fade-in h-screen w-screen top-0 left-0">
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-fade-in h-screen w-screen top-0 left-0">
       <div className="bg-white dark:bg-slate-900 rounded-[2rem] w-full max-w-2xl shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col max-h-[90vh] relative">
         
         {/* Header */}

@@ -59,7 +59,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSav
       const scripts = parseScriptsFromText(text, targetStatus);
       
       if (scripts.length === 0) {
-        throw new Error("No se encontraron registros válidos en el archivo.");
+        throw new Error("No se encontraron registros válidos. Verifica que el archivo use el separador '____'.");
       }
 
       onSave(scripts);
@@ -67,14 +67,14 @@ export const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSav
       setFile(null);
     } catch (err) {
       console.error(err);
-      setError("Error al procesar el archivo. Asegúrate de que tenga el formato correcto.");
+      setError(err instanceof Error ? err.message : "Error al procesar el archivo.");
     } finally {
       setIsProcessing(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in w-screen h-screen">
       <div className="bg-white dark:bg-slate-800 rounded-3xl w-full max-w-lg shadow-2xl border border-white/10 overflow-hidden transform transition-all scale-100">
         
         <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center bg-slate-50/50 dark:bg-slate-800/50">
@@ -112,7 +112,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSav
                 Toca para subir o arrastra aquí
               </p>
               <p className="text-sm text-slate-500 dark:text-slate-400">
-                Sube tu archivo .txt con la lista de guiones
+                Sube tu archivo .txt con los guiones separados por "____"
               </p>
             </div>
           ) : (
@@ -165,7 +165,7 @@ export const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSav
 
         <div className="px-6 py-3 bg-slate-50 dark:bg-slate-900/50 text-center">
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            Asegúrate de que el archivo .txt siga el formato: PROGRAMA, Archivo, Fecha, Tema.
+            Asegúrate de que el archivo .txt use "____" para separar cada guion.
           </p>
         </div>
       </div>

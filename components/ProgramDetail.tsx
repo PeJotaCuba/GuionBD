@@ -130,7 +130,11 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
   };
 
   return (
-    <div className="space-y-8 animate-fade-in relative">
+    <>
+      {/* 
+        MODALES FUERA DEL CONTENEDOR ANIMADO
+        Esto asegura que position: fixed sea relativo al viewport y no al contenedor transformado.
+      */}
       <UploadModal 
         isOpen={isUploading} 
         onClose={() => setIsUploading(false)} 
@@ -146,110 +150,112 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
         onSave={handleSaveScript}
       />
 
-      {/* Header del Programa */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-        <div className="flex items-center gap-4">
-          <button onClick={onBack} className="p-2.5 rounded-full hover:bg-white dark:hover:bg-slate-900 shadow-sm text-slate-600 dark:text-slate-400 transition-colors">
-             <ChevronLeft />
-          </button>
-          <div className={`p-3 rounded-3xl ${programInfo?.color || 'bg-indigo-600'} text-white shadow-lg`}>
-            <Radio size={32} />
+      <div className="space-y-8 animate-fade-in relative">
+        {/* Header del Programa */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+          <div className="flex items-center gap-4">
+            <button onClick={onBack} className="p-2.5 rounded-full hover:bg-white dark:hover:bg-slate-900 shadow-sm text-slate-600 dark:text-slate-400 transition-colors">
+               <ChevronLeft />
+            </button>
+            <div className={`p-3 rounded-3xl ${programInfo?.color || 'bg-indigo-600'} text-white shadow-lg`}>
+              <Radio size={32} />
+            </div>
+            <div>
+              <h2 className="text-3xl font-black text-slate-900 dark:text-white uppercase leading-tight">{programName}</h2>
+              <p className="text-slate-500 dark:text-slate-400 font-medium">
+                {scripts.length} registros almacenados
+              </p>
+            </div>
           </div>
-          <div>
-            <h2 className="text-3xl font-black text-slate-900 dark:text-white uppercase leading-tight">{programName}</h2>
-            <p className="text-slate-500 dark:text-slate-400 font-medium">
-              {scripts.length} registros almacenados
-            </p>
+
+          <div className="flex flex-wrap gap-2 w-full md:w-auto">
+            {isAdmin && (
+              <>
+                <button 
+                  onClick={openNewScriptModal} 
+                  className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-emerald-500/20 transition-all"
+                >
+                  <Plus size={18} /> <span>Nuevo Guion</span>
+                </button>
+
+                <button 
+                  onClick={() => setIsUploading(true)} 
+                  className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-indigo-500/20 transition-all"
+                >
+                  <Upload size={18} /> <span>Cargar Información</span>
+                </button>
+
+                <button 
+                  onClick={clearData} 
+                  className="flex-1 md:flex-none flex items-center justify-center gap-2 px-5 py-2.5 bg-slate-100 dark:bg-slate-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl text-sm font-bold transition-all" 
+                  title="Limpiar todo"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </>
+            )}
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-2 w-full md:w-auto">
-          {isAdmin && (
-            <>
-              <button 
-                onClick={openNewScriptModal} 
-                className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-emerald-500/20 transition-all"
-              >
-                <Plus size={18} /> <span>Nuevo Guion</span>
-              </button>
+        {/* Carrusel Histórico */}
+        {historicScripts.length > 0 && (
+          <div className="bg-gradient-to-r from-indigo-50/50 to-purple-50/50 dark:from-slate-900/50 dark:to-slate-800/50 p-6 rounded-[2rem] border border-indigo-100 dark:border-slate-800">
+             <ScriptCarousel scripts={historicScripts} title="Hace un año (± 3 días)" />
+          </div>
+        )}
 
-              <button 
-                onClick={() => setIsUploading(true)} 
-                className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-indigo-500/20 transition-all"
-              >
-                <Upload size={18} /> <span>Cargar Información</span>
-              </button>
+        <div className="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
+          <div className="flex flex-col md:flex-row gap-4 items-center">
+            <div className="relative flex-grow w-full group">
+              <Search size={20} className="absolute left-4 top-3.5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+              <input
+                type="text"
+                placeholder="Buscar por fecha, tema, escritor o asesor..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+              />
+            </div>
+            
+            <div className="flex flex-wrap gap-2 justify-center">
+              {['2022', '2023', '2024', '2025', '2026'].map(year => (
+                <button
+                  key={year}
+                  onClick={() => setSelectedYear(selectedYear === year ? null : year)}
+                  className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${selectedYear === year ? 'bg-indigo-600 text-white shadow-md ring-4 ring-indigo-500/20' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'}`}
+                >
+                  {year}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
 
-              <button 
-                onClick={clearData} 
-                className="flex-1 md:flex-none flex items-center justify-center gap-2 px-5 py-2.5 bg-slate-100 dark:bg-slate-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl text-sm font-bold transition-all" 
-                title="Limpiar todo"
-              >
-                <Trash2 size={18} />
-              </button>
-            </>
+        <div className="pb-20">
+          {filteredScripts.length > 0 ? (
+            <div className="grid gap-4">
+              {filteredScripts.map(script => (
+                <ScriptCard 
+                  key={script.id} 
+                  script={script} 
+                  isAdmin={isAdmin}
+                  onDelete={(id) => {
+                     if(isAdmin && window.confirm('¿Eliminar guion?')) {
+                       setScripts(prev => prev.filter(s => s.id !== id))
+                     }
+                  }}
+                  onEdit={openEditScriptModal}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-20 text-center opacity-50">
+               <FileText size={48} className="mb-4 text-slate-300" />
+               <p className="text-xl font-medium text-slate-400">No hay guiones registrados para este programa o filtros.</p>
+            </div>
           )}
         </div>
       </div>
-
-      {/* Carrusel Histórico */}
-      {historicScripts.length > 0 && (
-        <div className="bg-gradient-to-r from-indigo-50/50 to-purple-50/50 dark:from-slate-900/50 dark:to-slate-800/50 p-6 rounded-[2rem] border border-indigo-100 dark:border-slate-800">
-           <ScriptCarousel scripts={historicScripts} title="Hace un año (± 3 días)" />
-        </div>
-      )}
-
-      <div className="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
-        <div className="flex flex-col md:flex-row gap-4 items-center">
-          <div className="relative flex-grow w-full group">
-            <Search size={20} className="absolute left-4 top-3.5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
-            <input
-              type="text"
-              placeholder="Buscar por fecha, tema, escritor o asesor..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-2xl text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
-            />
-          </div>
-          
-          <div className="flex flex-wrap gap-2 justify-center">
-            {['2022', '2023', '2024', '2025', '2026'].map(year => (
-              <button
-                key={year}
-                onClick={() => setSelectedYear(selectedYear === year ? null : year)}
-                className={`px-4 py-2 rounded-full text-xs font-bold transition-all ${selectedYear === year ? 'bg-indigo-600 text-white shadow-md ring-4 ring-indigo-500/20' : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-700'}`}
-              >
-                {year}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="pb-20">
-        {filteredScripts.length > 0 ? (
-          <div className="grid gap-4">
-            {filteredScripts.map(script => (
-              <ScriptCard 
-                key={script.id} 
-                script={script} 
-                isAdmin={isAdmin}
-                onDelete={(id) => {
-                   if(isAdmin && window.confirm('¿Eliminar guion?')) {
-                     setScripts(prev => prev.filter(s => s.id !== id))
-                   }
-                }}
-                onEdit={openEditScriptModal}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center py-20 text-center opacity-50">
-             <FileText size={48} className="mb-4 text-slate-300" />
-             <p className="text-xl font-medium text-slate-400">No hay guiones registrados para este programa o filtros.</p>
-          </div>
-        )}
-      </div>
-    </div>
+    </>
   );
 };
