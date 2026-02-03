@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Script, UserRole } from '../types';
 import { ScriptCard } from './ScriptCard';
-import { StatsView } from './StatsView';
 import { UploadModal } from './UploadModal';
 import { EditScriptModal } from './EditScriptModal';
 import { PROGRAMS } from './ProgramGrid';
+import { ScriptCarousel } from './ScriptCarousel';
 import { 
   Upload, Search, Radio, ChevronLeft, 
-  Trash2, RefreshCw, Download, FileText
+  Trash2, FileText
 } from 'lucide-react';
 
 interface ProgramDetailProps {
@@ -22,7 +22,6 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [editingScript, setEditingScript] = useState<Script | null>(null);
-  const [view, setView] = useState<'list' | 'stats'>('list');
 
   const isAdmin = userRole === 'Administrador';
 
@@ -61,6 +60,27 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
     return result.sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime());
   }, [scripts, searchQuery, selectedYear]);
 
+  // Lógica para el carrusel "Hace un año" (rango -2 a +2 días)
+  const historicScripts = useMemo(() => {
+    const today = new Date();
+    // Fecha objetivo: hace 1 año
+    const targetDate = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
+    
+    // Rango: -2 días a +2 días
+    const startRange = new Date(targetDate);
+    startRange.setDate(targetDate.getDate() - 2);
+    startRange.setHours(0, 0, 0, 0);
+
+    const endRange = new Date(targetDate);
+    endRange.setDate(targetDate.getDate() + 2);
+    endRange.setHours(23, 59, 59, 999);
+
+    return scripts.filter(s => {
+      const scriptDate = new Date(s.dateAdded);
+      return scriptDate >= startRange && scriptDate <= endRange;
+    }).sort((a, b) => new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime());
+  }, [scripts]);
+
   const handleAddScripts = (newScripts: Script[]) => {
     setScripts(prev => {
       const merged = [...newScripts, ...prev];
@@ -82,21 +102,12 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
     }
   };
 
-  const downloadData = () => {
-    const blob = new Blob([JSON.stringify(scripts, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName;
-    link.click();
-  };
-
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Header del Programa */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div className="flex items-center gap-4">
-          <button onClick={onBack} className="p-2.5 rounded-full hover:bg-white dark:hover:bg-slate-900 shadow-sm text-slate-600 dark:text-slate-400">
+          <button onClick={onBack} className="p-2.5 rounded-full hover:bg-white dark:hover:bg-slate-900 shadow-sm text-slate-600 dark:text-slate-400 transition-colors">
              <ChevronLeft />
           </button>
           <div className={`p-3 rounded-3xl ${programInfo?.color || 'bg-indigo-600'} text-white shadow-lg`}>
@@ -105,13 +116,13 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
           <div>
             <h2 className="text-3xl font-black text-slate-900 dark:text-white uppercase leading-tight">{programName}</h2>
             <p className="text-slate-500 dark:text-slate-400 font-medium">
-              Base de Datos: <span className="font-bold text-indigo-500">{fileName}</span> ({scripts.length} registros)
+              {scripts.length} registros almacenados
             </p>
           </div>
         </div>
 
         <div className="flex flex-wrap gap-2 w-full md:w-auto">
-          {isAdmin ? (
+          {isAdmin && (
             <>
               <button 
                 onClick={() => setIsUploading(true)} 
@@ -119,35 +130,25 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
               >
                 <Upload size={18} /> <span>Cargar Información</span>
               </button>
-              
-              <button onClick={() => window.location.reload()} className="p-2.5 text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 rounded-xl border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all" title="Actualizar">
-                <RefreshCw size={20} />
-              </button>
 
-              <button onClick={downloadData} className="p-2.5 text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 rounded-xl border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all" title="Descargar JSON">
-                <Download size={20} />
-              </button>
-
-              <button onClick={clearData} className="p-2.5 text-slate-600 dark:text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl transition-all" title="Limpiar todo">
-                <Trash2 size={20} />
+              <button 
+                onClick={clearData} 
+                className="flex-1 md:flex-none flex items-center justify-center gap-2 px-5 py-2.5 bg-slate-100 dark:bg-slate-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl text-sm font-bold transition-all" 
+                title="Limpiar todo"
+              >
+                <Trash2 size={18} /> <span>Limpiar Datos</span>
               </button>
             </>
-          ) : (
-            <button onClick={() => window.location.reload()} className="p-2.5 text-slate-600 dark:text-slate-400 hover:bg-white dark:hover:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 transition-all" title="Actualizar">
-              <RefreshCw size={20} />
-            </button>
-          )}
-
-          {(['Administrador', 'Director', 'Asesor'].includes(userRole)) && (
-            <button 
-              onClick={() => setView(view === 'list' ? 'stats' : 'list')}
-              className={`flex-1 md:flex-none flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${view === 'stats' ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-400' : 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300'}`}
-            >
-              <FileText size={18} /> <span>Informes</span>
-            </button>
           )}
         </div>
       </div>
+
+      {/* Carrusel Histórico */}
+      {historicScripts.length > 0 && (
+        <div className="bg-gradient-to-r from-indigo-50/50 to-purple-50/50 dark:from-slate-900/50 dark:to-slate-800/50 p-6 rounded-[2rem] border border-indigo-100 dark:border-slate-800">
+           <ScriptCarousel scripts={historicScripts} title="Hace un año (± 2 días)" />
+        </div>
+      )}
 
       <div className="bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
         <div className="flex flex-col md:flex-row gap-4 items-center">
@@ -177,9 +178,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
       </div>
 
       <div className="pb-20">
-        {view === 'stats' ? (
-          <StatsView scripts={scripts} />
-        ) : filteredScripts.length > 0 ? (
+        {filteredScripts.length > 0 ? (
           <div className="grid gap-4">
             {filteredScripts.map(script => (
               <ScriptCard 

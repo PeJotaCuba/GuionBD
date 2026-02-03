@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { User } from '../types';
-import { FileStack, Lock, User as UserIcon, AlertCircle, RefreshCw } from 'lucide-react';
+import { FileStack, Lock, User as UserIcon, AlertCircle, RefreshCw, Eye, EyeOff } from 'lucide-react';
 
 interface LoginProps {
   onLogin: (user: User) => void;
@@ -9,6 +9,7 @@ interface LoginProps {
 export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -84,8 +85,8 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
                   required
                   value={identifier}
                   onChange={(e) => setIdentifier(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
-                  placeholder="admin o 54413935"
+                  className="w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all placeholder:text-slate-400"
+                  placeholder=""
                 />
               </div>
             </div>
@@ -95,13 +96,21 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
               <div className="relative group">
                 <Lock size={18} className="absolute left-3.5 top-3.5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
-                  placeholder="••••••••"
+                  className="w-full pl-11 pr-12 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all placeholder:text-slate-400"
+                  placeholder=""
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-3.5 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
               </div>
             </div>
 

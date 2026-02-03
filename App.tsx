@@ -26,6 +26,26 @@ export default function App() {
     setIsLoaded(true);
   }, []);
 
+  // Manejo del botón Atrás (History API)
+  useEffect(() => {
+    const handlePopState = (event: PopStateEvent) => {
+      // Si el estado tiene un programa, lo seleccionamos, si no, volvemos al grid
+      if (event.state && event.state.program) {
+        setSelectedProgram(event.state.program);
+        setShowSettings(false);
+      } else if (event.state && event.state.settings) {
+        setShowSettings(true);
+        setSelectedProgram(null);
+      } else {
+        setSelectedProgram(null);
+        setShowSettings(false);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
@@ -46,6 +66,31 @@ export default function App() {
     setSelectedProgram(null);
     setShowSettings(false);
     localStorage.removeItem('guionbd_session');
+    // Limpiar historial al salir
+    window.history.pushState(null, '', window.location.pathname);
+  };
+
+  const navigateToProgram = (programName: string) => {
+    setSelectedProgram(programName);
+    setShowSettings(false);
+    window.history.pushState({ program: programName }, '', `#${programName.replace(/\s+/g, '-')}`);
+  };
+
+  const navigateToSettings = () => {
+    setShowSettings(true);
+    setSelectedProgram(null);
+    window.history.pushState({ settings: true }, '', '#ajustes');
+  };
+
+  const navigateHome = () => {
+    setSelectedProgram(null);
+    setShowSettings(false);
+    // Si hay historial, volvemos atrás, si no, reemplazamos estado
+    if (window.history.state && (window.history.state.program || window.history.state.settings)) {
+      window.history.back();
+    } else {
+      window.history.pushState(null, '', window.location.pathname);
+    }
   };
 
   if (!isLoaded) return null;
@@ -66,7 +111,7 @@ export default function App() {
             <div className="flex items-center gap-4">
               <div 
                 className="flex items-center gap-2.5 cursor-pointer" 
-                onClick={() => { setSelectedProgram(null); setShowSettings(false); }}
+                onClick={navigateHome}
               >
                 <div className="bg-gradient-to-br from-indigo-500 to-violet-600 p-2 rounded-xl shadow-lg shadow-indigo-500/20">
                   <FileStack className="text-white h-5 w-5" />
@@ -79,11 +124,11 @@ export default function App() {
 
               {(selectedProgram || showSettings) && (
                 <button 
-                  onClick={() => { setSelectedProgram(null); setShowSettings(false); }}
+                  onClick={navigateHome}
                   className="hidden md:flex items-center gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
                 >
                   <ChevronLeft size={18} />
-                  Cambiar de programa
+                  Volver
                 </button>
               )}
             </div>
@@ -96,7 +141,7 @@ export default function App() {
 
               {currentUser.role === 'Administrador' && (
                 <button 
-                  onClick={() => { setShowSettings(!showSettings); setSelectedProgram(null); }}
+                  onClick={() => showSettings ? navigateHome() : navigateToSettings()}
                   className={`p-2 rounded-lg transition-colors ${showSettings ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/40 dark:text-indigo-400' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
                   title="Ajustes de Usuario"
                 >
@@ -131,11 +176,11 @@ export default function App() {
           <ProgramDetail 
             programName={selectedProgram} 
             userRole={currentUser.role} 
-            onBack={() => setSelectedProgram(null)}
+            onBack={navigateHome}
           />
         ) : (
           <ProgramGrid 
-            onSelectProgram={setSelectedProgram} 
+            onSelectProgram={navigateToProgram} 
             currentUser={currentUser} 
           />
         )}

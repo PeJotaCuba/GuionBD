@@ -1,7 +1,8 @@
 import React, { useState, useMemo, useRef } from 'react';
-import { Search, Radio, Music, BookOpen, Users, Leaf, Newspaper, Home, Activity, Palette, Upload, Loader2, RefreshCw, Database } from 'lucide-react';
+import { Search, Radio, Music, BookOpen, Users, Leaf, Newspaper, Home, Activity, Palette, Upload, Loader2, RefreshCw, Database, FileText, X } from 'lucide-react';
 import { User, Script } from '../types';
 import { parseScriptsFromText } from '../services/parserService';
+import { StatsView } from './StatsView';
 
 export const PROGRAMS = [
   { name: "BUENOS DÍAS BAYAMO", file: "bdias.json", color: "bg-amber-500", icon: <Activity size={32} /> },
@@ -29,6 +30,7 @@ interface ProgramGridProps {
 export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, currentUser }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [showStats, setShowStats] = useState(false);
   const globalUploadRef = useRef<HTMLInputElement>(null);
 
   // Normalización mejorada: reemplaza puntuación por espacios y colapsa espacios
@@ -83,10 +85,41 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
         return;
       }
 
-      const groupedByProgram: Record<string, Script[]> = {};
-      let ignoredCount = 0;
+      distributeScripts(allParsedScripts);
+      alert("Carga global completada exitosamente.");
+      window.location.reload();
+    } catch (error) {
+      alert("Error al procesar el archivo masivo.");
+    } finally {
+      setIsProcessing(false);
+      if (globalUploadRef.current) globalUploadRef.current.value = '';
+    }
+  };
 
-      allParsedScripts.forEach(script => {
+  const handleRemoteUpdate = async () => {
+    setIsProcessing(true);
+    try {
+      const response = await fetch('https://raw.githubusercontent.com/PeJotaCuba/GuionBD/refs/heads/main/global.json');
+      if (!response.ok) throw new Error('Error al descargar la base de datos global');
+      
+      const allScripts: Script[] = await response.json();
+      if (!Array.isArray(allScripts)) throw new Error('Formato inválido de JSON');
+
+      distributeScripts(allScripts);
+      alert("Base de datos actualizada correctamente desde el servidor.");
+      window.location.reload();
+    } catch (error) {
+      console.error(error);
+      alert(`Error al actualizar: ${error instanceof Error ? error.message : 'Desconocido'}`);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const distributeScripts = (allScripts: Script[]) => {
+      const groupedByProgram: Record<string, Script[]> = {};
+
+      allScripts.forEach(script => {
         const scriptProgNorm = normalize(script.genre);
         
         // Búsqueda de coincidencia flexible
@@ -107,34 +140,24 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
         if (matchedProg) {
           const progFile = matchedProg.file;
           if (!groupedByProgram[progFile]) groupedByProgram[progFile] = [];
+          // Normalizar nombre de programa en el script
           script.genre = matchedProg.name;
           groupedByProgram[progFile].push(script);
-        } else {
-          ignoredCount++;
         }
       });
 
-      let totalSaved = 0;
+      // Guardar en localStorage
       Object.entries(groupedByProgram).forEach(([file, newScripts]) => {
         const key = `guionbd_data_${file}`;
         const existing = JSON.parse(localStorage.getItem(key) || '[]');
+        // Fusionar evitando duplicados exactos por ID o Título+Fecha
         const merged = [...newScripts, ...existing];
         const unique = merged.filter((v, i, a) => 
-          a.findIndex(t => t.title === v.title && t.dateAdded === v.dateAdded) === i
+          a.findIndex(t => (t.id === v.id) || (t.title === v.title && t.dateAdded === v.dateAdded)) === i
         );
 
         localStorage.setItem(key, JSON.stringify(unique));
-        totalSaved += newScripts.length;
       });
-
-      alert(`Proceso completado:\n- ${totalSaved} guiones cargados.\n- ${ignoredCount} registros ignorados (programas no registrados).`);
-      window.location.reload();
-    } catch (error) {
-      alert("Error al procesar el archivo masivo.");
-    } finally {
-      setIsProcessing(false);
-      if (globalUploadRef.current) globalUploadRef.current.value = '';
-    }
   };
 
   const handleDownloadDatabase = () => {
@@ -166,6 +189,22 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
     link.click();
   };
 
+  if (showStats) {
+    return (
+      <div className="animate-fade-in relative min-h-screen">
+        <button 
+          onClick={() => setShowStats(false)}
+          className="absolute top-0 left-0 flex items-center gap-2 text-slate-500 hover:text-indigo-600 font-bold mb-4 z-10"
+        >
+          <X size={20} /> Cerrar Informes
+        </button>
+        <div className="pt-10">
+           <StatsView programs={PROGRAMS} onClose={() => setShowStats(false)} />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8 animate-fade-in">
       <div className="text-center max-w-2xl mx-auto space-y-4">
@@ -186,12 +225,25 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
 
           <div className="flex gap-2">
             <button
-               onClick={() => window.location.reload()}
-               className="p-3.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-slate-600 dark:text-slate-400 hover:text-indigo-600 hover:border-indigo-300 transition-all shadow-sm"
-               title="Actualizar datos recientes"
+               onClick={handleRemoteUpdate}
+               disabled={isProcessing}
+               className="flex items-center gap-2 p-3.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-slate-600 dark:text-slate-400 hover:text-indigo-600 hover:border-indigo-300 transition-all shadow-sm disabled:opacity-50"
+               title="Actualizar datos desde servidor"
             >
-               <RefreshCw size={18} />
+               <RefreshCw size={18} className={isProcessing ? "animate-spin" : ""} />
+               <span className="hidden sm:inline text-sm font-bold">Actualizar</span>
             </button>
+
+            {['Administrador', 'Director', 'Asesor'].includes(currentUser.role) && (
+              <button
+                onClick={() => setShowStats(true)}
+                className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-5 py-3.5 rounded-2xl text-sm font-bold shadow-sm transition-all"
+                title="Ver Informes Globales"
+              >
+                <FileText size={18} />
+                <span className="hidden sm:inline">Informes</span>
+              </button>
+            )}
 
             {currentUser.role === 'Administrador' && (
               <>

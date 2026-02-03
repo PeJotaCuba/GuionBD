@@ -1,52 +1,76 @@
-import React, { useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Script } from '../types';
 import { 
-  PieChart, Pie, Cell, Legend, Tooltip, ResponsiveContainer 
-} from 'recharts';
-import { FileDown, Table } from 'lucide-react';
+  FileDown, Calendar, Layers, Repeat, BarChart3, X, Check, Filter
+} from 'lucide-react';
 
 interface StatsViewProps {
-  scripts: Script[];
+  onClose?: () => void;
+  programs: Array<{ name: string; file: string }>;
 }
 
-// Colores principales. El último (Slate) se reserva para "OTROS" si es necesario.
-const COLORS = ['#6366f1', '#a855f7', '#ec4899', '#3b82f6', '#14b8a6', '#f59e0b', '#ef4444', '#22c55e', '#64748b'];
+// Tipos de informes
+type ReportType = 'month' | 'repeated' | 'program' | 'year_ago' | null;
 
-export const StatsView: React.FC<StatsViewProps> = ({ scripts }) => {
+interface FilterConfig {
+  programs: string[];
+  year: string;
+  month: string;
+  week: string;
+}
 
-  const programData = useMemo(() => {
-    const counts: Record<string, number> = {};
-    
-    // 1. Contar normalizando nombres (quitar paréntesis para agrupar)
-    scripts.forEach(s => {
-      // Normalización igual que en App.tsx para consistencia
-      const normalizedName = s.genre.replace(/\s*\(.*?\)/g, "").trim().toUpperCase();
-      counts[normalizedName] = (counts[normalizedName] || 0) + 1;
+export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
+  const [allScripts, setAllScripts] = useState<Script[]>([]);
+  const [activeReport, setActiveReport] = useState<ReportType>(null);
+  
+  // Configuración del filtro actual
+  const [filters, setFilters] = useState<FilterConfig>({
+    programs: [],
+    year: new Date().getFullYear().toString(),
+    month: (new Date().getMonth() + 1).toString(),
+    week: '1'
+  });
+
+  // Cargar todos los scripts al montar
+  useEffect(() => {
+    let gathered: Script[] = [];
+    programs.forEach(prog => {
+      const key = `guionbd_data_${prog.file}`;
+      const data = localStorage.getItem(key);
+      if (data) {
+        gathered = [...gathered, ...JSON.parse(data)];
+      }
     });
+    setAllScripts(gathered);
+  }, [programs]);
 
-    // 2. Convertir a array y ordenar descendente
-    const sortedData = Object.entries(counts)
-      .map(([name, value]) => ({ name, value }))
-      .sort((a, b) => b.value - a.value);
+  // Listas para los selects
+  const availableYears = useMemo(() => {
+    const years = new Set(allScripts.map(s => {
+      const d = new Date(s.dateAdded);
+      return isNaN(d.getTime()) ? null : d.getFullYear();
+    }).filter(y => y !== null));
+    return Array.from(years).sort((a, b) => (b as number) - (a as number)).map(String);
+  }, [allScripts]);
 
-    // 3. Aplicar lógica TOP 5 + OTROS
-    if (sortedData.length <= 5) {
-      return sortedData;
+  const toggleProgram = (progName: string) => {
+    setFilters(prev => {
+      const exists = prev.programs.includes(progName);
+      let newProgs = exists 
+        ? prev.programs.filter(p => p !== progName)
+        : [...prev.programs, progName];
+      return { ...prev, programs: newProgs };
+    });
+  };
+
+  const selectAllPrograms = () => {
+    if (filters.programs.length === programs.length) {
+      setFilters(prev => ({ ...prev, programs: [] }));
+    } else {
+      setFilters(prev => ({ ...prev, programs: programs.map(p => p.name) }));
     }
+  };
 
-    const top5 = sortedData.slice(0, 5);
-    const others = sortedData.slice(5);
-    
-    const othersCount = others.reduce((acc, curr) => acc + curr.value, 0);
-    
-    if (othersCount > 0) {
-      top5.push({ name: 'OTROS', value: othersCount });
-    }
-
-    return top5;
-  }, [scripts]);
-
-  // Fix: Added explicit CSS for word wrapping in the generated HTML table
   const downloadReport = (filename: string, title: string, headers: string[], rows: (string | number)[][]) => {
     const tableHeader = headers.map(h => 
       `<th style="border:1px solid #000; padding: 8px; background-color: #f3f4f6; text-align: left; font-size: 11px;">${h}</th>`
@@ -63,14 +87,9 @@ export const StatsView: React.FC<StatsViewProps> = ({ scripts }) => {
       <head><meta charset='utf-8'><title>${title}</title></head>
       <body style="font-family: Arial, sans-serif;">
         <h2 style="text-align:center; color: #4338ca;">${title}</h2>
-        <p style="text-align:center; font-size: 10px; color: #666;">Generado por GuionBD el ${new Date().toLocaleDateString()}</p>
+        <p style="text-align:center; font-size: 10px; color: #666;">Generado el ${new Date().toLocaleDateString()}</p>
         <br/>
         <table style="width:100%; border-collapse: collapse; border: 1px solid #000; table-layout: fixed;">
-          <colgroup>
-            <col style="width: 20%;">
-            <col style="width: 30%;">
-            <col style="width: 50%;">
-          </colgroup>
           <thead><tr>${tableHeader}</tr></thead>
           <tbody>${tableBody}</tbody>
         </table>
@@ -78,9 +97,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ scripts }) => {
       </html>
     `;
 
-    const blob = new Blob(['\ufeff', html], {
-      type: 'application/msword'
-    });
+    const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
@@ -88,183 +105,249 @@ export const StatsView: React.FC<StatsViewProps> = ({ scripts }) => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    setActiveReport(null); // Cerrar modal al descargar
   };
 
-  const downloadRepeatedThemes = () => {
-    const themeCounts: Record<string, number> = {};
-    scripts.forEach(s => s.themes.forEach(t => themeCounts[t] = (themeCounts[t] || 0) + 1));
-    const repeatedThemes = Object.keys(themeCounts).filter(t => themeCounts[t] > 1);
+  const handleGenerate = () => {
+    // Filtrar primero por programas seleccionados
+    let selectedScripts = allScripts.filter(s => {
+       // Normalización básica para comparar nombres de programas
+       return filters.programs.includes(s.genre) || filters.programs.some(p => s.genre.includes(p));
+    });
     
-    const rows: string[][] = [];
-    scripts.forEach(s => {
-      s.themes.forEach(t => {
-        if (repeatedThemes.includes(t)) {
-          rows.push([
-            new Date(s.dateAdded).toLocaleDateString(),
-            s.genre,
-            t
-          ]);
+    if (activeReport === 'month') {
+        const rows = selectedScripts.map(s => {
+            const d = new Date(s.dateAdded);
+            const monthName = d.toLocaleString('es-ES', { month: 'long' });
+            return [
+                monthName.charAt(0).toUpperCase() + monthName.slice(1),
+                d.getFullYear(),
+                s.genre,
+                s.title
+            ];
+        }).sort((a, b) => String(a[2]).localeCompare(String(b[2]))); 
+        
+        downloadReport('Temas_Por_Mes', 'Informe de Temas por Mes', ['Mes', 'Año', 'Programa', 'Temática'], rows);
+    } 
+    
+    else if (activeReport === 'repeated') {
+        const yearScripts = selectedScripts.filter(s => new Date(s.dateAdded).getFullYear().toString() === filters.year);
+        const themeCounts: Record<string, number> = {};
+        yearScripts.forEach(s => s.themes.forEach(t => themeCounts[t] = (themeCounts[t] || 0) + 1));
+        const repeated = Object.keys(themeCounts).filter(t => themeCounts[t] > 1);
+        
+        const rows: string[][] = [];
+        yearScripts.forEach(s => {
+            s.themes.forEach(t => {
+                if (repeated.includes(t)) {
+                    rows.push([new Date(s.dateAdded).toLocaleDateString(), s.genre, t]);
+                }
+            });
+        });
+        rows.sort((a, b) => a[2].localeCompare(b[2])); 
+        downloadReport(`Tematicas_Repetidas_${filters.year}`, `Temáticas Repetidas Año ${filters.year}`, ['Fecha', 'Programa', 'Temática'], rows);
+    }
+
+    else if (activeReport === 'program') {
+        // Filtrar por año y mes seleccionados
+        let filtered = selectedScripts.filter(s => {
+            const d = new Date(s.dateAdded);
+            return d.getFullYear().toString() === filters.year && (d.getMonth() + 1).toString() === filters.month;
+        });
+        
+        // Lógica simple de semana
+        if(filters.week) {
+             filtered = filtered.filter(s => {
+                 const d = new Date(s.dateAdded);
+                 const weekNum = Math.ceil(d.getDate() / 7);
+                 return weekNum.toString() === filters.week;
+             });
         }
-      });
-    });
 
-    rows.sort((a, b) => a[2].localeCompare(b[2]) || a[0].localeCompare(b[0]));
-    downloadReport('Tematicas_Repetidas', 'Informe de Temáticas Repetidas', ['Fecha', 'Programa', 'Temática'], rows);
+        const rows = filtered.map(s => [
+            s.genre,
+            new Date(s.dateAdded).toLocaleDateString(),
+            s.title
+        ]).sort((a, b) => a[0].localeCompare(b[0]));
+
+        downloadReport('Temas_Por_Programa_Detallado', `Informe Detallado (${filters.month}/${filters.year} - Sem ${filters.week})`, ['Programa', 'Fecha', 'Temática'], rows);
+    }
+
+    else if (activeReport === 'year_ago') {
+        const oneYearAgo = new Date();
+        oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+        const targetYear = oneYearAgo.getFullYear();
+
+        const rows = selectedScripts
+            .filter(s => new Date(s.dateAdded).getFullYear() === targetYear)
+            .map(s => [
+                new Date(s.dateAdded).toLocaleDateString(),
+                s.genre,
+                s.title
+            ]).sort((a, b) => a[1].localeCompare(b[1]));
+
+        downloadReport(`Temas_Ano_Atras_${targetYear}`, `Temas Año ${targetYear}`, ['Fecha', 'Programa', 'Tema'], rows);
+    }
   };
 
-  const downloadOneYearAgo = () => {
-    const oneYearAgo = new Date();
-    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-    const targetYear = oneYearAgo.getFullYear();
+  const renderModal = () => {
+    if (!activeReport) return null;
 
-    const rows = scripts
-      .filter(s => new Date(s.dateAdded).getFullYear() === targetYear)
-      .map(s => [
-        new Date(s.dateAdded).toLocaleDateString(),
-        s.genre,
-        s.title 
-      ]);
-    
-    downloadReport('Temas_Ano_Atras', `Temas Año ${targetYear}`, ['Fecha', 'Programa', 'Tema'], rows);
-  };
-
-  const downloadThemesByMonth = () => {
-    const rows = scripts.map(s => {
-      const d = new Date(s.dateAdded);
-      const month = d.toLocaleString('es-ES', { month: 'long' });
-      return [
-        month.charAt(0).toUpperCase() + month.slice(1),
-        d.getFullYear(),
-        s.genre,
-        s.title
-      ];
-    }).sort((a, b) => {
-        if (a[1] !== b[1]) return (b[1] as number) - (a[1] as number); 
-        return 0; 
-    });
-
-    // Modified headers for month report
-    const headers = ['Mes', 'Año', 'Programa', 'Temática'];
-     const tableHeader = headers.map(h => 
-      `<th style="border:1px solid #000; padding: 8px; background-color: #f3f4f6; text-align: left; font-size: 11px;">${h}</th>`
-    ).join('');
-    
-    const tableBody = rows.map(row => 
-      `<tr>${row.map(cell => 
-        `<td style="border:1px solid #000; padding: 8px; vertical-align: top; word-wrap: break-word; font-size: 11px;">${cell}</td>`
-      ).join('')}</tr>`
-    ).join('');
-
-    const html = `
-      <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-      <head><meta charset='utf-8'><title>Informe Mensual</title></head>
-      <body style="font-family: Arial, sans-serif;">
-        <h2 style="text-align:center; color: #4338ca;">Temas por Meses</h2>
-        <table style="width:100%; border-collapse: collapse; border: 1px solid #000;">
-          <thead><tr>${tableHeader}</tr></thead>
-          <tbody>${tableBody}</tbody>
-        </table>
-      </body>
-      </html>
-    `;
-    const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `Temas_Por_Meses.doc`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  const downloadThemesByProgram = () => {
-    const rows = scripts.map(s => [
-      s.genre,
-      new Date(s.dateAdded).toLocaleDateString(),
-      s.title
-    ]).sort((a, b) => a[0].localeCompare(b[0]));
-
-    downloadReport('Temas_Por_Programas', 'Informe de Temas por Programa', ['Programa', 'Fecha', 'Temática'], rows);
-  };
-
-  if (scripts.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-40 text-slate-400">
-        <p>No hay datos para informes.</p>
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+        <div className="bg-white dark:bg-slate-900 rounded-[2rem] w-full max-w-2xl shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col max-h-[90vh]">
+          
+          <div className="px-8 py-5 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/80 dark:bg-slate-800/50 backdrop-blur-md rounded-t-[2rem]">
+            <h2 className="text-xl font-black text-slate-800 dark:text-white tracking-tight flex items-center gap-2">
+              <Filter size={20} className="text-indigo-500" />
+              Configurar Informe
+            </h2>
+            <button onClick={() => setActiveReport(null)} className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-slate-500">
+              <X size={20} />
+            </button>
+          </div>
+
+          <div className="p-8 overflow-y-auto custom-scrollbar space-y-6">
+            {/* Selección de Programas (Común a todos) */}
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Programas</label>
+                <button onClick={selectAllPrograms} className="text-xs font-bold text-indigo-600 hover:text-indigo-700">
+                  {filters.programs.length === programs.length ? 'Deseleccionar todos' : 'Seleccionar todos'}
+                </button>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {programs.map(prog => (
+                  <button
+                    key={prog.name}
+                    onClick={() => toggleProgram(prog.name)}
+                    className={`text-left px-3 py-2 rounded-lg text-xs font-medium transition-all border ${
+                      filters.programs.includes(prog.name)
+                        ? 'bg-indigo-50 dark:bg-indigo-900/30 border-indigo-200 dark:border-indigo-700 text-indigo-700 dark:text-indigo-300'
+                        : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-indigo-300'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2">
+                      <div className={`w-3 h-3 rounded-full flex items-center justify-center border ${filters.programs.includes(prog.name) ? 'bg-indigo-500 border-indigo-500' : 'border-slate-300'}`}>
+                        {filters.programs.includes(prog.name) && <Check size={8} className="text-white" />}
+                      </div>
+                      <span className="truncate">{prog.name}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Filtros específicos */}
+            {(activeReport === 'repeated' || activeReport === 'program') && (
+               <div className="space-y-2">
+                 <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Año</label>
+                 <select 
+                   value={filters.year} 
+                   onChange={(e) => setFilters({...filters, year: e.target.value})}
+                   className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none"
+                 >
+                   {availableYears.map(y => <option key={y} value={y}>{y}</option>)}
+                 </select>
+               </div>
+            )}
+
+            {activeReport === 'program' && (
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Mes</label>
+                  <select 
+                    value={filters.month}
+                    onChange={(e) => setFilters({...filters, month: e.target.value})}
+                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none"
+                  >
+                    {Array.from({length: 12}, (_, i) => i + 1).map(m => (
+                      <option key={m} value={m}>{new Date(0, m-1).toLocaleString('es-ES', {month: 'long'})}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Semana</label>
+                  <select 
+                    value={filters.week}
+                    onChange={(e) => setFilters({...filters, week: e.target.value})}
+                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none"
+                  >
+                    <option value="">Todas</option>
+                    {[1,2,3,4,5].map(w => <option key={w} value={w}>Semana {w}</option>)}
+                  </select>
+                </div>
+              </div>
+            )}
+
+          </div>
+
+          <div className="p-6 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 rounded-b-[2rem] flex gap-3">
+            <button 
+              onClick={() => setActiveReport(null)}
+              className="flex-1 py-3.5 rounded-xl font-bold text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+            >
+              Cancelar
+            </button>
+            <button 
+              onClick={handleGenerate}
+              disabled={filters.programs.length === 0}
+              className="flex-[2] py-3.5 rounded-xl font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <FileDown size={18} /> Generar Informe
+            </button>
+          </div>
+        </div>
       </div>
     );
-  }
+  };
 
   return (
-    <div className="space-y-6 pb-20 animate-fade-in">
-      {/* Chart */}
-      <div className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
-        <h3 className="text-base font-bold text-slate-800 dark:text-white mb-4">Top 5 Programas (+ Otros)</h3>
-        {/* Increased height to accommodate the bottom legend */}
-        <div className="h-96 w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={programData}
-                cx="50%"
-                cy="45%"
-                innerRadius={60}
-                outerRadius={90}
-                paddingAngle={4}
-                dataKey="value"
-                label={({ percent}) => `${(percent * 100).toFixed(0)}%`}
-                labelLine={false}
-              >
-                {programData.map((entry, index) => {
-                  // Si el nombre es 'OTROS', usar color gris (asumiendo que es el último color o uno específico)
-                  const fill = entry.name === 'OTROS' ? '#94a3b8' : COLORS[index % (COLORS.length - 1)];
-                  return <Cell key={`cell-${index}`} fill={fill} />;
-                })}
-              </Pie>
-              <Tooltip 
-                contentStyle={{ borderRadius: '8px', border: 'none', fontSize: '12px' }}
-              />
-              <Legend 
-                verticalAlign="bottom" 
-                align="center"
-                height={36} 
-                iconType="circle"
-                wrapperStyle={{ fontSize: '12px', paddingTop: '20px' }}
-              />
-            </PieChart>
-          </ResponsiveContainer>
-        </div>
+    <div className="max-w-5xl mx-auto px-4 pb-20">
+      <div className="text-center mb-10 space-y-2">
+        <h2 className="text-3xl font-black text-slate-900 dark:text-white">Centro de Informes Globales</h2>
+        <p className="text-slate-500 dark:text-slate-400">Genera documentos detallados de toda la programación.</p>
       </div>
 
-      {/* Download Options */}
-      <div className="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-sm border border-slate-100 dark:border-slate-700">
-        <h3 className="text-base font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2">
-          <Table size={18} className="text-indigo-500" />
-          Descargar Informes (.doc)
-        </h3>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <button onClick={downloadRepeatedThemes} className="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-700/50 hover:bg-indigo-50 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
-            <span className="font-medium text-xs">Temáticas Repetidas</span>
-            <FileDown size={16} className="text-slate-400" />
-          </button>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Temas por Mes */}
+        <button onClick={() => setActiveReport('month')} className="group bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-500 shadow-sm hover:shadow-xl transition-all text-left">
+          <div className="bg-blue-100 dark:bg-blue-900/30 w-12 h-12 rounded-2xl flex items-center justify-center text-blue-600 dark:text-blue-400 mb-4 group-hover:scale-110 transition-transform">
+            <Calendar size={24} />
+          </div>
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">Temas por Mes</h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400">Resumen mensual de temáticas abordadas. Filtra por programas específicos.</p>
+        </button>
 
-          <button onClick={downloadOneYearAgo} className="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-700/50 hover:bg-indigo-50 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
-            <span className="font-medium text-xs">Temas un año atrás</span>
-            <FileDown size={16} className="text-slate-400" />
-          </button>
+        {/* Temáticas Repetidas */}
+        <button onClick={() => setActiveReport('repeated')} className="group bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-200 dark:border-slate-800 hover:border-amber-500 dark:hover:border-amber-500 shadow-sm hover:shadow-xl transition-all text-left">
+          <div className="bg-amber-100 dark:bg-amber-900/30 w-12 h-12 rounded-2xl flex items-center justify-center text-amber-600 dark:text-amber-400 mb-4 group-hover:scale-110 transition-transform">
+            <Repeat size={24} />
+          </div>
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">Temáticas Repetidas</h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400">Detecta repeticiones de temas en un año específico entre programas seleccionados.</p>
+        </button>
 
-          <button onClick={downloadThemesByMonth} className="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-700/50 hover:bg-indigo-50 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
-            <span className="font-medium text-xs">Temas por Meses</span>
-            <FileDown size={16} className="text-slate-400" />
-          </button>
+        {/* Temas por Programas (Detallado) */}
+        <button onClick={() => setActiveReport('program')} className="group bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-200 dark:border-slate-800 hover:border-emerald-500 dark:hover:border-emerald-500 shadow-sm hover:shadow-xl transition-all text-left">
+          <div className="bg-emerald-100 dark:bg-emerald-900/30 w-12 h-12 rounded-2xl flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-4 group-hover:scale-110 transition-transform">
+            <Layers size={24} />
+          </div>
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">Temas por Programas</h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400">Informe detallado filtrado por programa, año, mes y semana.</p>
+        </button>
 
-          <button onClick={downloadThemesByProgram} className="flex items-center justify-between p-3 rounded-lg bg-slate-50 dark:bg-slate-700/50 hover:bg-indigo-50 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
-            <span className="font-medium text-xs">Temas por Programa</span>
-            <FileDown size={16} className="text-slate-400" />
-          </button>
-        </div>
+        {/* Un año atrás */}
+        <button onClick={() => setActiveReport('year_ago')} className="group bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-200 dark:border-slate-800 hover:border-purple-500 dark:hover:border-purple-500 shadow-sm hover:shadow-xl transition-all text-left">
+          <div className="bg-purple-100 dark:bg-purple-900/30 w-12 h-12 rounded-2xl flex items-center justify-center text-purple-600 dark:text-purple-400 mb-4 group-hover:scale-110 transition-transform">
+            <BarChart3 size={24} />
+          </div>
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">Temas un año atrás</h3>
+          <p className="text-sm text-slate-500 dark:text-slate-400">Consulta histórica de lo tratado exactamente hace un año.</p>
+        </button>
       </div>
+
+      {renderModal()}
     </div>
   );
 };
