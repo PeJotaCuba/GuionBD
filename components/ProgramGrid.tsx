@@ -91,7 +91,7 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
       }
 
       distributeScripts(allParsedScripts);
-      alert("Carga global completada exitosamente.");
+      alert("Carga global completada. Se han incorporado los nuevos guiones.");
       window.location.reload();
     } catch (error) {
       alert("Error al procesar el archivo masivo.");
@@ -155,8 +155,11 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
       Object.entries(groupedByProgram).forEach(([file, newScripts]) => {
         const key = `guionbd_data_${file}`;
         const existing = JSON.parse(localStorage.getItem(key) || '[]');
-        // Fusionar evitando duplicados exactos por ID o Título+Fecha
-        const merged = [...newScripts, ...existing];
+        
+        // FUSIÓN: Priorizamos lo existente (para no sobrescribir ediciones) e incorporamos lo nuevo.
+        // Ponemos 'existing' primero. El filtro 'unique' conservará la primera ocurrencia encontrada.
+        const merged = [...existing, ...newScripts];
+        
         const unique = merged.filter((v, i, a) => 
           a.findIndex(t => (t.id === v.id) || (t.title === v.title && t.dateAdded === v.dateAdded)) === i
         );
@@ -168,7 +171,7 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
   const handleDownloadDatabase = () => {
     const allData: any[] = [];
     
-    // Iterar sobre todos los programas y recolectar todos los scripts
+    // Iterar sobre todos los programas y recolectar TODOS los scripts
     // Sin filtrar por fecha (exportación completa)
     PROGRAMS.forEach(prog => {
        const key = `guionbd_data_${prog.file}`;

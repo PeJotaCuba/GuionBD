@@ -29,6 +29,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
   const fileName = programInfo?.file || `${programName.replace(/\s+/g, '_').toLowerCase()}.json`;
   const storageKey = `guionbd_data_${fileName}`;
 
+  // Carga inicial
   useEffect(() => {
     const saved = localStorage.getItem(storageKey);
     if (saved) {
@@ -38,8 +39,11 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
     }
   }, [storageKey]);
 
+  // Persistencia automática ante cambios
   useEffect(() => {
-    localStorage.setItem(storageKey, JSON.stringify(scripts));
+    if (scripts.length > 0) {
+      localStorage.setItem(storageKey, JSON.stringify(scripts));
+    }
   }, [scripts, storageKey]);
 
   const filteredScripts = useMemo(() => {
@@ -92,6 +96,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
   };
 
   const handleUpdateScript = (updatedScript: Script) => {
+    // Actualizar estado local inmediatamente
     setScripts(prev => prev.map(s => s.id === updatedScript.id ? updatedScript : s));
   };
 
@@ -99,11 +104,27 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
     if (!isAdmin) return;
     if (window.confirm('¿Eliminar toda la base de datos de este programa? Esta acción no se puede deshacer.')) {
       setScripts([]);
+      localStorage.removeItem(storageKey);
     }
   };
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-8 animate-fade-in relative">
+      {/* Modales ubicados aquí para asegurar que estén por encima de todo el contenido */}
+      <UploadModal 
+        isOpen={isUploading} 
+        onClose={() => setIsUploading(false)} 
+        onSave={handleAddScripts}
+        targetStatus="active" 
+      />
+
+      <EditScriptModal
+        isOpen={!!editingScript}
+        onClose={() => setEditingScript(null)}
+        script={editingScript}
+        onSave={handleUpdateScript}
+      />
+
       {/* Header del Programa */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div className="flex items-center gap-4">
@@ -201,20 +222,6 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
           </div>
         )}
       </div>
-
-      <UploadModal 
-        isOpen={isUploading} 
-        onClose={() => setIsUploading(false)} 
-        onSave={handleAddScripts}
-        targetStatus="active" 
-      />
-
-      <EditScriptModal
-        isOpen={!!editingScript}
-        onClose={() => setEditingScript(null)}
-        script={editingScript}
-        onSave={handleUpdateScript}
-      />
     </div>
   );
 };
