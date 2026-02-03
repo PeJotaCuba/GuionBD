@@ -3,13 +3,14 @@ import { User, UserRole } from '../types';
 import { PROGRAMS } from './ProgramGrid';
 import { 
   UserPlus, Trash2, ShieldCheck, UserCheck, 
-  Edit2, Download, FileText, X, Globe
+  Edit2, Download, FileText, X, Globe, RefreshCw
 } from 'lucide-react';
 import { parseUsersFromText } from '../services/parserService';
 
 export const AdminSettings: React.FC = () => {
   const [users, setUsers] = useState<User[]>([]);
   const [editingUser, setEditingUser] = useState<User | null>(null);
+  const [isUpdating, setIsUpdating] = useState(false);
   
   const [formData, setFormData] = useState({
     fullName: '',
@@ -92,6 +93,27 @@ export const AdminSettings: React.FC = () => {
     link.click();
   };
 
+  const handleRemoteUpdate = async () => {
+    setIsUpdating(true);
+    try {
+      const response = await fetch('https://raw.githubusercontent.com/PeJotaCuba/GuionBD/refs/heads/main/gusuario.json');
+      if (!response.ok) throw new Error('Error al descargar base de datos remota');
+      
+      const newUsers = await response.json();
+      if (Array.isArray(newUsers)) {
+        setUsers(newUsers);
+        localStorage.setItem('guionbd_users', JSON.stringify(newUsers));
+        alert('Usuarios actualizados correctamente desde el servidor.');
+      } else {
+        throw new Error('Formato inválido');
+      }
+    } catch (err) {
+      alert('Error: ' + (err instanceof Error ? err.message : 'Desconocido'));
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
   const handleTxtUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -116,6 +138,13 @@ export const AdminSettings: React.FC = () => {
           <p className="text-slate-500 dark:text-slate-400">Administra acceso, roles y programas permitidos.</p>
         </div>
         <div className="flex flex-wrap gap-2">
+          <button 
+            onClick={handleRemoteUpdate}
+            disabled={isUpdating}
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-50 dark:bg-slate-800 border border-indigo-200 dark:border-slate-700 text-indigo-700 dark:text-indigo-400 rounded-xl text-sm font-bold shadow-sm hover:bg-indigo-100 dark:hover:bg-slate-700 transition-all disabled:opacity-50"
+          >
+            <RefreshCw size={18} className={isUpdating ? "animate-spin" : ""} /> Actualizar
+          </button>
           <button onClick={downloadUserDB} className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-sm font-bold shadow-sm hover:border-indigo-500 transition-all">
             <Download size={18} className="text-indigo-500" /> gusuario.json
           </button>

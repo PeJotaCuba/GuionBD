@@ -60,19 +60,19 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
     return result.sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime());
   }, [scripts, searchQuery, selectedYear]);
 
-  // Lógica para el carrusel "Hace un año" (rango -2 a +2 días)
+  // Lógica para el carrusel "Hace un año" (rango -3 a +3 días)
   const historicScripts = useMemo(() => {
     const today = new Date();
     // Fecha objetivo: hace 1 año
     const targetDate = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
     
-    // Rango: -2 días a +2 días
+    // Rango: -3 días a +3 días
     const startRange = new Date(targetDate);
-    startRange.setDate(targetDate.getDate() - 2);
+    startRange.setDate(targetDate.getDate() - 3);
     startRange.setHours(0, 0, 0, 0);
 
     const endRange = new Date(targetDate);
-    endRange.setDate(targetDate.getDate() + 2);
+    endRange.setDate(targetDate.getDate() + 3);
     endRange.setHours(23, 59, 59, 999);
 
     return scripts.filter(s => {
@@ -146,7 +146,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
       {/* Carrusel Histórico */}
       {historicScripts.length > 0 && (
         <div className="bg-gradient-to-r from-indigo-50/50 to-purple-50/50 dark:from-slate-900/50 dark:to-slate-800/50 p-6 rounded-[2rem] border border-indigo-100 dark:border-slate-800">
-           <ScriptCarousel scripts={historicScripts} title="Hace un año (± 2 días)" />
+           <ScriptCarousel scripts={historicScripts} title="Hace un año (± 3 días)" />
         </div>
       )}
 

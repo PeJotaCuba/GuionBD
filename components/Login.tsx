@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { User } from '../types';
 import { FileStack, Lock, User as UserIcon, AlertCircle, RefreshCw, Eye, EyeOff } from 'lucide-react';
 
@@ -11,7 +11,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,20 +46,23 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
     }
   };
 
-  const handleUpdateUsers = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+  const handleRemoteUpdate = async () => {
+    setIsUpdating(true);
     try {
-      const text = await file.text();
-      const uploaded = JSON.parse(text) as User[];
+      const response = await fetch('https://raw.githubusercontent.com/PeJotaCuba/GuionBD/refs/heads/main/gusuario.json');
+      if (!response.ok) throw new Error('Error de conexión con el servidor');
+      
+      const uploaded = await response.json();
       if (Array.isArray(uploaded)) {
         localStorage.setItem('guionbd_users', JSON.stringify(uploaded));
         alert('Base de datos de usuarios actualizada correctamente.');
       } else {
-        throw new Error();
+        throw new Error('Formato incorrecto');
       }
     } catch (err) {
-      alert('Error: El archivo gusuario.json no tiene un formato válido.');
+      alert('Error al actualizar usuarios: ' + (err instanceof Error ? err.message : 'Desconocido'));
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -131,13 +134,13 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
           <div className="mt-6 flex flex-col items-center gap-4">
              <button 
-                onClick={() => fileInputRef.current?.click()}
-                className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-indigo-600 transition-colors bg-slate-50 dark:bg-slate-800 px-4 py-2 rounded-full border border-slate-200 dark:border-slate-700"
+                onClick={handleRemoteUpdate}
+                disabled={isUpdating}
+                className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-indigo-600 transition-colors bg-slate-50 dark:bg-slate-800 px-4 py-2 rounded-full border border-slate-200 dark:border-slate-700 disabled:opacity-50 cursor-pointer"
               >
-                <RefreshCw size={14} />
-                Actualizar Usuarios (gusuario.json)
+                <RefreshCw size={14} className={isUpdating ? "animate-spin" : ""} />
+                Actualizar
               </button>
-              <input type="file" ref={fileInputRef} className="hidden" accept=".json" onChange={handleUpdateUsers} />
           </div>
           
           <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800 text-center">

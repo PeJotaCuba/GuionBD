@@ -31,7 +31,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
     week: '1'
   });
 
-  // Manejo de tecla Escape para cerrar (Uso de onClose para corregir error TS6133)
+  // Manejo de tecla Escape para cerrar
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -59,14 +59,15 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
     setAllScripts(gathered);
   }, [programs]);
 
-  // Listas para los selects
+  // Listas para los selects (Años 2022 al actual)
   const availableYears = useMemo(() => {
-    const years = new Set(allScripts.map(s => {
-      const d = new Date(s.dateAdded);
-      return isNaN(d.getTime()) ? null : d.getFullYear();
-    }).filter(y => y !== null));
-    return Array.from(years).sort((a, b) => (b as number) - (a as number)).map(String);
-  }, [allScripts]);
+    const currentYear = new Date().getFullYear();
+    const years = [];
+    for (let y = currentYear; y >= 2022; y--) {
+      years.push(y.toString());
+    }
+    return years;
+  }, []);
 
   const toggleProgram = (progName: string) => {
     setFilters(prev => {
@@ -86,7 +87,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
     }
   };
 
-  const downloadReport = (filename: string, title: string, headers: string[], rows: (string | number)[][]) => {
+  const downloadReport = (filename: string, title: string, subTitle: string, headers: string[], rows: (string | number)[][]) => {
     const tableHeader = headers.map(h => 
       `<th style="border:1px solid #000; padding: 8px; background-color: #f3f4f6; text-align: left; font-size: 11px;">${h}</th>`
     ).join('');
@@ -101,8 +102,9 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
       <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
       <head><meta charset='utf-8'><title>${title}</title></head>
       <body style="font-family: Arial, sans-serif;">
-        <h2 style="text-align:center; color: #4338ca;">${title}</h2>
-        <p style="text-align:center; font-size: 10px; color: #666;">Generado el ${new Date().toLocaleDateString()}</p>
+        <h2 style="text-align:center; color: #4338ca; margin-bottom: 5px;">${title}</h2>
+        <h4 style="text-align:center; color: #666; margin-top: 0;">${subTitle}</h4>
+        <p style="text-align:center; font-size: 10px; color: #888;">Generado el ${new Date().toLocaleDateString()}</p>
         <br/>
         <table style="width:100%; border-collapse: collapse; border: 1px solid #000; table-layout: fixed;">
           <thead><tr>${tableHeader}</tr></thead>
@@ -126,11 +128,20 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
   const handleGenerate = () => {
     // Filtrar primero por programas seleccionados
     let selectedScripts = allScripts.filter(s => {
-       // Normalización básica para comparar nombres de programas
        return filters.programs.includes(s.genre) || filters.programs.some(p => s.genre.includes(p));
     });
+
+    const programsLabel = filters.programs.length === programs.length 
+        ? "Todos los Programas" 
+        : filters.programs.join(", ");
     
+    // Nombres normalizados para archivo
+    const safeProgramsName = filters.programs.length > 1 ? "Multiples_Programas" : filters.programs[0].replace(/\s+/g, '_');
+
     if (activeReport === 'month') {
+        // Filtrar por año seleccionado
+        selectedScripts = selectedScripts.filter(s => new Date(s.dateAdded).getFullYear().toString() === filters.year);
+
         const rows = selectedScripts.map(s => {
             const d = new Date(s.dateAdded);
             const monthName = d.toLocaleString('es-ES', { month: 'long' });
@@ -140,9 +151,16 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
                 s.genre,
                 s.title
             ];
-        }).sort((a, b) => String(a[2]).localeCompare(String(b[2]))); 
+        }).sort((a, b) => {
+            // Ordenar por Mes (usando orden cronológico simple si es posible, aquí es alfabético del mes que es subóptimo pero funcional para visualización, mejor sería por fecha)
+            return a[2].toString().localeCompare(b[2].toString()) || a[0].toString().localeCompare(b[0].toString());
+        }); 
         
-        downloadReport('Temas_Por_Mes', 'Informe de Temas por Mes', ['Mes', 'Año', 'Programa', 'Temática'], rows);
+        const fileName = `Temas_Por_Mes_${safeProgramsName}_${filters.year}`;
+        const title = `Informe de Temas por Mes - ${filters.year}`;
+        const subTitle = `Programas: ${programsLabel}`;
+
+        downloadReport(fileName, title, subTitle, ['Mes', 'Año', 'Programa', 'Temática'], rows);
     } 
     
     else if (activeReport === 'repeated') {
@@ -160,7 +178,9 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
             });
         });
         rows.sort((a, b) => a[2].localeCompare(b[2])); 
-        downloadReport(`Tematicas_Repetidas_${filters.year}`, `Temáticas Repetidas Año ${filters.year}`, ['Fecha', 'Programa', 'Temática'], rows);
+        
+        const fileName = `Repetidos_${safeProgramsName}_${filters.year}`;
+        downloadReport(fileName, `Temáticas Repetidas Año ${filters.year}`, `Programas: ${programsLabel}`, ['Fecha', 'Programa', 'Temática'], rows);
     }
 
     else if (activeReport === 'program') {
@@ -171,12 +191,14 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
         });
         
         // Lógica simple de semana
+        let weekLabel = "";
         if(filters.week) {
              filtered = filtered.filter(s => {
                  const d = new Date(s.dateAdded);
                  const weekNum = Math.ceil(d.getDate() / 7);
                  return weekNum.toString() === filters.week;
              });
+             weekLabel = `_Semana${filters.week}`;
         }
 
         const rows = filtered.map(s => [
@@ -185,23 +207,42 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
             s.title
         ]).sort((a, b) => a[0].localeCompare(b[0]));
 
-        downloadReport('Temas_Por_Programa_Detallado', `Informe Detallado (${filters.month}/${filters.year} - Sem ${filters.week})`, ['Programa', 'Fecha', 'Temática'], rows);
+        const monthName = new Date(parseInt(filters.year), parseInt(filters.month)-1).toLocaleString('es-ES', {month: 'long'});
+        const fileName = `Detallado_${safeProgramsName}_${filters.year}_${monthName}${weekLabel}`;
+        const subTitle = `Programas: ${programsLabel} | Periodo: ${monthName} ${filters.year} ${filters.week ? `- Semana ${filters.week}` : ''}`;
+
+        downloadReport(fileName, `Informe Detallado`, subTitle, ['Programa', 'Fecha', 'Temática'], rows);
     }
 
     else if (activeReport === 'year_ago') {
+        const today = new Date();
         const oneYearAgo = new Date();
-        oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-        const targetYear = oneYearAgo.getFullYear();
+        oneYearAgo.setFullYear(today.getFullYear() - 1);
+        
+        // Rango: -3 días y +3 días (Total 7 días)
+        const startRange = new Date(oneYearAgo);
+        startRange.setDate(oneYearAgo.getDate() - 3);
+        startRange.setHours(0, 0, 0, 0);
+
+        const endRange = new Date(oneYearAgo);
+        endRange.setDate(oneYearAgo.getDate() + 3);
+        endRange.setHours(23, 59, 59, 999);
 
         const rows = selectedScripts
-            .filter(s => new Date(s.dateAdded).getFullYear() === targetYear)
+            .filter(s => {
+                const sDate = new Date(s.dateAdded);
+                return sDate >= startRange && sDate <= endRange;
+            })
             .map(s => [
                 new Date(s.dateAdded).toLocaleDateString(),
                 s.genre,
                 s.title
-            ]).sort((a, b) => a[1].localeCompare(b[1]));
+            ]).sort((a, b) => new Date(a[0]).getTime() - new Date(b[0]).getTime());
 
-        downloadReport(`Temas_Ano_Atras_${targetYear}`, `Temas Año ${targetYear}`, ['Fecha', 'Programa', 'Tema'], rows);
+        const rangeStr = `${startRange.toLocaleDateString()} al ${endRange.toLocaleDateString()}`;
+        const fileName = `Historico_${safeProgramsName}_Hace_1_Ano`;
+        
+        downloadReport(fileName, `Temas hace un año (± 3 días)`, `Programas: ${programsLabel} | Rango: ${rangeStr}`, ['Fecha', 'Programa', 'Tema'], rows);
     }
   };
 
@@ -254,7 +295,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
             </div>
 
             {/* Filtros específicos */}
-            {(activeReport === 'repeated' || activeReport === 'program') && (
+            {(activeReport === 'repeated' || activeReport === 'program' || activeReport === 'month') && (
                <div className="space-y-2">
                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Año</label>
                  <select 
@@ -295,6 +336,14 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
               </div>
             )}
 
+            {activeReport === 'year_ago' && (
+                <div className="p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl border border-indigo-100 dark:border-indigo-800">
+                    <p className="text-sm text-indigo-700 dark:text-indigo-300 text-center">
+                        Este informe generará datos de hace exactamente un año (fecha actual), incluyendo un rango de <strong>3 días antes y 3 días después</strong>.
+                    </p>
+                </div>
+            )}
+
           </div>
 
           <div className="p-6 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/50 rounded-b-[2rem] flex gap-3">
@@ -331,7 +380,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
             <Calendar size={24} />
           </div>
           <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">Temas por Mes</h3>
-          <p className="text-sm text-slate-500 dark:text-slate-400">Resumen mensual de temáticas abordadas. Filtra por programas específicos.</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">Resumen mensual de temáticas abordadas. Filtra por año y programas.</p>
         </button>
 
         {/* Temáticas Repetidas */}
@@ -358,7 +407,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
             <BarChart3 size={24} />
           </div>
           <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">Temas un año atrás</h3>
-          <p className="text-sm text-slate-500 dark:text-slate-400">Consulta histórica de lo tratado exactamente hace un año.</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400">Consulta histórica del día en curso hace un año (+/- 3 días).</p>
         </button>
       </div>
 

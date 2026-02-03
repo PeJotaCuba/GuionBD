@@ -48,11 +48,16 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
     return saved ? JSON.parse(saved) : [];
   };
 
-  const filteredPrograms = useMemo(() => {
-    let allowed = PROGRAMS;
+  // Determinar los programas disponibles para el usuario actual (para Informes y Filtrado)
+  const availablePrograms = useMemo(() => {
     if (currentUser.role === 'Guionista' && currentUser.allowedPrograms) {
-      allowed = PROGRAMS.filter(p => currentUser.allowedPrograms?.includes(p.name));
+      return PROGRAMS.filter(p => currentUser.allowedPrograms?.includes(p.name));
     }
+    return PROGRAMS;
+  }, [currentUser]);
+
+  const filteredPrograms = useMemo(() => {
+    let allowed = availablePrograms;
 
     const q = searchQuery.toLowerCase().trim();
     if (!q) return allowed;
@@ -69,7 +74,7 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
         new Date(s.dateAdded).toLocaleDateString('es-ES').includes(q)
       );
     });
-  }, [searchQuery, currentUser]);
+  }, [searchQuery, availablePrograms]);
 
   const handleGlobalUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -199,7 +204,8 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
           <X size={20} /> Cerrar Informes
         </button>
         <div className="pt-10">
-           <StatsView programs={PROGRAMS} onClose={() => setShowStats(false)} />
+           {/* Se pasan solo los programas permitidos para el usuario */}
+           <StatsView programs={availablePrograms} onClose={() => setShowStats(false)} />
         </div>
       </div>
     );
@@ -207,12 +213,15 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
 
   return (
     <div className="space-y-8 animate-fade-in">
-      <div className="text-center max-w-2xl mx-auto space-y-4">
-        <h2 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">Programas de Radio</h2>
-        <p className="text-slate-500 dark:text-slate-400">Búsqueda avanzada por programa, fecha, tema o personal.</p>
+      <div className="text-center max-w-4xl mx-auto space-y-6">
+        <div className="space-y-2">
+          <h2 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">Programas de Radio</h2>
+          <p className="text-slate-500 dark:text-slate-400">Búsqueda avanzada por programa, fecha, tema o personal.</p>
+        </div>
         
-        <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
-          <div className="relative group flex-grow max-w-md w-full">
+        <div className="flex flex-col gap-6 items-center justify-center w-full">
+          {/* Fila del Buscador */}
+          <div className="relative group w-full max-w-xl">
             <Search size={20} className="absolute left-4 top-3.5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
             <input
               type="text"
@@ -223,18 +232,19 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
             />
           </div>
 
-          <div className="flex gap-2">
+          {/* Fila de Botones */}
+          <div className="flex flex-wrap gap-3 justify-center">
             <button
                onClick={handleRemoteUpdate}
                disabled={isProcessing}
-               className="flex items-center gap-2 p-3.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-slate-600 dark:text-slate-400 hover:text-indigo-600 hover:border-indigo-300 transition-all shadow-sm disabled:opacity-50"
+               className="flex items-center gap-2 px-5 py-3.5 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl text-slate-600 dark:text-slate-400 hover:text-indigo-600 hover:border-indigo-300 transition-all shadow-sm disabled:opacity-50"
                title="Actualizar datos desde servidor"
             >
                <RefreshCw size={18} className={isProcessing ? "animate-spin" : ""} />
                <span className="hidden sm:inline text-sm font-bold">Actualizar</span>
             </button>
 
-            {['Administrador', 'Director', 'Asesor'].includes(currentUser.role) && (
+            {['Administrador', 'Director', 'Asesor', 'Guionista'].includes(currentUser.role) && (
               <button
                 onClick={() => setShowStats(true)}
                 className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-5 py-3.5 rounded-2xl text-sm font-bold shadow-sm transition-all"
