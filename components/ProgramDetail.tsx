@@ -7,7 +7,7 @@ import { PROGRAMS } from './ProgramGrid';
 import { ScriptCarousel } from './ScriptCarousel';
 import { 
   Upload, Search, Radio, ChevronLeft, 
-  Trash2, FileText
+  Trash2, FileText, Plus
 } from 'lucide-react';
 
 interface ProgramDetailProps {
@@ -22,6 +22,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [editingScript, setEditingScript] = useState<Script | null>(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const isAdmin = userRole === 'Administrador';
 
@@ -95,9 +96,29 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
     });
   };
 
-  const handleUpdateScript = (updatedScript: Script) => {
-    // Actualizar estado local inmediatamente
-    setScripts(prev => prev.map(s => s.id === updatedScript.id ? updatedScript : s));
+  const handleSaveScript = (savedScript: Script) => {
+    setScripts(prev => {
+        const index = prev.findIndex(s => s.id === savedScript.id);
+        if (index >= 0) {
+            // Actualizar
+            const updated = [...prev];
+            updated[index] = savedScript;
+            return updated;
+        } else {
+            // Crear nuevo (al principio)
+            return [savedScript, ...prev];
+        }
+    });
+  };
+
+  const openNewScriptModal = () => {
+    setEditingScript(null);
+    setIsEditModalOpen(true);
+  };
+
+  const openEditScriptModal = (script: Script) => {
+    setEditingScript(script);
+    setIsEditModalOpen(true);
   };
 
   const clearData = () => {
@@ -110,7 +131,6 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
 
   return (
     <div className="space-y-8 animate-fade-in relative">
-      {/* Modales ubicados aquí para asegurar que estén por encima de todo el contenido */}
       <UploadModal 
         isOpen={isUploading} 
         onClose={() => setIsUploading(false)} 
@@ -119,10 +139,11 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
       />
 
       <EditScriptModal
-        isOpen={!!editingScript}
-        onClose={() => setEditingScript(null)}
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
         script={editingScript}
-        onSave={handleUpdateScript}
+        initialProgram={programName}
+        onSave={handleSaveScript}
       />
 
       {/* Header del Programa */}
@@ -146,6 +167,13 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
           {isAdmin && (
             <>
               <button 
+                onClick={openNewScriptModal} 
+                className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-emerald-500/20 transition-all"
+              >
+                <Plus size={18} /> <span>Nuevo Guion</span>
+              </button>
+
+              <button 
                 onClick={() => setIsUploading(true)} 
                 className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-indigo-500/20 transition-all"
               >
@@ -157,7 +185,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
                 className="flex-1 md:flex-none flex items-center justify-center gap-2 px-5 py-2.5 bg-slate-100 dark:bg-slate-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-xl text-sm font-bold transition-all" 
                 title="Limpiar todo"
               >
-                <Trash2 size={18} /> <span>Limpiar Datos</span>
+                <Trash2 size={18} />
               </button>
             </>
           )}
@@ -211,7 +239,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
                      setScripts(prev => prev.filter(s => s.id !== id))
                    }
                 }}
-                onEdit={(s) => setEditingScript(s)}
+                onEdit={openEditScriptModal}
               />
             ))}
           </div>
