@@ -31,6 +31,21 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
     week: '1'
   });
 
+  // Manejo de tecla Escape para cerrar (Uso de onClose para corregir error TS6133)
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        if (activeReport) {
+          setActiveReport(null);
+        } else if (onClose) {
+          onClose();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [onClose, activeReport]);
+
   // Cargar todos los scripts al montar
   useEffect(() => {
     let gathered: Script[] = [];
@@ -245,7 +260,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
                  <select 
                    value={filters.year} 
                    onChange={(e) => setFilters({...filters, year: e.target.value})}
-                   className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none"
+                   className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none text-slate-900 dark:text-white"
                  >
                    {availableYears.map(y => <option key={y} value={y}>{y}</option>)}
                  </select>
@@ -259,7 +274,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
                   <select 
                     value={filters.month}
                     onChange={(e) => setFilters({...filters, month: e.target.value})}
-                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none"
+                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none text-slate-900 dark:text-white"
                   >
                     {Array.from({length: 12}, (_, i) => i + 1).map(m => (
                       <option key={m} value={m}>{new Date(0, m-1).toLocaleString('es-ES', {month: 'long'})}</option>
@@ -271,7 +286,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
                   <select 
                     value={filters.week}
                     onChange={(e) => setFilters({...filters, week: e.target.value})}
-                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none"
+                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none text-slate-900 dark:text-white"
                   >
                     <option value="">Todas</option>
                     {[1,2,3,4,5].map(w => <option key={w} value={w}>Semana {w}</option>)}
