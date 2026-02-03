@@ -28,6 +28,10 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
   const [isBalanceOpen, setIsBalanceOpen] = useState(false);
   const [isPolishOpen, setIsPolishOpen] = useState(false);
   const [polishInitialTerm, setPolishInitialTerm] = useState('');
+  
+  // Estado para el botón flotante
+  const [selectionPos, setSelectionPos] = useState<{ x: number, y: number } | null>(null);
+  const [tempSelection, setTempSelection] = useState('');
 
   const isAdmin = userRole === 'Administrador';
 
@@ -51,6 +55,59 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
       localStorage.setItem(storageKey, JSON.stringify(scripts));
     }
   }, [scripts, storageKey]);
+
+  // Efecto para detectar selección de texto
+  useEffect(() => {
+    if (!isAdmin) return;
+
+    const handleSelection = () => {
+      const selection = window.getSelection();
+      
+      // Si no hay selección o es texto vacío
+      if (!selection || selection.isCollapsed || !selection.toString().trim()) {
+        setSelectionPos(null);
+        return;
+      }
+
+      const text = selection.toString().trim();
+      // Solo mostrar si se seleccionan más de 2 caracteres
+      if (text.length < 2) {
+        setSelectionPos(null);
+        return;
+      }
+
+      const range = selection.getRangeAt(0);
+      const rect = range.getBoundingClientRect();
+
+      // Calcular posición (centrado arriba de la selección)
+      if (rect.width > 0 && rect.height > 0) {
+        setTempSelection(text);
+        setSelectionPos({
+          x: rect.left + rect.width / 2,
+          y: rect.top
+        });
+      }
+    };
+
+    // Limpiar botón al hacer clic en otro lado (mousedown ocurre antes que mouseup)
+    const handleMouseDown = (e: MouseEvent) => {
+       // Si el clic no es en el botón flotante (lo manejamos via evento del boton)
+       const target = e.target as HTMLElement;
+       if (!target.closest('#floating-polish-btn')) {
+         setSelectionPos(null);
+       }
+    };
+
+    document.addEventListener('mouseup', handleSelection);
+    document.addEventListener('keyup', handleSelection); // Para selección con teclado
+    document.addEventListener('mousedown', handleMouseDown);
+
+    return () => {
+      document.removeEventListener('mouseup', handleSelection);
+      document.removeEventListener('keyup', handleSelection);
+      document.removeEventListener('mousedown', handleMouseDown);
+    };
+  }, [isAdmin]);
 
   // Filtro PRINCIPAL para la lista visual:
   const filteredScripts = useMemo(() => {
@@ -185,6 +242,15 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
     setIsPolishOpen(true);
   };
 
+  // Acción del botón flotante
+  const handleFloatingClick = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Evitar que el mousedown del document lo cierre inmediatamente
+    setPolishInitialTerm(tempSelection);
+    setIsPolishOpen(true);
+    setSelectionPos(null);
+    window.getSelection()?.removeAllRanges(); // Limpiar selección visual
+  };
+
   const openNewScriptModal = () => {
     setEditingScript(null);
     setIsEditModalOpen(true);
@@ -237,6 +303,31 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
           programName={programName}
           initialTerm={polishInitialTerm}
         />
+      )}
+
+      {/* Botón Flotante de Pulir */}
+      {selectionPos && (
+        <div 
+          id="floating-polish-btn"
+          style={{ 
+            position: 'fixed', 
+            top: selectionPos.y - 12, 
+            left: selectionPos.x,
+            transform: 'translate(-50%, -100%)',
+            zIndex: 9999 
+          }}
+          className="animate-fade-in"
+        >
+           <button 
+             onClick={handleFloatingClick}
+             className="bg-slate-900 text-white px-3 py-1.5 rounded-lg shadow-xl shadow-indigo-500/20 flex items-center gap-2 text-xs font-bold hover:bg-indigo-600 transition-all active:scale-95 border border-slate-700"
+           >
+              <Sparkles size={12} className="text-yellow-400" />
+              Pulir
+           </button>
+           {/* Triangulito abajo */}
+           <div className="w-2 h-2 bg-slate-900 rotate-45 absolute bottom-[-4px] left-1/2 -translate-x-1/2 -z-10 border-b border-r border-slate-700"></div>
+        </div>
       )}
 
       <div className="space-y-8 animate-fade-in relative">
