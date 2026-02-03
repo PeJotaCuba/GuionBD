@@ -168,22 +168,12 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
   const handleDownloadDatabase = () => {
     const allData: any[] = [];
     
-    // Calcular la fecha límite (hace 7 días)
-    const cutoffDate = new Date();
-    cutoffDate.setDate(cutoffDate.getDate() - 7);
-    const cutoffTime = cutoffDate.getTime();
-
+    // Iterar sobre todos los programas y recolectar todos los scripts
+    // Sin filtrar por fecha (exportación completa)
     PROGRAMS.forEach(prog => {
        const key = `guionbd_data_${prog.file}`;
        const data: Script[] = JSON.parse(localStorage.getItem(key) || '[]');
-       
-       // Filtrar solo los guiones de los últimos 7 días
-       const recentScripts = data.filter(script => {
-         const d = new Date(script.dateAdded);
-         return !isNaN(d.getTime()) && d.getTime() >= cutoffTime;
-       });
-
-       allData.push(...recentScripts);
+       allData.push(...data);
     });
 
     const blob = new Blob([JSON.stringify(allData, null, 2)], { type: "application/json" });
@@ -260,7 +250,7 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
                 <button
                   onClick={handleDownloadDatabase}
                   className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-5 py-3.5 rounded-2xl text-sm font-bold shadow-sm transition-all"
-                  title="Descargar base de datos (últimos 7 días)"
+                  title="Descargar base de datos completa"
                 >
                   <Database size={18} />
                   <span className="hidden sm:inline">BD Global</span>
