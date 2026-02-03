@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { X, Calendar, Search, AlertCircle, CheckCircle, FileDown, Filter, ArrowRight } from 'lucide-react';
+import { X, Calendar, Search, CheckCircle, FileDown, Filter, ArrowRight } from 'lucide-react';
 import { Script } from '../types';
 
 interface BalanceModalProps {
