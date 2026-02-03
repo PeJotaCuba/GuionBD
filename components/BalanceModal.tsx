@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { X, Calendar, Search, AlertCircle, CheckCircle } from 'lucide-react';
+import { X, Calendar, Search, AlertCircle, CheckCircle, FileDown } from 'lucide-react';
 import { Script } from '../types';
 
 interface BalanceModalProps {
@@ -29,6 +29,68 @@ export const BalanceModal: React.FC<BalanceModalProps> = ({ isOpen, onClose, scr
     }).sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime());
   }, [scripts, searchDate]);
 
+  const handleExportDocx = () => {
+    const rows = filteredData.map(script => {
+      const missingFields = [];
+      if (!script.writer || script.writer.includes("NO ESPECIFICADO")) missingFields.push("Escritor");
+      if (!script.advisor || script.advisor.includes("NO ESPECIFICADO")) missingFields.push("Asesor");
+      if (!script.title || script.title === "Sin Título" || script.title.includes("NO ESPECIFICADO")) missingFields.push("Tema");
+
+      const formattedDate = new Date(script.dateAdded).toLocaleDateString('es-ES', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+      
+      const statusText = missingFields.length > 0 ? `Incompleto (Falta: ${missingFields.join(', ')})` : 'Correcto';
+      const statusColor = missingFields.length > 0 ? '#f59e0b' : '#10b981'; // Amber vs Emerald
+
+      return `
+        <tr>
+          <td style="border:1px solid #ddd; padding:8px;">${formattedDate}</td>
+          <td style="border:1px solid #ddd; padding:8px;">${script.title}</td>
+          <td style="border:1px solid #ddd; padding:8px;">${script.writer || '-'}</td>
+          <td style="border:1px solid #ddd; padding:8px;">${script.advisor || '-'}</td>
+          <td style="border:1px solid #ddd; padding:8px; color:${statusColor}; font-weight:bold;">${statusText}</td>
+        </tr>
+      `;
+    }).join('');
+
+    const html = `
+      <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+      <head><meta charset='utf-8'><title>Balance de Programas</title></head>
+      <body style="font-family: Arial, sans-serif;">
+        <h2 style="text-align:center; color: #4f46e5;">Balance de Guiones - ${programName}</h2>
+        <p style="text-align:center; color: #666;">Generado el ${new Date().toLocaleDateString()}</p>
+        <br/>
+        <table style="width:100%; border-collapse: collapse; border: 1px solid #000;">
+          <thead>
+            <tr style="background-color: #f3f4f6;">
+              <th style="border:1px solid #000; padding:8px; text-align:left;">Fecha</th>
+              <th style="border:1px solid #000; padding:8px; text-align:left;">Tema</th>
+              <th style="border:1px solid #000; padding:8px; text-align:left;">Escritor</th>
+              <th style="border:1px solid #000; padding:8px; text-align:left;">Asesor</th>
+              <th style="border:1px solid #000; padding:8px; text-align:left;">Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows}
+          </tbody>
+        </table>
+      </body>
+      </html>
+    `;
+
+    const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `Balance_${programName.replace(/\s+/g, '_')}_${new Date().getFullYear()}.doc`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm animate-fade-in w-screen h-screen">
       <div className="bg-white dark:bg-slate-900 rounded-[2rem] w-full max-w-4xl shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col max-h-[85vh] relative">
@@ -47,9 +109,9 @@ export const BalanceModal: React.FC<BalanceModalProps> = ({ isOpen, onClose, scr
           </button>
         </div>
 
-        {/* Search Bar */}
-        <div className="px-8 py-4 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800">
-          <div className="relative group">
+        {/* Search Bar & Actions */}
+        <div className="px-8 py-4 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 flex gap-4">
+          <div className="relative group flex-grow">
             <Search size={18} className="absolute left-4 top-3.5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
             <input
               type="text"
@@ -59,6 +121,13 @@ export const BalanceModal: React.FC<BalanceModalProps> = ({ isOpen, onClose, scr
               className="w-full pl-11 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all text-sm font-medium"
             />
           </div>
+          <button 
+            onClick={handleExportDocx}
+            className="flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-sm font-bold shadow-lg shadow-indigo-500/20 transition-all whitespace-nowrap"
+          >
+            <FileDown size={18} />
+            Exportar .doc
+          </button>
         </div>
 
         {/* Table/List */}
@@ -75,9 +144,10 @@ export const BalanceModal: React.FC<BalanceModalProps> = ({ isOpen, onClose, scr
             <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
               {filteredData.map(script => {
                 const missingFields = [];
-                if (!script.writer) missingFields.push("Escritor");
-                if (!script.advisor) missingFields.push("Asesor");
-                if (!script.title || script.title === "Sin Título") missingFields.push("Tema");
+                // Check for generic placeholders or empty strings
+                if (!script.writer || script.writer.toUpperCase().includes("NO ESPECIFICADO")) missingFields.push("Escritor");
+                if (!script.advisor || script.advisor.toUpperCase().includes("NO ESPECIFICADO")) missingFields.push("Asesor");
+                if (!script.title || script.title === "Sin Título" || script.title.toUpperCase().includes("NO ESPECIFICADO")) missingFields.push("Tema");
 
                 const formattedDate = new Date(script.dateAdded).toLocaleDateString('es-ES', {
                   day: 'numeric',

@@ -49,8 +49,26 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
     }
   }, [scripts, storageKey]);
 
+  // Filtro PRINCIPAL para la lista visual:
+  // 1. Aplica búsqueda y año.
+  // 2. EXCLUYE los guiones que tengan datos "No especificados" o vacíos.
   const filteredScripts = useMemo(() => {
     let result = scripts;
+
+    // Filtro estricto: Eliminar de la VISTA aquellos con datos faltantes o marcados como no especificados
+    result = result.filter(s => {
+      const w = (s.writer || "").toUpperCase();
+      const a = (s.advisor || "").toUpperCase();
+      const t = (s.title || "").toUpperCase();
+      
+      const isUnspecified = 
+        w.includes("NO ESPECIFICADO") || w.includes("PECIFICADO") || !w ||
+        a.includes("NO ESPECIFICADO") || a.includes("PECIFICADO") || !a ||
+        t.includes("NO ESPECIFICADO");
+        
+      return !isUnspecified;
+    });
+
     if (selectedYear) {
       result = result.filter(s => new Date(s.dateAdded).getFullYear().toString() === selectedYear);
     }
@@ -84,7 +102,11 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
 
     return scripts.filter(s => {
       const scriptDate = new Date(s.dateAdded);
-      return scriptDate >= startRange && scriptDate <= endRange;
+      // Aplicar también el filtro de validez al carrusel
+      const w = (s.writer || "").toUpperCase();
+      const isValid = !w.includes("NO ESPECIFICADO") && !w.includes("PECIFICADO");
+      
+      return isValid && scriptDate >= startRange && scriptDate <= endRange;
     }).sort((a, b) => new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime());
   }, [scripts]);
 
@@ -151,7 +173,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
       <BalanceModal
         isOpen={isBalanceOpen}
         onClose={() => setIsBalanceOpen(false)}
-        scripts={scripts}
+        scripts={scripts} // Pasamos TODOS los scripts al balance (incluidos los incompletos)
         programName={programName}
       />
 
@@ -168,17 +190,18 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
             <div>
               <h2 className="text-3xl font-black text-slate-900 dark:text-white uppercase leading-tight">{programName}</h2>
               <p className="text-slate-500 dark:text-slate-400 font-medium">
-                {scripts.length} registros almacenados
+                {filteredScripts.length} registros visibles
               </p>
             </div>
           </div>
 
           <div className="flex flex-wrap gap-2 w-full md:w-auto">
+            {/* Botón Balance movido aquí arriba a la derecha */}
             <button 
               onClick={() => setIsBalanceOpen(true)}
-              className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm"
+              className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm border border-slate-200 dark:border-slate-700"
             >
-              <ClipboardList size={18} /> <span>Balance</span>
+              <ClipboardList size={18} className="text-indigo-500" /> <span>Balance</span>
             </button>
 
             {isAdmin && (
@@ -194,7 +217,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
                   onClick={() => setIsUploading(true)} 
                   className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-indigo-500/20 transition-all"
                 >
-                  <Upload size={18} /> <span>Cargar Información</span>
+                  <Upload size={18} /> <span>Cargar</span>
                 </button>
 
                 <button 

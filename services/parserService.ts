@@ -71,20 +71,6 @@ export const parseRawEntry = (entry: string, defaultStatus: ScriptStatus): Scrip
   // Limpieza final de valores
   if (!tema) tema = "Sin Título";
   
-  // ---------------------------------------------------------
-  // FILTRADO ESTRICTO: No cargar si Escritor o Asesor son "NO ESPECIFICADO"
-  // ---------------------------------------------------------
-  if (
-    !escritor || 
-    !asesor ||
-    escritor.toUpperCase().includes("NO ESPECIFICADO") || 
-    asesor.toUpperCase().includes("NO ESPECIFICADO") ||
-    escritor.toUpperCase().includes("PECIFICADO") || // Captura variaciones
-    asesor.toUpperCase().includes("PECIFICADO")
-  ) {
-    return null;
-  }
-
   // Procesamiento de Fecha
   let dateAdded = new Date().toISOString();
   if (fechaRaw) {
