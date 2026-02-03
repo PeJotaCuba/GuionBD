@@ -5,7 +5,7 @@ const MONTHS: Record<string, number> = {
   JULIO: 6, AGOSTO: 7, SEPTIEMBRE: 8, OCTUBRE: 9, NOVIEMBRE: 10, DICIEMBRE: 11
 };
 
-// Función auxiliar para limpiar texto
+// Función auxiliar para limpiar texto básico
 const cleanText = (text: string) => text ? text.trim().replace(/^[:\.\-]\s*/, '').trim() : "";
 
 export const parseRawEntry = (entry: string, defaultStatus: ScriptStatus): Script | null => {
@@ -20,8 +20,6 @@ export const parseRawEntry = (entry: string, defaultStatus: ScriptStatus): Scrip
   let tema = "";
   let contentBuffer = "";
 
-  // Estrategia: Buscar línea por línea las palabras clave
-  // Si no encuentra clave, asume que es continuación del campo anterior (para Temas largos)
   let currentField = ""; 
 
   lines.forEach(line => {
@@ -37,13 +35,32 @@ export const parseRawEntry = (entry: string, defaultStatus: ScriptStatus): Scrip
       escritor = cleanText(line.substring(line.indexOf(":") + 1));
       currentField = "escritor";
     } else if (upperLine.startsWith("ASESOR") || upperLine.startsWith("ASESORA")) {
-      asesor = cleanText(line.substring(line.indexOf(":") + 1));
+      // Lógica específica para extraer nombre del Asesor en textos largos
+      let rawAsesor = line.substring(line.indexOf(":") + 1).trim();
+      
+      // Quitar prefijo "es " si existe (ej: "Asesor: es Yanet...")
+      if (rawAsesor.toLowerCase().startsWith("es ")) {
+        rawAsesor = rawAsesor.substring(3).trim();
+      }
+
+      // Cortar en la primera coma, punto o palabra clave que indique otro cargo
+      const separators = [',', '.', ' la realización', ' el realizador'];
+      let cutIndex = rawAsesor.length;
+      
+      separators.forEach(sep => {
+        const idx = rawAsesor.toLowerCase().indexOf(sep.toLowerCase());
+        if (idx !== -1 && idx < cutIndex) {
+          cutIndex = idx;
+        }
+      });
+
+      asesor = cleanText(rawAsesor.substring(0, cutIndex));
       currentField = "asesor";
     } else if (upperLine.startsWith("TEMA")) {
       tema = cleanText(line.substring(line.indexOf(":") + 1));
       currentField = "tema";
     } else {
-      // Línea sin etiqueta, agregar al campo actual (útil para temas de varias líneas)
+      // Línea sin etiqueta, agregar al campo actual
       if (currentField === "tema") {
         tema += " " + line;
       }
@@ -54,6 +71,20 @@ export const parseRawEntry = (entry: string, defaultStatus: ScriptStatus): Scrip
   // Limpieza final de valores
   if (!tema) tema = "Sin Título";
   
+  // ---------------------------------------------------------
+  // FILTRADO ESTRICTO: No cargar si Escritor o Asesor son "NO ESPECIFICADO"
+  // ---------------------------------------------------------
+  if (
+    !escritor || 
+    !asesor ||
+    escritor.toUpperCase().includes("NO ESPECIFICADO") || 
+    asesor.toUpperCase().includes("NO ESPECIFICADO") ||
+    escritor.toUpperCase().includes("PECIFICADO") || // Captura variaciones
+    asesor.toUpperCase().includes("PECIFICADO")
+  ) {
+    return null;
+  }
+
   // Procesamiento de Fecha
   let dateAdded = new Date().toISOString();
   if (fechaRaw) {
@@ -89,14 +120,14 @@ export const parseRawEntry = (entry: string, defaultStatus: ScriptStatus): Scrip
   // Tags
   const themes = tema
     .split(/[\s,.:;]+/)
-    .filter(w => w.length > 3 && !['PARA', 'SOBRE', 'COMO', 'CUANDO', 'DONDE', 'ESTE', 'ESTA', 'LOS', 'LAS'].includes(w.toUpperCase()))
+    .filter(w => w.length > 3 && !['PARA', 'SOBRE', 'COMO', 'CUANDO', 'DONDE', 'ESTE', 'ESTA', 'LOS', 'LAS', 'DEL', 'POR'].includes(w.toUpperCase()))
     .slice(0, 5);
 
   return {
     id: crypto.randomUUID(),
     title: tema,
     genre: programa || "OTRO",
-    summary: `Escritor: ${escritor || 'N/A'} | Asesor: ${asesor || 'N/A'}`,
+    summary: `Escritor: ${escritor} | Asesor: ${asesor}`,
     writer: escritor,
     advisor: asesor,
     content: contentBuffer,

@@ -3,11 +3,12 @@ import { Script, UserRole } from '../types';
 import { ScriptCard } from './ScriptCard';
 import { UploadModal } from './UploadModal';
 import { EditScriptModal } from './EditScriptModal';
+import { BalanceModal } from './BalanceModal';
 import { PROGRAMS } from './ProgramGrid';
 import { ScriptCarousel } from './ScriptCarousel';
 import { 
   Upload, Search, Radio, ChevronLeft, 
-  Trash2, FileText, Plus
+  Trash2, FileText, Plus, ClipboardList
 } from 'lucide-react';
 
 interface ProgramDetailProps {
@@ -23,6 +24,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
   const [isUploading, setIsUploading] = useState(false);
   const [editingScript, setEditingScript] = useState<Script | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isBalanceOpen, setIsBalanceOpen] = useState(false);
 
   const isAdmin = userRole === 'Administrador';
 
@@ -131,10 +133,6 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
 
   return (
     <>
-      {/* 
-        MODALES FUERA DEL CONTENEDOR ANIMADO
-        Esto asegura que position: fixed sea relativo al viewport y no al contenedor transformado.
-      */}
       <UploadModal 
         isOpen={isUploading} 
         onClose={() => setIsUploading(false)} 
@@ -148,6 +146,13 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
         script={editingScript}
         initialProgram={programName}
         onSave={handleSaveScript}
+      />
+
+      <BalanceModal
+        isOpen={isBalanceOpen}
+        onClose={() => setIsBalanceOpen(false)}
+        scripts={scripts}
+        programName={programName}
       />
 
       <div className="space-y-8 animate-fade-in relative">
@@ -169,6 +174,13 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
           </div>
 
           <div className="flex flex-wrap gap-2 w-full md:w-auto">
+            <button 
+              onClick={() => setIsBalanceOpen(true)}
+              className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm"
+            >
+              <ClipboardList size={18} /> <span>Balance</span>
+            </button>
+
             {isAdmin && (
               <>
                 <button 
