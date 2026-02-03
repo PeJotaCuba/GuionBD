@@ -1,8 +1,9 @@
 import React, { useState, useMemo, useRef } from 'react';
-import { Search, Radio, Music, BookOpen, Users, Leaf, Newspaper, Home, Activity, Palette, Upload, Loader2, RefreshCw, Database, FileText, X } from 'lucide-react';
+import { Search, Radio, Music, BookOpen, Users, Leaf, Newspaper, Home, Activity, Palette, Upload, RefreshCw, Database, FileText, X } from 'lucide-react';
 import { User, Script } from '../types';
-import { parseScriptsFromText } from '../services/parserService';
+import { parseRawEntry } from '../services/parserService';
 import { StatsView } from './StatsView';
+import { LoadingOverlay } from './LoadingOverlay';
 
 export const PROGRAMS = [
   { name: "BUENOS DÍAS BAYAMO", file: "bdias.json", color: "bg-amber-500", icon: <Activity size={32} /> },
@@ -29,8 +30,10 @@ interface ProgramGridProps {
 
 export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, currentUser }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [isProcessing, setIsProcessing] = useState(false);
   const [showStats, setShowStats] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [processMessage, setProcessMessage] = useState("");
   const globalUploadRef = useRef<HTMLInputElement>(null);
 
   // Normalización mejorada: reemplaza puntuación por espacios y colapsa espacios
@@ -81,16 +84,45 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
     if (!file) return;
 
     setIsProcessing(true);
+    setProcessMessage("Leyendo archivo...");
+    setLoadingProgress(0);
+
     try {
       const text = await file.text();
-      const allParsedScripts = parseScriptsFromText(text, 'active');
+      // Dividir por separador
+      const rawEntries = text.split(/_{4,}/);
+      const total = rawEntries.length;
+      const parsedScripts: Script[] = [];
+
+      setProcessMessage("Analizando guiones...");
       
-      if (allParsedScripts.length === 0) {
-        alert("No se encontraron registros válidos. Verifica que el archivo use >>> como separador.");
+      // Procesar en chunks para actualizar la UI
+      const chunkSize = 20;
+      for (let i = 0; i < total; i += chunkSize) {
+        const chunk = rawEntries.slice(i, i + chunkSize);
+        chunk.forEach(raw => {
+          const script = parseRawEntry(raw, 'active');
+          if (script) parsedScripts.push(script);
+        });
+        
+        // Actualizar progreso
+        setLoadingProgress(Math.round(((i + chunkSize) / total) * 100));
+        // Permitir que el navegador renderice
+        await new Promise(resolve => setTimeout(resolve, 0));
+      }
+
+      if (parsedScripts.length === 0) {
+        alert("No se encontraron registros válidos. Verifica que el archivo use '____' como separador.");
         return;
       }
 
-      distributeScripts(allParsedScripts);
+      setProcessMessage("Guardando en base de datos...");
+      distributeScripts(parsedScripts);
+      
+      setProcessMessage("¡Completado!");
+      setLoadingProgress(100);
+      await new Promise(resolve => setTimeout(resolve, 500)); // Breve pausa para ver el 100%
+      
       alert("Carga global completada. Se han incorporado los nuevos guiones.");
       window.location.reload();
     } catch (error) {
@@ -103,6 +135,7 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
 
   const handleRemoteUpdate = async () => {
     setIsProcessing(true);
+    setProcessMessage("Descargando datos...");
     try {
       const response = await fetch('https://raw.githubusercontent.com/PeJotaCuba/GuionBD/refs/heads/main/global.json');
       if (!response.ok) throw new Error('Error al descargar la base de datos global');
@@ -110,6 +143,7 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
       const allScripts: Script[] = await response.json();
       if (!Array.isArray(allScripts)) throw new Error('Formato inválido de JSON');
 
+      setProcessMessage("Actualizando registros...");
       distributeScripts(allScripts);
       alert("Base de datos actualizada correctamente desde el servidor.");
       window.location.reload();
@@ -130,12 +164,10 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
         // Búsqueda de coincidencia flexible
         const matchedProg = PROGRAMS.find(p => {
           const pNorm = normalize(p.name);
-          // Coincidencia exacta, contenida o por siglas
           if (pNorm === scriptProgNorm) return true;
           if (scriptProgNorm.length > 3 && pNorm.includes(scriptProgNorm)) return true;
           if (pNorm.length > 3 && scriptProgNorm.includes(pNorm)) return true;
           
-          // Soporte para siglas comunes (BDB, TC, PJ, etc.)
           const initials = pNorm.split(' ').map(w => w[0]).join('');
           if (scriptProgNorm === initials) return true;
           
@@ -145,21 +177,18 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
         if (matchedProg) {
           const progFile = matchedProg.file;
           if (!groupedByProgram[progFile]) groupedByProgram[progFile] = [];
-          // Normalizar nombre de programa en el script
           script.genre = matchedProg.name;
           groupedByProgram[progFile].push(script);
         }
       });
 
-      // Guardar en localStorage
       Object.entries(groupedByProgram).forEach(([file, newScripts]) => {
         const key = `guionbd_data_${file}`;
         const existing = JSON.parse(localStorage.getItem(key) || '[]');
         
-        // FUSIÓN: Priorizamos lo existente (para no sobrescribir ediciones) e incorporamos lo nuevo.
-        // Ponemos 'existing' primero. El filtro 'unique' conservará la primera ocurrencia encontrada.
         const merged = [...existing, ...newScripts];
         
+        // Filtrar duplicados
         const unique = merged.filter((v, i, a) => 
           a.findIndex(t => (t.id === v.id) || (t.title === v.title && t.dateAdded === v.dateAdded)) === i
         );
@@ -170,9 +199,6 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
 
   const handleDownloadDatabase = () => {
     const allData: any[] = [];
-    
-    // Iterar sobre todos los programas y recolectar TODOS los scripts
-    // Sin filtrar por fecha (exportación completa)
     PROGRAMS.forEach(prog => {
        const key = `guionbd_data_${prog.file}`;
        const data: Script[] = JSON.parse(localStorage.getItem(key) || '[]');
@@ -197,7 +223,6 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
           <X size={20} /> Cerrar Informes
         </button>
         <div className="pt-10">
-           {/* Se pasan solo los programas permitidos para el usuario */}
            <StatsView programs={availablePrograms} onClose={() => setShowStats(false)} />
         </div>
       </div>
@@ -206,6 +231,8 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
 
   return (
     <div className="space-y-8 animate-fade-in">
+      <LoadingOverlay isVisible={isProcessing} progress={loadingProgress} message={processMessage} />
+
       <div className="text-center max-w-4xl mx-auto space-y-6">
         <div className="space-y-2">
           <h2 className="text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">Programas de Radio</h2>
@@ -265,7 +292,7 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
                     disabled={isProcessing}
                     className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3.5 rounded-2xl text-sm font-bold shadow-lg shadow-indigo-500/20 transition-all disabled:opacity-50 h-full"
                   >
-                    {isProcessing ? <Loader2 size={18} className="animate-spin" /> : <Upload size={18} />}
+                    <Upload size={18} />
                     <span className="hidden sm:inline">Carga Global</span>
                   </button>
                   <input type="file" ref={globalUploadRef} className="hidden" accept=".txt" onChange={handleGlobalUpload} />
