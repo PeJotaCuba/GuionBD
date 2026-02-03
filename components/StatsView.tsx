@@ -93,10 +93,18 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
     return `${d.getDate()}/${d.getMonth() + 1}`;
   };
 
-  const downloadReport = (filename: string, title: string, subTitle: string, headers: string[], rows: (string | number)[][]) => {
-    const tableHeader = headers.map(h => 
-      `<th style="border:1px solid #000; padding: 8px; background-color: #f3f4f6; text-align: left; font-size: 11px;">${h}</th>`
-    ).join('');
+  const downloadReport = (
+    filename: string, 
+    title: string, 
+    subTitle: string, 
+    headers: string[], 
+    rows: (string | number)[][],
+    columnWidths?: string[] // Nuevo parámetro opcional para anchos de columna
+  ) => {
+    const tableHeader = headers.map((h, index) => {
+      const widthStyle = columnWidths && columnWidths[index] ? `width: ${columnWidths[index]};` : '';
+      return `<th style="border:1px solid #000; padding: 8px; background-color: #f3f4f6; text-align: left; font-size: 11px; ${widthStyle}">${h}</th>`;
+    }).join('');
     
     const tableBody = rows.map(row => 
       `<tr>${row.map(cell => 
@@ -192,17 +200,33 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
         rows.sort((a, b) => a[3].localeCompare(b[3])); 
         
         const fileName = `Repetidos_${safeProgramsName}_${filters.year}`;
-        downloadReport(fileName, `Temáticas Repetidas Año ${filters.year}`, `Programas: ${programsLabel}`, ['Fecha', 'Programa', 'Autor', 'Temática'], rows);
+        // Pasamos anchos específicos: Fecha (12%), Programa (18%), Autor (20%), Temática (50%)
+        downloadReport(
+          fileName, 
+          `Temáticas Repetidas Año ${filters.year}`, 
+          `Programas: ${programsLabel}`, 
+          ['Fecha', 'Programa', 'Autor', 'Temática'], 
+          rows,
+          ['12%', '18%', '20%', '50%'] 
+        );
     }
 
     else if (activeReport === 'program') {
-        // Filtrar por año y mes seleccionados
+        // Filtrar por año 
         let filtered = selectedScripts.filter(s => {
             const d = new Date(s.dateAdded);
-            return d.getFullYear().toString() === filters.year && (d.getMonth() + 1).toString() === filters.month;
+            return d.getFullYear().toString() === filters.year;
         });
+
+        // Filtrar por mes (si no es "Todos")
+        if (filters.month !== "") {
+          filtered = filtered.filter(s => {
+             const d = new Date(s.dateAdded);
+             return (d.getMonth() + 1).toString() === filters.month;
+          });
+        }
         
-        // Lógica simple de semana
+        // Lógica de semana (si no es "Todas")
         let weekLabel = "";
         if(filters.week) {
              filtered = filtered.filter(s => {
@@ -220,9 +244,16 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
             s.title
         ]).sort((a, b) => a[0].localeCompare(b[0]));
 
-        const monthName = new Date(parseInt(filters.year), parseInt(filters.month)-1).toLocaleString('es-ES', {month: 'long'});
-        const fileName = `Detallado_${safeProgramsName}_${filters.year}_${monthName}${weekLabel}`;
-        const subTitle = `Programas: ${programsLabel} | Periodo: ${monthName} ${filters.year} ${filters.week ? `- Semana ${filters.week}` : ''}`;
+        let periodName = filters.year;
+        if (filters.month !== "") {
+           const monthName = new Date(parseInt(filters.year), parseInt(filters.month)-1).toLocaleString('es-ES', {month: 'long'});
+           periodName = `${monthName} ${filters.year}`;
+        } else {
+           periodName = `Todo el año ${filters.year}`;
+        }
+
+        const fileName = `Detallado_${safeProgramsName}_${periodName.replace(/\s+/g, '_')}${weekLabel}`;
+        const subTitle = `Programas: ${programsLabel} | Periodo: ${periodName} ${filters.week ? `- Semana ${filters.week}` : ''}`;
 
         downloadReport(fileName, `Informe Detallado`, subTitle, ['Programa', 'Fecha', 'Autor', 'Temática'], rows);
     }
@@ -330,6 +361,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
                     onChange={(e) => setFilters({...filters, month: e.target.value})}
                     className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none text-slate-900 dark:text-white"
                   >
+                    <option value="">Todos</option>
                     {Array.from({length: 12}, (_, i) => i + 1).map(m => (
                       <option key={m} value={m}>{new Date(0, m-1).toLocaleString('es-ES', {month: 'long'})}</option>
                     ))}
