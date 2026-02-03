@@ -27,6 +27,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isBalanceOpen, setIsBalanceOpen] = useState(false);
   const [isPolishOpen, setIsPolishOpen] = useState(false);
+  const [polishInitialTerm, setPolishInitialTerm] = useState('');
 
   const isAdmin = userRole === 'Administrador';
 
@@ -174,6 +175,16 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
     alert(`Proceso de pulido completado. Se han actualizado los registros que contenían "${term}".`);
   };
 
+  const openPolishModal = () => {
+    const selection = window.getSelection()?.toString();
+    if (selection && selection.trim().length > 0) {
+      setPolishInitialTerm(selection.trim());
+    } else {
+      setPolishInitialTerm('');
+    }
+    setIsPolishOpen(true);
+  };
+
   const openNewScriptModal = () => {
     setEditingScript(null);
     setIsEditModalOpen(true);
@@ -224,6 +235,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
           onClose={() => setIsPolishOpen(false)}
           onApply={handlePolish}
           programName={programName}
+          initialTerm={polishInitialTerm}
         />
       )}
 
@@ -270,7 +282,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
                 </button>
 
                 <button 
-                  onClick={() => setIsPolishOpen(true)}
+                  onClick={openPolishModal}
                   className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-violet-500/20 transition-all"
                   title="Pulir base de datos (Reemplazar texto)"
                 >

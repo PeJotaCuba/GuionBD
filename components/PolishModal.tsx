@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Sparkles, Eraser, RefreshCw } from 'lucide-react';
 
 interface PolishModalProps {
@@ -6,11 +6,20 @@ interface PolishModalProps {
   onClose: () => void;
   onApply: (term: string, replacement: string) => void;
   programName: string;
+  initialTerm?: string;
 }
 
-export const PolishModal: React.FC<PolishModalProps> = ({ isOpen, onClose, onApply, programName }) => {
-  const [term, setTerm] = useState('');
+export const PolishModal: React.FC<PolishModalProps> = ({ isOpen, onClose, onApply, programName, initialTerm = '' }) => {
+  const [term, setTerm] = useState(initialTerm);
   const [replacement, setReplacement] = useState('');
+
+  // Actualizar el término cuando se abre el modal
+  useEffect(() => {
+    if (isOpen) {
+      setTerm(initialTerm);
+      setReplacement('');
+    }
+  }, [isOpen, initialTerm]);
 
   if (!isOpen) return null;
 
@@ -62,7 +71,7 @@ export const PolishModal: React.FC<PolishModalProps> = ({ isOpen, onClose, onApp
                     onChange={(e) => setTerm(e.target.value)}
                     placeholder="Ej: Errores comunes..."
                     className="w-full pl-4 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-slate-900 dark:text-white outline-none focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all font-medium"
-                    autoFocus
+                    autoFocus={!initialTerm} // Solo autofoco si no hay término inicial
                   />
                 </div>
              </div>
@@ -84,6 +93,7 @@ export const PolishModal: React.FC<PolishModalProps> = ({ isOpen, onClose, onApp
                   onChange={(e) => setReplacement(e.target.value)}
                   placeholder="Nueva palabra o frase..."
                   className="w-full px-4 py-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl text-slate-900 dark:text-white outline-none focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 transition-all font-medium"
+                  autoFocus={!!initialTerm} // Autofoco aquí si ya hay término inicial
                 />
              </div>
           </div>
