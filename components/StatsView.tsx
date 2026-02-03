@@ -180,22 +180,26 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
     
     else if (activeReport === 'repeated') {
         const yearScripts = selectedScripts.filter(s => new Date(s.dateAdded).getFullYear().toString() === filters.year);
+        // Contamos frecuencia de temáticas (tags)
         const themeCounts: Record<string, number> = {};
         yearScripts.forEach(s => s.themes.forEach(t => themeCounts[t] = (themeCounts[t] || 0) + 1));
+        // Filtramos las que se repiten
         const repeated = Object.keys(themeCounts).filter(t => themeCounts[t] > 1);
         
         const rows: string[][] = [];
+        
         yearScripts.forEach(s => {
-            s.themes.forEach(t => {
-                if (repeated.includes(t)) {
-                    rows.push([
-                        getMonthDay(s.dateAdded), // Día/Mes
-                        s.genre, 
-                        s.writer || 'No especificado', // Autor
-                        t
-                    ]);
-                }
-            });
+            // Verificamos si el guion tiene ALGUNA temática repetida
+            const hasRepeatedTheme = s.themes.some(t => repeated.includes(t));
+            
+            if (hasRepeatedTheme) {
+                rows.push([
+                    getMonthDay(s.dateAdded), // Día/Mes
+                    s.genre, 
+                    s.writer || 'No especificado', // Autor
+                    s.title // Nombre completo de la temática
+                ]);
+            }
         });
         rows.sort((a, b) => a[3].localeCompare(b[3])); 
         
