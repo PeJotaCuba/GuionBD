@@ -88,11 +88,6 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
   };
 
   // Helpers de fecha
-  const getDay = (dateStr: string) => {
-    const d = new Date(dateStr);
-    return d.getDate().toString();
-  };
-
   const getMonthDay = (dateStr: string) => {
     const d = new Date(dateStr);
     return `${d.getDate()}/${d.getMonth() + 1}`;
