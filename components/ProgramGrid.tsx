@@ -123,7 +123,7 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
       setLoadingProgress(100);
       await new Promise(resolve => setTimeout(resolve, 500)); // Breve pausa para ver el 100%
       
-      alert("Carga global completada. Se han incorporado los nuevos guiones.");
+      alert("Carga global completada. Se han actualizado/añadido los registros.");
       window.location.reload();
     } catch (error) {
       alert("Error al procesar el archivo masivo.");
@@ -145,7 +145,7 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
 
       setProcessMessage("Actualizando registros...");
       distributeScripts(allScripts);
-      alert("Base de datos actualizada correctamente desde el servidor.");
+      alert("Base de datos actualizada y sincronizada correctamente.");
       window.location.reload();
     } catch (error) {
       console.error(error);
@@ -155,45 +155,63 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
     }
   };
 
-  const distributeScripts = (allScripts: Script[]) => {
+  // Función mejorada para distribuir y sobrescribir datos
+  const distributeScripts = (newScripts: Script[]) => {
+      // 1. Agrupar los NUEVOS scripts por archivo de programa
       const groupedByProgram: Record<string, Script[]> = {};
 
-      allScripts.forEach(script => {
+      newScripts.forEach(script => {
         const scriptProgNorm = normalize(script.genre);
         
-        // Búsqueda de coincidencia flexible
+        // Búsqueda de coincidencia flexible para encontrar a qué programa pertenece
         const matchedProg = PROGRAMS.find(p => {
           const pNorm = normalize(p.name);
           if (pNorm === scriptProgNorm) return true;
           if (scriptProgNorm.length > 3 && pNorm.includes(scriptProgNorm)) return true;
           if (pNorm.length > 3 && scriptProgNorm.includes(pNorm)) return true;
-          
           const initials = pNorm.split(' ').map(w => w[0]).join('');
           if (scriptProgNorm === initials) return true;
-          
           return false;
         });
 
         if (matchedProg) {
           const progFile = matchedProg.file;
           if (!groupedByProgram[progFile]) groupedByProgram[progFile] = [];
+          
+          // Normalizar el nombre del programa en el script para consistencia
           script.genre = matchedProg.name;
           groupedByProgram[progFile].push(script);
         }
       });
 
-      Object.entries(groupedByProgram).forEach(([file, newScripts]) => {
+      // 2. Procesar cada archivo de programa: Cargar, Merge (sobrescribir), Guardar
+      Object.entries(groupedByProgram).forEach(([file, incomingScripts]) => {
         const key = `guionbd_data_${file}`;
-        const existing = JSON.parse(localStorage.getItem(key) || '[]');
+        const existing: Script[] = JSON.parse(localStorage.getItem(key) || '[]');
         
-        const merged = [...existing, ...newScripts];
-        
-        // Filtrar duplicados
-        const unique = merged.filter((v, i, a) => 
-          a.findIndex(t => (t.id === v.id) || (t.title === v.title && t.dateAdded === v.dateAdded)) === i
-        );
+        // Usar un Map para hacer el merge. La clave será una combinación de fecha, título y escritor.
+        // Si la clave ya existe, el script INCOMING sobrescribe al EXISTING.
+        const mergedMap = new Map<string, Script>();
 
-        localStorage.setItem(key, JSON.stringify(unique));
+        const generateKey = (s: Script) => {
+             // Clave compuesta: Fecha(YYYY-MM-DD) + Titulo(Norm) + Escritor(Norm)
+             const d = new Date(s.dateAdded).toISOString().split('T')[0];
+             const t = normalize(s.title);
+             const w = normalize(s.writer || "");
+             return `${d}|${t}|${w}`;
+        };
+
+        // Primero cargamos los existentes
+        existing.forEach(s => mergedMap.set(generateKey(s), s));
+
+        // Luego cargamos los nuevos (sobrescribiendo si hay colisión de clave)
+        // Esto garantiza que la información del JSON/TXT nuevo actualice a la vieja.
+        incomingScripts.forEach(s => mergedMap.set(generateKey(s), s));
+
+        // Convertir de nuevo a array
+        const mergedArray = Array.from(mergedMap.values());
+
+        localStorage.setItem(key, JSON.stringify(mergedArray));
       });
   };
 

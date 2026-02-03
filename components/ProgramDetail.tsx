@@ -4,11 +4,12 @@ import { ScriptCard } from './ScriptCard';
 import { UploadModal } from './UploadModal';
 import { EditScriptModal } from './EditScriptModal';
 import { BalanceModal } from './BalanceModal';
+import { PolishModal } from './PolishModal';
 import { PROGRAMS } from './ProgramGrid';
 import { ScriptCarousel } from './ScriptCarousel';
 import { 
   Upload, Search, Radio, ChevronLeft, 
-  Trash2, FileText, Plus, ClipboardList
+  Trash2, FileText, Plus, ClipboardList, Sparkles
 } from 'lucide-react';
 
 interface ProgramDetailProps {
@@ -25,6 +26,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
   const [editingScript, setEditingScript] = useState<Script | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isBalanceOpen, setIsBalanceOpen] = useState(false);
+  const [isPolishOpen, setIsPolishOpen] = useState(false);
 
   const isAdmin = userRole === 'Administrador';
 
@@ -108,13 +110,29 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
     }).sort((a, b) => new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime());
   }, [scripts]);
 
+  // Nueva lógica de carga: Sobrescribir si existe (Fecha + Tema + Escritor)
   const handleAddScripts = (newScripts: Script[]) => {
     setScripts(prev => {
-      const merged = [...newScripts, ...prev];
-      const unique = merged.filter((v, i, a) => 
-        a.findIndex(t => t.title === v.title && t.dateAdded === v.dateAdded) === i
-      );
-      return unique;
+      const existingMap = new Map();
+      
+      // Función para generar clave única basada en Fecha (día), Tema y Escritor
+      const generateKey = (s: Script) => {
+        const datePart = new Date(s.dateAdded).toISOString().split('T')[0]; // YYYY-MM-DD
+        const titlePart = s.title.trim().toLowerCase();
+        const writerPart = (s.writer || "").trim().toLowerCase();
+        return `${datePart}|${titlePart}|${writerPart}`;
+      };
+
+      // 1. Cargar existentes en el mapa
+      prev.forEach(s => existingMap.set(generateKey(s), s));
+
+      // 2. Insertar nuevos (sobrescribiendo si la clave ya existe)
+      newScripts.forEach(s => {
+        existingMap.set(generateKey(s), s);
+      });
+
+      // Retornar array
+      return Array.from(existingMap.values());
     });
   };
 
@@ -131,6 +149,29 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
             return [savedScript, ...prev];
         }
     });
+  };
+
+  // Función para Pulir (Reemplazar masivamente)
+  const handlePolish = (term: string, replacement: string) => {
+    // Escapar caracteres especiales para el regex
+    const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(escapedTerm, 'gi'); // Global, Case-insensitive
+
+    const updatedScripts = scripts.map(s => {
+      // Crear copia del script para no mutar directamente si no hay cambios
+      const newS = { ...s };
+      
+      if (newS.title) newS.title = newS.title.replace(regex, replacement).replace(/\s+/g, ' ').trim();
+      if (newS.summary) newS.summary = newS.summary.replace(regex, replacement).replace(/\s+/g, ' ').trim();
+      if (newS.content) newS.content = newS.content.replace(regex, replacement); // Contenido respeta saltos de línea, no trim agresivo
+      if (newS.writer) newS.writer = newS.writer.replace(regex, replacement).replace(/\s+/g, ' ').trim();
+      if (newS.advisor) newS.advisor = newS.advisor.replace(regex, replacement).replace(/\s+/g, ' ').trim();
+      
+      return newS;
+    });
+
+    setScripts(updatedScripts);
+    alert(`Proceso de pulido completado. Se han actualizado los registros que contenían "${term}".`);
   };
 
   const openNewScriptModal = () => {
@@ -168,12 +209,20 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
         onSave={handleSaveScript}
       />
 
-      {/* Renderizado condicional del BalanceModal para asegurar que recibe los datos */}
       {isBalanceOpen && (
         <BalanceModal
           isOpen={isBalanceOpen}
           onClose={() => setIsBalanceOpen(false)}
-          scripts={scripts} // Pasamos la lista COMPLETA, sin filtrar
+          scripts={scripts} 
+          programName={programName}
+        />
+      )}
+
+      {isPolishOpen && (
+        <PolishModal
+          isOpen={isPolishOpen}
+          onClose={() => setIsPolishOpen(false)}
+          onApply={handlePolish}
           programName={programName}
         />
       )}
@@ -210,7 +259,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
                   onClick={openNewScriptModal} 
                   className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-emerald-500/20 transition-all"
                 >
-                  <Plus size={18} /> <span>Nuevo Guion</span>
+                  <Plus size={18} /> <span>Nuevo</span>
                 </button>
 
                 <button 
@@ -218,6 +267,14 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
                   className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-indigo-500/20 transition-all"
                 >
                   <Upload size={18} /> <span>Cargar</span>
+                </button>
+
+                <button 
+                  onClick={() => setIsPolishOpen(true)}
+                  className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-violet-600 hover:bg-violet-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-violet-500/20 transition-all"
+                  title="Pulir base de datos (Reemplazar texto)"
+                >
+                  <Sparkles size={18} /> <span>Pulir</span>
                 </button>
 
                 <button 
