@@ -15,6 +15,7 @@ type ReportType = 'month' | 'repeated' | 'program' | 'year_ago' | null;
 interface FilterConfig {
   programs: string[];
   year: string;
+  years: string[];
   month: string;
   week: string;
 }
@@ -27,6 +28,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
   const [filters, setFilters] = useState<FilterConfig>({
     programs: [],
     year: new Date().getFullYear().toString(),
+    years: [new Date().getFullYear().toString()],
     month: (new Date().getMonth() + 1).toString(),
     week: '1'
   });
@@ -87,10 +89,28 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
     }
   };
 
+  const toggleYear = (y: string) => {
+    setFilters(prev => {
+      const exists = prev.years.includes(y);
+      const newYears = exists 
+        ? prev.years.filter(yr => yr !== y) 
+        : [...prev.years, y];
+      return { ...prev, years: newYears };
+    });
+  };
+
+  const selectAllYears = () => {
+    if (filters.years.length === availableYears.length) {
+      setFilters(prev => ({ ...prev, years: [] }));
+    } else {
+      setFilters(prev => ({ ...prev, years: [...availableYears] }));
+    }
+  };
+
   // Helpers de fecha
   const getMonthDay = (dateStr: string) => {
     const d = new Date(dateStr);
-    return `${d.getDate()}/${d.getMonth() + 1}`;
+    return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
   };
 
   // Helper para normalizar títulos (huella digital)
@@ -191,7 +211,9 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
     } 
     
     else if (activeReport === 'repeated') {
-        const yearScripts = selectedScripts.filter(s => new Date(s.dateAdded).getFullYear().toString() === filters.year);
+        const yearScripts = selectedScripts.filter(s => 
+          filters.years.includes(new Date(s.dateAdded).getFullYear().toString())
+        );
         
         const titleCounts: Record<string, number> = {};
         
@@ -213,7 +235,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
             const fingerprint = getNormalizedFingerprint(s.title);
             if (repeatedFingerprints.includes(fingerprint)) {
                 rows.push([
-                    getMonthDay(s.dateAdded), // Día/Mes
+                    getMonthDay(s.dateAdded), // Día/Mes/Año
                     s.genre, 
                     s.writer || 'No especificado', // Autor
                     s.title // Nombre completo REAL
@@ -228,11 +250,19 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
              return fpA.localeCompare(fpB) || a[0].localeCompare(b[0]);
         });
         
-        const fileName = `Repetidos_${safeProgramsName}_${filters.year}`;
+        const yearsLabel = filters.years.length === availableYears.length 
+            ? "Todos los años" 
+            : filters.years.sort().join(", ");
+        
+        const safeYears = filters.years.length === availableYears.length 
+            ? 'Todos' 
+            : filters.years.sort().join('_');
+
+        const fileName = `Repetidos_${safeProgramsName}_${safeYears}`;
         // Pasamos anchos específicos: Fecha (12%), Programa (18%), Autor (20%), Temática (50%)
         downloadReport(
           fileName, 
-          `Temáticas Repetidas Año ${filters.year}`, 
+          `Temáticas Repetidas (${yearsLabel})`, 
           `Programas: ${programsLabel}`, 
           ['Fecha', 'Programa', 'Autor', 'Temática'], 
           rows,
@@ -368,7 +398,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
             </div>
 
             {/* Filtros específicos */}
-            {(activeReport === 'repeated' || activeReport === 'program' || activeReport === 'month') && (
+            {(activeReport === 'program' || activeReport === 'month') && (
                <div className="space-y-2">
                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Año</label>
                  <select 
@@ -379,6 +409,32 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
                    {availableYears.map(y => <option key={y} value={y}>{y}</option>)}
                  </select>
                </div>
+            )}
+
+            {activeReport === 'repeated' && (
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Años</label>
+                    <button onClick={selectAllYears} className="text-xs font-bold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300">
+                      {filters.years.length === availableYears.length ? 'Deseleccionar todos' : 'Seleccionar todos'}
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-4 gap-2">
+                    {availableYears.map(y => (
+                      <button
+                        key={y}
+                        onClick={() => toggleYear(y)}
+                        className={`px-3 py-2 rounded-lg text-xs font-bold transition-all border ${
+                          filters.years.includes(y)
+                            ? 'bg-indigo-50 dark:bg-indigo-900/30 border-indigo-200 dark:border-indigo-700 text-indigo-700 dark:text-indigo-300'
+                            : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-indigo-300'
+                        }`}
+                      >
+                        {y}
+                      </button>
+                    ))}
+                  </div>
+                </div>
             )}
 
             {activeReport === 'program' && (
@@ -429,7 +485,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
             </button>
             <button 
               onClick={handleGenerate}
-              disabled={filters.programs.length === 0}
+              disabled={filters.programs.length === 0 || (activeReport === 'repeated' && filters.years.length === 0)}
               className="flex-[2] py-3.5 rounded-xl font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-500/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <FileDown size={18} /> Generar Informe
