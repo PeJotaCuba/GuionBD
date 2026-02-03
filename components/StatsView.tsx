@@ -93,6 +93,18 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
     return `${d.getDate()}/${d.getMonth() + 1}`;
   };
 
+  // Helper para normalizar títulos (huella digital)
+  const getNormalizedFingerprint = (text: string) => {
+    return text
+      .toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Quitar tildes
+      .replace(/[^\w\s]/g, '') // Quitar signos de puntuación
+      .trim()
+      .split(/\s+/) // Separar palabras
+      .sort() // Ordenar alfabéticamente para que el orden no importe
+      .join(' '); // Unir de nuevo
+  };
+
   const downloadReport = (
     filename: string, 
     title: string, 
@@ -180,28 +192,41 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
     
     else if (activeReport === 'repeated') {
         const yearScripts = selectedScripts.filter(s => new Date(s.dateAdded).getFullYear().toString() === filters.year);
-        // Contamos frecuencia de temáticas (tags)
-        const themeCounts: Record<string, number> = {};
-        yearScripts.forEach(s => s.themes.forEach(t => themeCounts[t] = (themeCounts[t] || 0) + 1));
-        // Filtramos las que se repiten
-        const repeated = Object.keys(themeCounts).filter(t => themeCounts[t] > 1);
+        
+        const titleCounts: Record<string, number> = {};
+        
+        // 1. Contar frecuencias de títulos normalizados
+        yearScripts.forEach(s => {
+            const fingerprint = getNormalizedFingerprint(s.title);
+            if (fingerprint.length > 3) { // Ignorar títulos muy cortos o vacíos
+                titleCounts[fingerprint] = (titleCounts[fingerprint] || 0) + 1;
+            }
+        });
+
+        // 2. Identificar cuáles se repiten
+        const repeatedFingerprints = Object.keys(titleCounts).filter(fp => titleCounts[fp] > 1);
         
         const rows: string[][] = [];
         
+        // 3. Filtrar los guiones que coinciden con las huellas repetidas
         yearScripts.forEach(s => {
-            // Verificamos si el guion tiene ALGUNA temática repetida
-            const hasRepeatedTheme = s.themes.some(t => repeated.includes(t));
-            
-            if (hasRepeatedTheme) {
+            const fingerprint = getNormalizedFingerprint(s.title);
+            if (repeatedFingerprints.includes(fingerprint)) {
                 rows.push([
                     getMonthDay(s.dateAdded), // Día/Mes
                     s.genre, 
                     s.writer || 'No especificado', // Autor
-                    s.title // Nombre completo de la temática
+                    s.title // Nombre completo REAL
                 ]);
             }
         });
-        rows.sort((a, b) => a[3].localeCompare(b[3])); 
+
+        // 4. Ordenar agrupando por la huella digital para que salgan juntos
+        rows.sort((a, b) => {
+             const fpA = getNormalizedFingerprint(a[3].toString());
+             const fpB = getNormalizedFingerprint(b[3].toString());
+             return fpA.localeCompare(fpB) || a[0].localeCompare(b[0]);
+        });
         
         const fileName = `Repetidos_${safeProgramsName}_${filters.year}`;
         // Pasamos anchos específicos: Fecha (12%), Programa (18%), Autor (20%), Temática (50%)
