@@ -1,10 +1,10 @@
 [
   {
     "id": "admin",
-    "fullName": "Pedro José Reyes Acuña",
+    "fullName": "Administrador Principal",
     "username": "admin",
     "mobile": "54413935",
-    "password": "RCMM26",
+    "password": "GuionCMNL26",
     "role": "Administrador",
     "allowedPrograms": []
   },
@@ -152,18 +152,12 @@
     "allowedPrograms": []
   },
   {
-    "id": "ab4b1821-4aec-49ef-b9e1-a058b632b390",
-    "fullName": "Rosana María Fernández Verdecia",
-    "username": "rosana",
-    "mobile": "53535793",
-    "password": "RadioCiudad1826",
+    "id": "27628540-19b5-4119-8311-b447e73ce9b8",
+    "fullName": "Pedro José Reyes Acuña",
+    "username": "pedro",
+    "mobile": "54413935",
+    "password": "RadioCiudad2026",
     "role": "Guionista",
-    "allowedPrograms": [
-      "BUENOS DÍAS BAYAMO",
-      "ARTE BAYAMO",
-      "HABLANDO CON JUANA",
-      "AL SON DE LA RADIO",
-      "PALCO DE DOMINGO"
-    ]
+    "allowedPrograms": []
   }
 ]
