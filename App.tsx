@@ -175,7 +175,7 @@ export default function App() {
         ) : selectedProgram ? (
           <ProgramDetail 
             programName={selectedProgram} 
-            userRole={currentUser.role} 
+            currentUser={currentUser} 
             onBack={navigateHome}
           />
         ) : (

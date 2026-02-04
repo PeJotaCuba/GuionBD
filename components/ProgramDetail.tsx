@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Script, UserRole } from '../types';
+import { Script, User } from '../types';
 import { ScriptCard } from './ScriptCard';
 import { UploadModal } from './UploadModal';
 import { EditScriptModal } from './EditScriptModal';
@@ -14,11 +14,11 @@ import {
 
 interface ProgramDetailProps {
   programName: string;
-  userRole: UserRole;
+  currentUser: User;
   onBack: () => void;
 }
 
-export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userRole, onBack }) => {
+export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, currentUser, onBack }) => {
   const [scripts, setScripts] = useState<Script[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
@@ -33,11 +33,20 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
   const [selectionPos, setSelectionPos] = useState<{ x: number, y: number } | null>(null);
   const [tempSelection, setTempSelection] = useState('');
 
-  const isAdmin = userRole === 'Administrador';
+  const isAdmin = currentUser.role === 'Administrador';
 
   const programInfo = PROGRAMS.find(p => p.name === programName);
   const fileName = programInfo?.file || `${programName.replace(/\s+/g, '_').toLowerCase()}.json`;
   const storageKey = `guionbd_data_${fileName}`;
+
+  // Helper para normalizar cadenas
+  const normalize = (str: string) => 
+    str.normalize("NFD")
+       .replace(/[\u0300-\u036f]/g, "") 
+       .replace(/[^\w\s]/gi, ' ')      
+       .replace(/\s+/g, ' ')           
+       .trim()
+       .toUpperCase();
 
   // Generar años disponibles dinámicamente (2022 - Año Actual)
   const availableYears = useMemo(() => {
@@ -152,6 +161,17 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
       return !isUnspecified;
     });
 
+    // Filtro adicional para Guionistas: Solo ven sus propios guiones
+    if (currentUser.role === 'Guionista') {
+        const normalizedUser = normalize(currentUser.fullName);
+        result = result.filter(s => {
+            if (!s.writer) return false;
+            const normalizedWriter = normalize(s.writer);
+            // Comprobación flexible de nombre
+            return normalizedWriter.includes(normalizedUser) || normalizedUser.includes(normalizedWriter);
+        });
+    }
+
     if (selectedYear) {
       result = result.filter(s => new Date(s.dateAdded).getFullYear().toString() === selectedYear);
     }
@@ -166,10 +186,21 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
       );
     }
     return result.sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime());
-  }, [scripts, searchQuery, selectedYear]);
+  }, [scripts, searchQuery, selectedYear, currentUser]);
 
   // Lógica para el carrusel "Hace un año"
   const historicScripts = useMemo(() => {
+    // Si es guionista, también filtramos el carrusel
+    let baseScripts = scripts;
+    if (currentUser.role === 'Guionista') {
+        const normalizedUser = normalize(currentUser.fullName);
+        baseScripts = baseScripts.filter(s => {
+            if (!s.writer) return false;
+            const normalizedWriter = normalize(s.writer);
+            return normalizedWriter.includes(normalizedUser) || normalizedUser.includes(normalizedWriter);
+        });
+    }
+
     const today = new Date();
     // Fecha objetivo: hace 1 año
     const targetDate = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
@@ -183,7 +214,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
     endRange.setDate(targetDate.getDate() + 3);
     endRange.setHours(23, 59, 59, 999);
 
-    return scripts.filter(s => {
+    return baseScripts.filter(s => {
       const scriptDate = new Date(s.dateAdded);
       // Validar también en el carrusel
       const w = (s.writer || "").toUpperCase();
@@ -191,7 +222,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
       
       return isValid && scriptDate >= startRange && scriptDate <= endRange;
     }).sort((a, b) => new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime());
-  }, [scripts]);
+  }, [scripts, currentUser]);
 
   // Nueva lógica de carga: Sobrescribir si existe (Fecha + Tema + Escritor)
   const handleAddScripts = (newScripts: Script[]) => {
@@ -375,12 +406,15 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
           </div>
 
           <div className="flex flex-wrap gap-2 w-full md:w-auto">
-            <button 
-              onClick={() => setIsBalanceOpen(true)}
-              className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm border border-slate-200 dark:border-slate-700"
-            >
-              <ClipboardList size={18} className="text-indigo-500" /> <span>Balance</span>
-            </button>
+            {/* Botón de Balance visible solo si NO es Guionista */}
+            {currentUser.role !== 'Guionista' && (
+              <button 
+                onClick={() => setIsBalanceOpen(true)}
+                className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm border border-slate-200 dark:border-slate-700"
+              >
+                <ClipboardList size={18} className="text-indigo-500" /> <span>Balance</span>
+              </button>
+            )}
 
             {isAdmin && (
               <>
@@ -472,7 +506,11 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
           ) : (
             <div className="flex flex-col items-center justify-center py-20 text-center opacity-50">
                <FileText size={48} className="mb-4 text-slate-300" />
-               <p className="text-xl font-medium text-slate-400">No hay guiones registrados para este programa o filtros.</p>
+               <p className="text-xl font-medium text-slate-400">
+                 {currentUser.role === 'Guionista' 
+                   ? "No hay guiones registrados bajo tu nombre en este programa o no coinciden con los filtros." 
+                   : "No hay guiones registrados para este programa o filtros."}
+               </p>
             </div>
           )}
         </div>
