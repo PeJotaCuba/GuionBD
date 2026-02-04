@@ -20,7 +20,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
     const adminUser: User = { 
       id: 'admin', 
       username: 'admin', 
-      password: 'Guion26', 
+      password: 'GuionCMNL26', 
       role: 'Administrador',
       fullName: 'Pedro José Reyes Acuña',
       mobile: '54413935',

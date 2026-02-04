@@ -30,17 +30,31 @@ export const BalanceModal: React.FC<BalanceModalProps> = ({ isOpen, onClose, scr
     }
   }, [isOpen]);
 
-  // Obtener años disponibles
+  // Obtener años disponibles y válidos
   const availableYears = useMemo(() => {
-    const years = scripts.map(s => {
-      try {
-        return new Date(s.dateAdded).getFullYear().toString();
-      } catch (e) {
-        return '';
-      }
-    }).filter((y): y is string => !!y); // Filtrar invalidos
+    const currentYear = new Date().getFullYear();
+    const minValidYear = 2022; // Rango base pedido
     
-    const yearsSet = new Set(years);
+    // Conjunto para evitar duplicados
+    const yearsSet = new Set<string>();
+
+    // 1. Extraer años de los scripts existentes, pero VALIDANDO
+    scripts.forEach(s => {
+      try {
+        const y = new Date(s.dateAdded).getFullYear();
+        // Validación estricta: 4 dígitos, entre 2000 y el año actual + 2
+        if (y >= 2000 && y <= currentYear + 2 && y.toString().length === 4) {
+             yearsSet.add(y.toString());
+        }
+      } catch (e) {
+        // Ignorar fechas invalidas
+      }
+    });
+    
+    // 2. Asegurar que el rango base (2022 -> Actual) esté presente
+    for(let y = minValidYear; y <= currentYear; y++) {
+        yearsSet.add(y.toString());
+    }
     
     return Array.from(yearsSet).sort((a, b) => b.localeCompare(a));
   }, [scripts]);

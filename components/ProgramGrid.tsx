@@ -53,10 +53,28 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
 
   // Determinar los programas disponibles para el usuario actual (para Informes y Filtrado)
   const availablePrograms = useMemo(() => {
-    if (currentUser.role === 'Guionista' && currentUser.allowedPrograms) {
-      return PROGRAMS.filter(p => currentUser.allowedPrograms?.includes(p.name));
+    // Admin, Directores y Asesores ven todo
+    if (['Administrador', 'Director', 'Asesor'].includes(currentUser.role)) {
+      return PROGRAMS;
     }
-    return PROGRAMS;
+    
+    // Guionistas: Solo ven programas donde su nombre aparece como escritor
+    if (currentUser.role === 'Guionista') {
+      const normalizedUserName = normalize(currentUser.fullName);
+      
+      return PROGRAMS.filter(p => {
+        const scripts = getProgramScripts(p);
+        // Verificar si existe al menos un guion donde el escritor coincida parcialmente con el nombre del usuario
+        return scripts.some(s => {
+           if (!s.writer) return false;
+           const normalizedWriter = normalize(s.writer);
+           // Comprobación flexible: si el nombre del escritor contiene el nombre del usuario o viceversa
+           return normalizedWriter.includes(normalizedUserName) || normalizedUserName.includes(normalizedWriter);
+        });
+      });
+    }
+    
+    return [];
   }, [currentUser]);
 
   const filteredPrograms = useMemo(() => {
@@ -321,33 +339,37 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
         </div>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-        {filteredPrograms.map((program) => {
-          const scriptCount = getProgramScripts(program).length;
-          return (
-            <button
-              key={program.name}
-              onClick={() => onSelectProgram(program.name)}
-              className="group relative flex flex-col items-center justify-center p-6 bg-white dark:bg-slate-900 rounded-[2rem] border border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-400 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
-            >
-              <div className={`p-4 rounded-2xl ${program.color} text-white shadow-lg group-hover:scale-110 transition-transform mb-3`}>
-                {program.icon}
-              </div>
-              <span className="text-xs font-bold text-slate-800 dark:text-slate-100 text-center uppercase tracking-tight line-clamp-2">
-                {program.name}
-              </span>
-              <span className="mt-1 text-[10px] font-black text-slate-400 dark:text-slate-500">
-                {scriptCount} REGISTROS
-              </span>
-            </button>
-          );
-        })}
-      </div>
-
-      {filteredPrograms.length === 0 && (
+      {filteredPrograms.length > 0 ? (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+          {filteredPrograms.map((program) => {
+            const scriptCount = getProgramScripts(program).length;
+            return (
+              <button
+                key={program.name}
+                onClick={() => onSelectProgram(program.name)}
+                className="group relative flex flex-col items-center justify-center p-6 bg-white dark:bg-slate-900 rounded-[2rem] border border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-400 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className={`p-4 rounded-2xl ${program.color} text-white shadow-lg group-hover:scale-110 transition-transform mb-3`}>
+                  {program.icon}
+                </div>
+                <span className="text-xs font-bold text-slate-800 dark:text-slate-100 text-center uppercase tracking-tight line-clamp-2">
+                  {program.name}
+                </span>
+                <span className="mt-1 text-[10px] font-black text-slate-400 dark:text-slate-500">
+                  {scriptCount} REGISTROS
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      ) : (
         <div className="text-center py-20 bg-slate-100/50 dark:bg-slate-900/50 rounded-[3rem] border-2 border-dashed border-slate-200 dark:border-slate-800">
            <Search size={48} className="mx-auto mb-4 text-slate-300" />
-           <p className="text-slate-500 font-medium">No se encontraron programas o guiones con los términos buscados.</p>
+           <p className="text-slate-500 font-medium">
+             {currentUser.role === 'Guionista' 
+               ? "No tienes guiones asignados en los programas o no coinciden con la búsqueda." 
+               : "No se encontraron programas o guiones con los términos buscados."}
+           </p>
         </div>
       )}
     </div>

@@ -46,17 +46,8 @@ export const AdminSettings: React.FC = () => {
       mobile: user.mobile,
       password: user.password,
       role: user.role,
-      allowedPrograms: user.allowedPrograms || []
+      allowedPrograms: [] 
     });
-  };
-
-  const toggleProgram = (programName: string) => {
-    setFormData(prev => ({
-      ...prev,
-      allowedPrograms: prev.allowedPrograms.includes(programName)
-        ? prev.allowedPrograms.filter(p => p !== programName)
-        : [...prev.allowedPrograms, programName]
-    }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -135,7 +126,7 @@ export const AdminSettings: React.FC = () => {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
           <h2 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight">Gestión de Usuarios</h2>
-          <p className="text-slate-500 dark:text-slate-400">Administra acceso, roles y programas permitidos.</p>
+          <p className="text-slate-500 dark:text-slate-400">Administra acceso y roles del sistema.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <button 
@@ -193,23 +184,10 @@ export const AdminSettings: React.FC = () => {
               </div>
 
               {formData.role === 'Guionista' && (
-                <div className="space-y-2">
-                  <label className="text-xs font-black text-slate-400 uppercase tracking-widest pl-1">Programas Permitidos</label>
-                  <div className="max-h-40 overflow-y-auto bg-slate-50 dark:bg-slate-800 rounded-2xl p-3 border border-slate-100 dark:border-slate-700 space-y-1 no-scrollbar">
-                    {PROGRAMS.map(prog => (
-                      <label key={prog.name} className="flex items-center gap-2 p-2 hover:bg-white dark:hover:bg-slate-700 rounded-xl cursor-pointer text-xs font-bold">
-                        <input 
-                          type="checkbox" 
-                          checked={formData.allowedPrograms.includes(prog.name)}
-                          onChange={() => toggleProgram(prog.name)}
-                          className="rounded text-indigo-600 focus:ring-indigo-500"
-                        />
-                        <span className={formData.allowedPrograms.includes(prog.name) ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500'}>
-                          {prog.name}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
+                <div className="p-4 bg-blue-50 dark:bg-blue-900/10 rounded-2xl border border-blue-100 dark:border-blue-800">
+                  <p className="text-xs text-blue-700 dark:text-blue-300">
+                    <strong>Nota:</strong> Los guionistas verán automáticamente solo los programas donde aparezcan registrados como autores en la base de datos.
+                  </p>
                 </div>
               )}
             </div>
@@ -243,12 +221,6 @@ export const AdminSettings: React.FC = () => {
                         <span className="text-indigo-500">@{user.username}</span>
                         <span>•</span>
                         <span>{user.role}</span>
-                        {user.role === 'Guionista' && user.allowedPrograms && user.allowedPrograms.length > 0 && (
-                          <>
-                            <span>•</span>
-                            <span className="text-amber-500">{user.allowedPrograms.length} programas</span>
-                          </>
-                        )}
                       </div>
                     </div>
                   </div>

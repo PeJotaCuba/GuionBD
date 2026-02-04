@@ -39,6 +39,16 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
   const fileName = programInfo?.file || `${programName.replace(/\s+/g, '_').toLowerCase()}.json`;
   const storageKey = `guionbd_data_${fileName}`;
 
+  // Generar años disponibles dinámicamente (2022 - Año Actual)
+  const availableYears = useMemo(() => {
+    const currentYear = new Date().getFullYear();
+    const years = [];
+    for (let y = 2022; y <= currentYear; y++) {
+      years.push(y.toString());
+    }
+    return years;
+  }, []);
+
   // Carga inicial
   useEffect(() => {
     const saved = localStorage.getItem(storageKey);
@@ -56,42 +66,52 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
     }
   }, [scripts, storageKey]);
 
-  // Efecto para detectar selección de texto
+  // Efecto para detectar selección de texto (Mouse y Touch)
   useEffect(() => {
     if (!isAdmin) return;
 
     const handleSelection = () => {
-      const selection = window.getSelection();
-      
-      // Si no hay selección o es texto vacío
-      if (!selection || selection.isCollapsed || !selection.toString().trim()) {
-        setSelectionPos(null);
-        return;
-      }
+      // Pequeño timeout para permitir que la selección nativa termine en móviles
+      setTimeout(() => {
+        const selection = window.getSelection();
+        
+        // Si no hay selección o es texto vacío
+        if (!selection || selection.isCollapsed || !selection.toString().trim()) {
+          setSelectionPos(null);
+          return;
+        }
 
-      const text = selection.toString().trim();
-      // Solo mostrar si se seleccionan más de 2 caracteres
-      if (text.length < 2) {
-        setSelectionPos(null);
-        return;
-      }
+        const text = selection.toString().trim();
+        // Solo mostrar si se seleccionan más de 2 caracteres
+        if (text.length < 2) {
+          setSelectionPos(null);
+          return;
+        }
 
-      const range = selection.getRangeAt(0);
-      const rect = range.getBoundingClientRect();
+        try {
+            const range = selection.getRangeAt(0);
+            const rect = range.getBoundingClientRect();
 
-      // Calcular posición (centrado arriba de la selección)
-      if (rect.width > 0 && rect.height > 0) {
-        setTempSelection(text);
-        setSelectionPos({
-          x: rect.left + rect.width / 2,
-          y: rect.top
-        });
-      }
+            // Validar que el rectángulo sea visible y válido
+            if (rect.width > 0 && rect.height > 0) {
+              setTempSelection(text);
+              
+              // Ajuste para móviles: asegurar que no se salga de la pantalla
+              const x = Math.max(10, Math.min(window.innerWidth - 10, rect.left + rect.width / 2));
+              // Mostrar un poco más arriba para que el dedo no lo tape en touch, sumando scrollY para posición absoluta
+              const y = rect.top + window.scrollY - 10;
+
+              setSelectionPos({ x, y });
+            }
+        } catch (e) {
+            console.error("Error obteniendo posición de selección", e);
+            setSelectionPos(null);
+        }
+      }, 50); // Un poco más de tiempo para móviles
     };
 
-    // Limpiar botón al hacer clic en otro lado (mousedown ocurre antes que mouseup)
-    const handleMouseDown = (e: MouseEvent) => {
-       // Si el clic no es en el botón flotante (lo manejamos via evento del boton)
+    // Limpiar botón al hacer clic en otro lado
+    const handleInteractionStart = (e: Event) => {
        const target = e.target as HTMLElement;
        if (!target.closest('#floating-polish-btn')) {
          setSelectionPos(null);
@@ -99,13 +119,18 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
     };
 
     document.addEventListener('mouseup', handleSelection);
-    document.addEventListener('keyup', handleSelection); // Para selección con teclado
-    document.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('touchend', handleSelection); // Soporte móvil
+    document.addEventListener('keyup', handleSelection);
+    
+    document.addEventListener('mousedown', handleInteractionStart);
+    document.addEventListener('touchstart', handleInteractionStart); // Soporte móvil
 
     return () => {
       document.removeEventListener('mouseup', handleSelection);
+      document.removeEventListener('touchend', handleSelection);
       document.removeEventListener('keyup', handleSelection);
-      document.removeEventListener('mousedown', handleMouseDown);
+      document.removeEventListener('mousedown', handleInteractionStart);
+      document.removeEventListener('touchstart', handleInteractionStart);
     };
   }, [isAdmin]);
 
@@ -245,6 +270,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
   // Acción del botón flotante
   const handleFloatingClick = (e: React.MouseEvent) => {
     e.stopPropagation(); // Evitar que el mousedown del document lo cierre inmediatamente
+    e.preventDefault(); // Prevenir comportamientos por defecto en móviles
     setPolishInitialTerm(tempSelection);
     setIsPolishOpen(true);
     setSelectionPos(null);
@@ -310,8 +336,8 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
         <div 
           id="floating-polish-btn"
           style={{ 
-            position: 'fixed', 
-            top: selectionPos.y - 12, 
+            position: 'absolute', // Usar absolute relativo al contenedor principal o fixed con cálculo
+            top: selectionPos.y, 
             left: selectionPos.x,
             transform: 'translate(-50%, -100%)',
             zIndex: 9999 
@@ -320,13 +346,13 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
         >
            <button 
              onClick={handleFloatingClick}
-             className="bg-slate-900 text-white px-3 py-1.5 rounded-lg shadow-xl shadow-indigo-500/20 flex items-center gap-2 text-xs font-bold hover:bg-indigo-600 transition-all active:scale-95 border border-slate-700"
+             className="bg-slate-900 text-white px-4 py-2 rounded-xl shadow-xl shadow-indigo-500/30 flex items-center gap-2 text-xs font-bold hover:bg-indigo-600 transition-all active:scale-95 border border-slate-700"
            >
-              <Sparkles size={12} className="text-yellow-400" />
+              <Sparkles size={14} className="text-yellow-400" />
               Pulir
            </button>
            {/* Triangulito abajo */}
-           <div className="w-2 h-2 bg-slate-900 rotate-45 absolute bottom-[-4px] left-1/2 -translate-x-1/2 -z-10 border-b border-r border-slate-700"></div>
+           <div className="w-2 h-2 bg-slate-900 rotate-45 absolute bottom-[-5px] left-1/2 -translate-x-1/2 -z-10 border-b border-r border-slate-700"></div>
         </div>
       )}
 
@@ -413,7 +439,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, userR
             </div>
             
             <div className="flex flex-wrap gap-2 justify-center">
-              {['2022', '2023', '2024', '2025', '2026'].map(year => (
+              {availableYears.map(year => (
                 <button
                   key={year}
                   onClick={() => setSelectedYear(selectedYear === year ? null : year)}
