@@ -57,8 +57,10 @@ export const AdminSettings: React.FC = () => {
       saveUsers(updated);
       alert('Usuario actualizado correctamente.');
     } else {
-      if (users.some(u => u.username === formData.username || u.mobile === formData.mobile)) {
-        alert('El nombre de usuario o número de móvil ya existe.');
+      // Validación: Solo el nombre de usuario debe ser único. 
+      // Se permite repetir el móvil para que el Admin tenga cuenta de Guionista.
+      if (users.some(u => u.username === formData.username)) {
+        alert('El nombre de usuario ya existe. Por favor elija otro.');
         return;
       }
       const newUser: User = { id: crypto.randomUUID(), ...formData };
@@ -220,6 +222,9 @@ export const AdminSettings: React.FC = () => {
                         <span className="text-indigo-500">@{user.username}</span>
                         <span>•</span>
                         <span>{user.role}</span>
+                        {/* Mostrar móvil para diferenciar cuentas duplicadas visualmente */}
+                        <span>•</span>
+                        <span>{user.mobile}</span>
                       </div>
                     </div>
                   </div>
