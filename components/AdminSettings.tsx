@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { User, UserRole } from '../types';
-import { PROGRAMS } from './ProgramGrid';
 import { 
   UserPlus, Trash2, ShieldCheck, UserCheck, 
   Edit2, Download, FileText, X, Globe, RefreshCw
