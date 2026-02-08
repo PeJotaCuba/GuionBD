@@ -117,7 +117,7 @@ export default function App() {
                   <FileStack className="text-white h-5 w-5" />
                 </div>
                 <div>
-                  <span className="font-bold text-xl text-slate-900 dark:text-slate-100 tracking-tight leading-none block">GuionBD</span>
+                  <span className="font-bold text-xl text-slate-900 dark:text-slate-100 tracking-tight leading-none block">CMNL Guiones</span>
                   <span className="text-[10px] font-medium text-indigo-600 dark:text-indigo-400 uppercase tracking-widest leading-none">Gestor</span>
                 </div>
               </div>

@@ -141,7 +141,7 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
       setLoadingProgress(100);
       await new Promise(resolve => setTimeout(resolve, 500)); // Breve pausa para ver el 100%
       
-      alert("Carga global completada. Se han actualizado/añadido los registros.");
+      alert("Carga global completada. Se han actualizado los registros existentes y añadido los nuevos.");
       window.location.reload();
     } catch (error) {
       alert("Error al procesar el archivo masivo.");
@@ -207,23 +207,23 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
         const key = `guionbd_data_${file}`;
         const existing: Script[] = JSON.parse(localStorage.getItem(key) || '[]');
         
-        // Usar un Map para hacer el merge. La clave será una combinación de fecha, título y escritor.
-        // Si la clave ya existe, el script INCOMING sobrescribe al EXISTING.
+        // Usar un Map para hacer el merge.
+        // ACTUALIZACIÓN: La clave de unicidad es Fecha + Tema (Título).
+        // Si ya existe un registro con la misma fecha y tema, el NUEVO sobrescribe al VIEJO.
+        // Esto permite corregir escritores o asesores subiendo el archivo de nuevo.
         const mergedMap = new Map<string, Script>();
 
         const generateKey = (s: Script) => {
-             // Clave compuesta: Fecha(YYYY-MM-DD) + Titulo(Norm) + Escritor(Norm)
+             // Clave compuesta: Fecha(YYYY-MM-DD) + Titulo(Norm)
              const d = new Date(s.dateAdded).toISOString().split('T')[0];
              const t = normalize(s.title);
-             const w = normalize(s.writer || "");
-             return `${d}|${t}|${w}`;
+             return `${d}|${t}`;
         };
 
         // Primero cargamos los existentes
         existing.forEach(s => mergedMap.set(generateKey(s), s));
 
         // Luego cargamos los nuevos (sobrescribiendo si hay colisión de clave)
-        // Esto garantiza que la información del JSON/TXT nuevo actualice a la vieja.
         incomingScripts.forEach(s => mergedMap.set(generateKey(s), s));
 
         // Convertir de nuevo a array
@@ -259,7 +259,7 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
           <X size={20} /> Cerrar Informes
         </button>
         <div className="pt-10">
-           <StatsView programs={availablePrograms} onClose={() => setShowStats(false)} />
+           <StatsView programs={availablePrograms} onClose={() => setShowStats(false)} currentUser={currentUser} />
         </div>
       </div>
     );

@@ -9,7 +9,7 @@ import { PROGRAMS } from './ProgramGrid';
 import { ScriptCarousel } from './ScriptCarousel';
 import { 
   Upload, Search, Radio, ChevronLeft, 
-  Trash2, FileText, Plus, ClipboardList, Sparkles
+  Trash2, FileText, Plus, ClipboardList, Sparkles, ChevronDown
 } from 'lucide-react';
 
 interface ProgramDetailProps {
@@ -28,6 +28,9 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
   const [isBalanceOpen, setIsBalanceOpen] = useState(false);
   const [isPolishOpen, setIsPolishOpen] = useState(false);
   const [polishInitialTerm, setPolishInitialTerm] = useState('');
+  
+  // Paginación para rendimiento
+  const [visibleCount, setVisibleCount] = useState(20);
   
   // Estado para el botón flotante
   const [selectionPos, setSelectionPos] = useState<{ x: number, y: number } | null>(null);
@@ -75,23 +78,25 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
     }
   }, [scripts, storageKey]);
 
+  // Resetear paginación al cambiar filtros
+  useEffect(() => {
+    setVisibleCount(20);
+  }, [searchQuery, selectedYear]);
+
   // Efecto para detectar selección de texto (Mouse y Touch)
   useEffect(() => {
     if (!isAdmin) return;
 
     const handleSelection = () => {
-      // Pequeño timeout para permitir que la selección nativa termine en móviles
       setTimeout(() => {
         const selection = window.getSelection();
         
-        // Si no hay selección o es texto vacío
         if (!selection || selection.isCollapsed || !selection.toString().trim()) {
           setSelectionPos(null);
           return;
         }
 
         const text = selection.toString().trim();
-        // Solo mostrar si se seleccionan más de 2 caracteres
         if (text.length < 2) {
           setSelectionPos(null);
           return;
@@ -101,25 +106,19 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
             const range = selection.getRangeAt(0);
             const rect = range.getBoundingClientRect();
 
-            // Validar que el rectángulo sea visible y válido
             if (rect.width > 0 && rect.height > 0) {
               setTempSelection(text);
-              
-              // Ajuste para móviles: asegurar que no se salga de la pantalla
               const x = Math.max(10, Math.min(window.innerWidth - 10, rect.left + rect.width / 2));
-              // Mostrar un poco más arriba para que el dedo no lo tape en touch, sumando scrollY para posición absoluta
               const y = rect.top + window.scrollY - 10;
-
               setSelectionPos({ x, y });
             }
         } catch (e) {
             console.error("Error obteniendo posición de selección", e);
             setSelectionPos(null);
         }
-      }, 50); // Un poco más de tiempo para móviles
+      }, 50);
     };
 
-    // Limpiar botón al hacer clic en otro lado
     const handleInteractionStart = (e: Event) => {
        const target = e.target as HTMLElement;
        if (!target.closest('#floating-polish-btn')) {
@@ -128,11 +127,10 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
     };
 
     document.addEventListener('mouseup', handleSelection);
-    document.addEventListener('touchend', handleSelection); // Soporte móvil
+    document.addEventListener('touchend', handleSelection); 
     document.addEventListener('keyup', handleSelection);
-    
     document.addEventListener('mousedown', handleInteractionStart);
-    document.addEventListener('touchstart', handleInteractionStart); // Soporte móvil
+    document.addEventListener('touchstart', handleInteractionStart); 
 
     return () => {
       document.removeEventListener('mouseup', handleSelection);
@@ -147,7 +145,6 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
   const filteredScripts = useMemo(() => {
     let result = scripts;
 
-    // Filtro estricto: Eliminar de la VISTA aquellos con datos faltantes o marcados como no especificados
     result = result.filter(s => {
       const w = (s.writer || "").trim().toUpperCase();
       const a = (s.advisor || "").trim().toUpperCase();
@@ -161,13 +158,11 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
       return !isUnspecified;
     });
 
-    // Filtro adicional para Guionistas: Solo ven sus propios guiones
     if (currentUser.role === 'Guionista') {
         const normalizedUser = normalize(currentUser.fullName);
         result = result.filter(s => {
             if (!s.writer) return false;
             const normalizedWriter = normalize(s.writer);
-            // Comprobación flexible de nombre
             return normalizedWriter.includes(normalizedUser) || normalizedUser.includes(normalizedWriter);
         });
     }
@@ -188,9 +183,16 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
     return result.sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime());
   }, [scripts, searchQuery, selectedYear, currentUser]);
 
-  // Lógica para el carrusel "Hace un año"
+  // Scripts visibles para renderizar
+  const displayedScripts = useMemo(() => {
+    return filteredScripts.slice(0, visibleCount);
+  }, [filteredScripts, visibleCount]);
+
+  const loadMore = () => {
+    setVisibleCount(prev => Math.min(prev + 20, filteredScripts.length));
+  };
+
   const historicScripts = useMemo(() => {
-    // Si es guionista, también filtramos el carrusel
     let baseScripts = scripts;
     if (currentUser.role === 'Guionista') {
         const normalizedUser = normalize(currentUser.fullName);
@@ -202,10 +204,8 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
     }
 
     const today = new Date();
-    // Fecha objetivo: hace 1 año
     const targetDate = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
     
-    // Rango: -3 días a +3 días
     const startRange = new Date(targetDate);
     startRange.setDate(targetDate.getDate() - 3);
     startRange.setHours(0, 0, 0, 0);
@@ -216,36 +216,29 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
 
     return baseScripts.filter(s => {
       const scriptDate = new Date(s.dateAdded);
-      // Validar también en el carrusel
       const w = (s.writer || "").toUpperCase();
       const isValid = !w.includes("NO ESPECIFICADO") && !w.includes("PECIFICADO");
-      
       return isValid && scriptDate >= startRange && scriptDate <= endRange;
     }).sort((a, b) => new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime());
   }, [scripts, currentUser]);
 
-  // Nueva lógica de carga: Sobrescribir si existe (Fecha + Tema + Escritor)
+  // Lógica de carga: Sobrescribir si existe Fecha + Tema
   const handleAddScripts = (newScripts: Script[]) => {
     setScripts(prev => {
       const existingMap = new Map();
       
-      // Función para generar clave única basada en Fecha (día), Tema y Escritor
       const generateKey = (s: Script) => {
         const datePart = new Date(s.dateAdded).toISOString().split('T')[0]; // YYYY-MM-DD
-        const titlePart = s.title.trim().toLowerCase();
-        const writerPart = (s.writer || "").trim().toLowerCase();
-        return `${datePart}|${titlePart}|${writerPart}`;
+        const titlePart = normalize(s.title);
+        return `${datePart}|${titlePart}`;
       };
 
-      // 1. Cargar existentes en el mapa
       prev.forEach(s => existingMap.set(generateKey(s), s));
 
-      // 2. Insertar nuevos (sobrescribiendo si la clave ya existe)
       newScripts.forEach(s => {
         existingMap.set(generateKey(s), s);
       });
 
-      // Retornar array
       return Array.from(existingMap.values());
     });
   };
@@ -254,33 +247,26 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
     setScripts(prev => {
         const index = prev.findIndex(s => s.id === savedScript.id);
         if (index >= 0) {
-            // Actualizar
             const updated = [...prev];
             updated[index] = savedScript;
             return updated;
         } else {
-            // Crear nuevo (al principio)
             return [savedScript, ...prev];
         }
     });
   };
 
-  // Función para Pulir (Reemplazar masivamente)
   const handlePolish = (term: string, replacement: string) => {
-    // Escapar caracteres especiales para el regex
     const escapedTerm = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const regex = new RegExp(escapedTerm, 'gi'); // Global, Case-insensitive
+    const regex = new RegExp(escapedTerm, 'gi');
 
     const updatedScripts = scripts.map(s => {
-      // Crear copia del script para no mutar directamente si no hay cambios
       const newS = { ...s };
-      
       if (newS.title) newS.title = newS.title.replace(regex, replacement).replace(/\s+/g, ' ').trim();
       if (newS.summary) newS.summary = newS.summary.replace(regex, replacement).replace(/\s+/g, ' ').trim();
-      if (newS.content) newS.content = newS.content.replace(regex, replacement); // Contenido respeta saltos de línea, no trim agresivo
+      if (newS.content) newS.content = newS.content.replace(regex, replacement);
       if (newS.writer) newS.writer = newS.writer.replace(regex, replacement).replace(/\s+/g, ' ').trim();
       if (newS.advisor) newS.advisor = newS.advisor.replace(regex, replacement).replace(/\s+/g, ' ').trim();
-      
       return newS;
     });
 
@@ -298,14 +284,13 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
     setIsPolishOpen(true);
   };
 
-  // Acción del botón flotante
   const handleFloatingClick = (e: React.MouseEvent) => {
-    e.stopPropagation(); // Evitar que el mousedown del document lo cierre inmediatamente
-    e.preventDefault(); // Prevenir comportamientos por defecto en móviles
+    e.stopPropagation();
+    e.preventDefault();
     setPolishInitialTerm(tempSelection);
     setIsPolishOpen(true);
     setSelectionPos(null);
-    window.getSelection()?.removeAllRanges(); // Limpiar selección visual
+    window.getSelection()?.removeAllRanges();
   };
 
   const openNewScriptModal = () => {
@@ -362,12 +347,11 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
         />
       )}
 
-      {/* Botón Flotante de Pulir */}
       {selectionPos && (
         <div 
           id="floating-polish-btn"
           style={{ 
-            position: 'absolute', // Usar absolute relativo al contenedor principal o fixed con cálculo
+            position: 'absolute',
             top: selectionPos.y, 
             left: selectionPos.x,
             transform: 'translate(-50%, -100%)',
@@ -382,13 +366,11 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
               <Sparkles size={14} className="text-yellow-400" />
               Pulir
            </button>
-           {/* Triangulito abajo */}
            <div className="w-2 h-2 bg-slate-900 rotate-45 absolute bottom-[-5px] left-1/2 -translate-x-1/2 -z-10 border-b border-r border-slate-700"></div>
         </div>
       )}
 
       <div className="space-y-8 animate-fade-in relative">
-        {/* Header del Programa */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="flex items-center gap-4">
             <button onClick={onBack} className="p-2.5 rounded-full hover:bg-white dark:hover:bg-slate-900 shadow-sm text-slate-600 dark:text-slate-400 transition-colors">
@@ -406,7 +388,6 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
           </div>
 
           <div className="flex flex-wrap gap-2 w-full md:w-auto">
-            {/* Botón de Balance visible solo si NO es Guionista */}
             {currentUser.role !== 'Guionista' && (
               <button 
                 onClick={() => setIsBalanceOpen(true)}
@@ -452,7 +433,6 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
           </div>
         </div>
 
-        {/* Carrusel Histórico */}
         {historicScripts.length > 0 && (
           <div className="bg-gradient-to-r from-indigo-50/50 to-purple-50/50 dark:from-slate-900/50 dark:to-slate-800/50 p-6 rounded-[2rem] border border-indigo-100 dark:border-slate-800">
              <ScriptCarousel scripts={historicScripts} title="Hace un año (± 3 días)" />
@@ -487,21 +467,34 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
         </div>
 
         <div className="pb-20">
-          {filteredScripts.length > 0 ? (
-            <div className="grid gap-4">
-              {filteredScripts.map(script => (
-                <ScriptCard 
-                  key={script.id} 
-                  script={script} 
-                  isAdmin={isAdmin}
-                  onDelete={(id) => {
-                     if(isAdmin && window.confirm('¿Eliminar guion?')) {
-                       setScripts(prev => prev.filter(s => s.id !== id))
-                     }
-                  }}
-                  onEdit={openEditScriptModal}
-                />
-              ))}
+          {displayedScripts.length > 0 ? (
+            <div className="space-y-4">
+              <div className="grid gap-4">
+                {displayedScripts.map(script => (
+                  <ScriptCard 
+                    key={script.id} 
+                    script={script} 
+                    isAdmin={isAdmin}
+                    onDelete={(id) => {
+                      if(isAdmin && window.confirm('¿Eliminar guion?')) {
+                        setScripts(prev => prev.filter(s => s.id !== id))
+                      }
+                    }}
+                    onEdit={openEditScriptModal}
+                  />
+                ))}
+              </div>
+              
+              {visibleCount < filteredScripts.length && (
+                <div className="flex justify-center pt-4">
+                  <button 
+                    onClick={loadMore}
+                    className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-6 py-3 rounded-xl font-bold transition-all shadow-sm"
+                  >
+                    <ChevronDown size={20} /> Mostrar más ({filteredScripts.length - visibleCount} restantes)
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-20 text-center opacity-50">

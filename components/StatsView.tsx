@@ -1,16 +1,17 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Script } from '../types';
+import { Script, User } from '../types';
 import { 
-  FileDown, Calendar, Layers, Repeat, BarChart3, X, Check, Filter
+  FileDown, Calendar, Layers, Repeat, BarChart3, X, Check, Filter, FileText
 } from 'lucide-react';
 
 interface StatsViewProps {
   onClose?: () => void;
   programs: Array<{ name: string; file: string }>;
+  currentUser: User;
 }
 
 // Tipos de informes
-type ReportType = 'month' | 'repeated' | 'program' | 'year_ago' | null;
+type ReportType = 'month' | 'repeated' | 'program' | 'year_ago' | 'monthly_txt' | null;
 
 interface FilterConfig {
   programs: string[];
@@ -20,7 +21,7 @@ interface FilterConfig {
   week: string;
 }
 
-export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
+export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs, currentUser }) => {
   const [allScripts, setAllScripts] = useState<Script[]>([]);
   const [activeReport, setActiveReport] = useState<ReportType>(null);
   
@@ -32,6 +33,12 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
     month: (new Date().getMonth() + 1).toString(),
     week: '1'
   });
+
+  // Estado para el rango de días en el reporte mensual TXT
+  const [startDay, setStartDay] = useState<number>(1);
+  const [endDay, setEndDay] = useState<number>(new Date().getDate());
+
+  const canAccessMonthlyReport = ['Administrador', 'Director', 'Asesor'].includes(currentUser.role);
 
   // Manejo de tecla Escape para cerrar
   useEffect(() => {
@@ -60,6 +67,41 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
     });
     setAllScripts(gathered);
   }, [programs]);
+
+  // Resetear filtros específicos al abrir el reporte mensual TXT
+  useEffect(() => {
+    if (activeReport === 'monthly_txt') {
+        const now = new Date();
+        const currentYear = now.getFullYear().toString();
+        const currentMonth = (now.getMonth() + 1).toString();
+        
+        // Si el mes seleccionado coincide con el actual, el fin es hoy.
+        // Si es un mes pasado, el fin es el último día del mes.
+        setFilters(prev => ({
+            ...prev,
+            year: currentYear,
+            month: currentMonth
+        }));
+        setStartDay(1);
+        setEndDay(now.getDate());
+    }
+  }, [activeReport]);
+
+  // Ajustar el día final al cambiar año o mes en el reporte mensual
+  useEffect(() => {
+      if (activeReport === 'monthly_txt') {
+          const now = new Date();
+          const selectedYear = parseInt(filters.year);
+          const selectedMonth = parseInt(filters.month);
+          
+          if (selectedYear === now.getFullYear() && selectedMonth === (now.getMonth() + 1)) {
+              setEndDay(now.getDate());
+          } else {
+              // Último día del mes seleccionado
+              setEndDay(new Date(selectedYear, selectedMonth, 0).getDate());
+          }
+      }
+  }, [filters.year, filters.month, activeReport]);
 
   // Listas para los selects (Años 2022 al actual)
   const availableYears = useMemo(() => {
@@ -171,7 +213,58 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
     setActiveReport(null); // Cerrar modal al descargar
   };
 
+  const handleGenerateTxt = () => {
+    let selectedScripts = allScripts.filter(s => {
+       return filters.programs.includes(s.genre) || filters.programs.some(p => s.genre.includes(p));
+    });
+
+    // Filtrar por año y mes
+    selectedScripts = selectedScripts.filter(s => {
+        const d = new Date(s.dateAdded);
+        return d.getFullYear().toString() === filters.year && (d.getMonth() + 1).toString() === filters.month;
+    });
+
+    // Filtrar por rango de días
+    selectedScripts = selectedScripts.filter(s => {
+        const d = new Date(s.dateAdded);
+        const day = d.getDate();
+        return day >= startDay && day <= endDay;
+    });
+
+    // Ordenar por fecha
+    selectedScripts.sort((a, b) => new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime());
+
+    if (selectedScripts.length === 0) {
+        alert("No hay guiones para el período y programas seleccionados.");
+        return;
+    }
+
+    let content = "";
+    selectedScripts.forEach(s => {
+        const dateStr = new Date(s.dateAdded).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+        content += `Programa: ${s.genre}\nFecha: ${dateStr}\nEscritor: ${s.writer || 'No especificado'}\n-----------------------------------\n`;
+    });
+
+    const monthName = new Date(parseInt(filters.year), parseInt(filters.month) - 1).toLocaleString('es-ES', { month: 'long' });
+    const filename = `Reporte_Mensual_${monthName}_${filters.year}.txt`;
+    
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setActiveReport(null);
+  };
+
   const handleGenerate = () => {
+    if (activeReport === 'monthly_txt') {
+        handleGenerateTxt();
+        return;
+    }
+
     // Filtrar primero por programas seleccionados
     let selectedScripts = allScripts.filter(s => {
        return filters.programs.includes(s.genre) || filters.programs.some(p => s.genre.includes(p));
@@ -349,6 +442,10 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
     }
   };
 
+  const getDaysInMonth = (year: string, month: string) => {
+    return new Date(parseInt(year), parseInt(month), 0).getDate();
+  };
+
   const renderModal = () => {
     if (!activeReport) return null;
 
@@ -398,7 +495,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
             </div>
 
             {/* Filtros específicos */}
-            {(activeReport === 'program' || activeReport === 'month') && (
+            {(activeReport === 'program' || activeReport === 'month' || activeReport === 'monthly_txt') && (
                <div className="space-y-2">
                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Año</label>
                  <select 
@@ -466,6 +563,55 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
               </div>
             )}
 
+            {activeReport === 'monthly_txt' && (
+              <>
+                 <div className="space-y-2">
+                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Mes</label>
+                  <select 
+                    value={filters.month}
+                    onChange={(e) => setFilters({...filters, month: e.target.value})}
+                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none text-slate-900 dark:text-white"
+                  >
+                    {Array.from({length: 12}, (_, i) => i + 1).map(m => (
+                      <option key={m} value={m}>{new Date(0, m-1).toLocaleString('es-ES', {month: 'long'})}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Día Inicio</label>
+                        <select 
+                            value={startDay}
+                            onChange={(e) => setStartDay(parseInt(e.target.value))}
+                            className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none text-slate-900 dark:text-white"
+                        >
+                            {Array.from({length: getDaysInMonth(filters.year, filters.month)}, (_, i) => i + 1).map(d => (
+                                <option key={d} value={d}>{d}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="space-y-2">
+                        <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Día Final</label>
+                        <select 
+                            value={endDay}
+                            onChange={(e) => setEndDay(parseInt(e.target.value))}
+                            className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none text-slate-900 dark:text-white"
+                        >
+                            {Array.from({length: getDaysInMonth(filters.year, filters.month)}, (_, i) => i + 1).map(d => (
+                                <option key={d} value={d}>{d}</option>
+                            ))}
+                        </select>
+                    </div>
+                </div>
+                <div className="p-4 bg-emerald-50 dark:bg-emerald-900/20 rounded-xl border border-emerald-100 dark:border-emerald-800">
+                    <p className="text-sm text-emerald-700 dark:text-emerald-300 text-center">
+                        Se generará un archivo de texto plano (.txt) con la estructura solicitada para los días seleccionados.
+                    </p>
+                </div>
+              </>
+            )}
+
             {activeReport === 'year_ago' && (
                 <div className="p-4 bg-indigo-50 dark:bg-indigo-900/20 rounded-xl border border-indigo-100 dark:border-indigo-800">
                     <p className="text-sm text-indigo-700 dark:text-indigo-300 text-center">
@@ -504,6 +650,17 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Reporte Mensual TXT (Solo para Admin, Director, Asesor) */}
+        {canAccessMonthlyReport && (
+            <button onClick={() => setActiveReport('monthly_txt')} className="group bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-200 dark:border-slate-800 hover:border-emerald-500 dark:hover:border-emerald-500 shadow-sm hover:shadow-xl transition-all text-left">
+              <div className="bg-emerald-100 dark:bg-emerald-900/30 w-12 h-12 rounded-2xl flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-4 group-hover:scale-110 transition-transform">
+                <FileText size={24} />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">Reporte Mensual (TXT)</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400">Genera listado de guiones del mes en formato de texto. Incluye Programa, Fecha y Escritor.</p>
+            </button>
+        )}
+
         {/* Temas por Mes */}
         <button onClick={() => setActiveReport('month')} className="group bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-500 shadow-sm hover:shadow-xl transition-all text-left">
           <div className="bg-blue-100 dark:bg-blue-900/30 w-12 h-12 rounded-2xl flex items-center justify-center text-blue-600 dark:text-blue-400 mb-4 group-hover:scale-110 transition-transform">
@@ -523,8 +680,8 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
         </button>
 
         {/* Temas por Programas (Detallado) */}
-        <button onClick={() => setActiveReport('program')} className="group bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-200 dark:border-slate-800 hover:border-emerald-500 dark:hover:border-emerald-500 shadow-sm hover:shadow-xl transition-all text-left">
-          <div className="bg-emerald-100 dark:bg-emerald-900/30 w-12 h-12 rounded-2xl flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-4 group-hover:scale-110 transition-transform">
+        <button onClick={() => setActiveReport('program')} className="group bg-white dark:bg-slate-900 p-6 rounded-[2rem] border border-slate-200 dark:border-slate-800 hover:border-indigo-500 dark:hover:border-indigo-500 shadow-sm hover:shadow-xl transition-all text-left">
+          <div className="bg-indigo-100 dark:bg-indigo-900/30 w-12 h-12 rounded-2xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-4 group-hover:scale-110 transition-transform">
             <Layers size={24} />
           </div>
           <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-1">Temas por Programas</h3>

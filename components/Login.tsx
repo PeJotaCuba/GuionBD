@@ -20,21 +20,24 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
     const adminUser: User = { 
       id: 'admin', 
       username: 'admin', 
-      password: 'GuionCMNL26', 
+      password: 'RadioCiudad0026', 
       role: 'Administrador',
       fullName: 'Pedro José Reyes Acuña',
       mobile: '54413935',
       allowedPrograms: []
     };
 
+    // Verificar credenciales del Admin (Usuario o Móvil)
     if ((identifier === adminUser.username || identifier === adminUser.mobile) && password === adminUser.password) {
       const savedUsers = JSON.parse(localStorage.getItem('guionbd_users') || '[]');
       const savedAdmin = savedUsers.find((u: User) => u.id === 'admin');
+      // Priorizar datos guardados pero permitir acceso si la contraseña hardcoded coincide
       onLogin(savedAdmin || adminUser);
       return;
     }
 
     const savedUsers = JSON.parse(localStorage.getItem('guionbd_users') || '[]');
+    // Verificar credenciales de usuarios registrados (Usuario o Móvil)
     const found = savedUsers.find((u: User) => 
       (u.username === identifier || u.mobile === identifier) && u.password === password
     );

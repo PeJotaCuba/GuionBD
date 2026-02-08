@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { X, Calendar, Search, CheckCircle, FileDown, Filter, ArrowRight } from 'lucide-react';
+import { X, Calendar, Search, CheckCircle, FileDown, Filter, ArrowRight, List, AlertOctagon, UserX, FileQuestion } from 'lucide-react';
 import { Script } from '../types';
 
 interface BalanceModalProps {
@@ -19,6 +19,9 @@ export const BalanceModal: React.FC<BalanceModalProps> = ({ isOpen, onClose, scr
   const [selectedYear, setSelectedYear] = useState<string>('Todos');
   const [selectedMonth, setSelectedMonth] = useState<string>('Todos');
   const [searchQuery, setSearchQuery] = useState('');
+  
+  // Estado para las pestañas en móvil
+  const [activeTab, setActiveTab] = useState<'total' | 'writer' | 'advisor' | 'topic'>('total');
 
   // Resetear estado al abrir
   useEffect(() => {
@@ -27,31 +30,24 @@ export const BalanceModal: React.FC<BalanceModalProps> = ({ isOpen, onClose, scr
       setSelectedYear('Todos');
       setSelectedMonth('Todos');
       setSearchQuery('');
+      setActiveTab('total');
     }
   }, [isOpen]);
 
-  // Obtener años disponibles y válidos
   const availableYears = useMemo(() => {
     const currentYear = new Date().getFullYear();
-    const minValidYear = 2022; // Rango base pedido
-    
-    // Conjunto para evitar duplicados
+    const minValidYear = 2022; 
     const yearsSet = new Set<string>();
 
-    // 1. Extraer años de los scripts existentes, pero VALIDANDO
     scripts.forEach(s => {
       try {
         const y = new Date(s.dateAdded).getFullYear();
-        // Validación estricta: 4 dígitos, entre 2000 y el año actual + 2
         if (y >= 2000 && y <= currentYear + 2 && y.toString().length === 4) {
              yearsSet.add(y.toString());
         }
-      } catch (e) {
-        // Ignorar fechas invalidas
-      }
+      } catch (e) {}
     });
     
-    // 2. Asegurar que el rango base (2022 -> Actual) esté presente
     for(let y = minValidYear; y <= currentYear; y++) {
         yearsSet.add(y.toString());
     }
@@ -59,21 +55,16 @@ export const BalanceModal: React.FC<BalanceModalProps> = ({ isOpen, onClose, scr
     return Array.from(yearsSet).sort((a, b) => b.localeCompare(a));
   }, [scripts]);
 
-  // Lógica principal de filtrado y agrupación
   const reportData = useMemo(() => {
-    // 1. Filtrar por Año y Mes
     let filtered = scripts.filter(s => {
       const date = new Date(s.dateAdded);
       const yearMatch = selectedYear === 'Todos' || date.getFullYear().toString() === selectedYear;
-      // Ajuste de mes: getMonth() es 0-11, MONTHS_LIST index es 0-11
       const monthMatch = selectedMonth === 'Todos' || date.getMonth() === MONTHS_LIST.indexOf(selectedMonth);
       return yearMatch && monthMatch;
     });
 
-    // Ordenar por fecha descendente
     filtered.sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime());
 
-    // 2. Agrupar por categorías de error
     const noWriter = filtered.filter(s => !s.writer || s.writer.trim() === '' || s.writer.toUpperCase().includes("NO ESPECIFICADO") || s.writer.toUpperCase().includes("PECIFICADO"));
     const noAdvisor = filtered.filter(s => !s.advisor || s.advisor.trim() === '' || s.advisor.toUpperCase().includes("NO ESPECIFICADO") || s.advisor.toUpperCase().includes("PECIFICADO"));
     const noTopic = filtered.filter(s => !s.title || s.title.trim() === '' || s.title.toUpperCase() === "SIN TÍTULO" || s.title.toUpperCase().includes("NO ESPECIFICADO"));
@@ -86,7 +77,6 @@ export const BalanceModal: React.FC<BalanceModalProps> = ({ isOpen, onClose, scr
     };
   }, [scripts, selectedYear, selectedMonth]);
 
-  // Filtrado final por búsqueda de texto (aplica a las listas mostradas)
   const filterListBySearch = (list: Script[]) => {
     if (!searchQuery) return list;
     const q = searchQuery.toLowerCase();
@@ -138,6 +128,32 @@ export const BalanceModal: React.FC<BalanceModalProps> = ({ isOpen, onClose, scr
     link.click();
   };
 
+  const renderScriptList = (list: Script[], emptyMessage: string, colorClass: string) => {
+    const filtered = filterListBySearch(list);
+    return (
+      <div className="flex-1 overflow-y-auto p-2 space-y-1 custom-scrollbar min-h-[200px]">
+        {filtered.map(s => (
+          <div key={s.id} className={`p-3 rounded-xl border border-transparent transition-all ${colorClass}`}>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-[10px] font-bold opacity-70">
+                {new Date(s.dateAdded).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })}
+              </span>
+            </div>
+            <p className="text-xs font-medium text-slate-700 dark:text-slate-300 line-clamp-2 leading-snug">
+                {s.title || <span className="italic opacity-50">Sin título</span>}
+            </p>
+          </div>
+        ))}
+        {list.length === 0 && (
+          <div className="h-40 flex flex-col items-center justify-center text-slate-400 opacity-50">
+            <CheckCircle size={32} className="text-emerald-500 mb-2" />
+            <span className="text-xs font-bold">{emptyMessage}</span>
+          </div>
+        )}
+      </div>
+    );
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -145,22 +161,22 @@ export const BalanceModal: React.FC<BalanceModalProps> = ({ isOpen, onClose, scr
       <div className="bg-white dark:bg-slate-900 rounded-[2rem] w-full max-w-7xl shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col h-[90vh] overflow-hidden relative">
         
         {/* Header */}
-        <div className="px-8 py-5 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/80 dark:bg-slate-800/50 backdrop-blur-md">
-          <div>
-            <h2 className="text-xl font-black text-slate-800 dark:text-white tracking-tight flex items-center gap-2">
-              <Calendar size={24} className="text-indigo-500" />
-              Balance: {programName}
+        <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/80 dark:bg-slate-800/50 backdrop-blur-md">
+          <div className="flex-1 overflow-hidden">
+            <h2 className="text-lg md:text-xl font-black text-slate-800 dark:text-white tracking-tight flex items-center gap-2 truncate">
+              <Calendar size={20} className="text-indigo-500 flex-shrink-0" />
+              <span className="truncate">Balance: {programName}</span>
             </h2>
             {step === 'report' && (
-               <p className="text-xs text-slate-500 font-bold mt-1">Filtro: {selectedYear} / {selectedMonth}</p>
+               <p className="text-xs text-slate-500 font-bold mt-0.5">Filtro: {selectedYear} / {selectedMonth}</p>
             )}
           </div>
-          <button onClick={onClose} className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-slate-500">
+          <button onClick={onClose} className="p-2 rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-slate-500 ml-2">
             <X size={24} />
           </button>
         </div>
 
-        {/* CONTENIDO: PASO 1 - FILTROS */}
+        {/* PASO 1: FILTROS */}
         {step === 'filter' && (
           <div className="flex-1 flex flex-col items-center justify-center p-8 bg-slate-50/50 dark:bg-slate-950/50">
             <div className="bg-white dark:bg-slate-800 p-8 rounded-[2.5rem] shadow-xl max-w-lg w-full border border-slate-100 dark:border-slate-700">
@@ -209,24 +225,24 @@ export const BalanceModal: React.FC<BalanceModalProps> = ({ isOpen, onClose, scr
           </div>
         )}
 
-        {/* CONTENIDO: PASO 2 - REPORTE */}
+        {/* PASO 2: REPORTE */}
         {step === 'report' && (
           <div className="flex-1 flex flex-col overflow-hidden bg-slate-50 dark:bg-slate-950">
             {/* Toolbar */}
-            <div className="px-8 py-4 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 flex flex-col md:flex-row gap-4 justify-between items-center">
+            <div className="px-6 py-4 bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 flex flex-col md:flex-row gap-4 justify-between items-center">
               <button 
                   onClick={() => setStep('filter')}
-                  className="text-xs font-bold text-indigo-600 hover:underline flex items-center gap-1"
+                  className="text-xs font-bold text-indigo-600 hover:underline flex items-center gap-1 order-2 md:order-1"
                 >
                   <Filter size={14} /> Cambiar Filtros
               </button>
 
-              <div className="flex gap-3 w-full md:w-auto items-center">
+              <div className="flex gap-3 w-full md:w-auto items-center order-1 md:order-2">
                 <div className="relative group flex-grow md:w-64">
                   <Search size={16} className="absolute left-3 top-3 text-slate-400" />
                   <input
                     type="text"
-                    placeholder="Buscar fecha o tema..."
+                    placeholder="Buscar..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full pl-9 pr-4 py-2.5 bg-slate-100 dark:bg-slate-800 border-none rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500/50"
@@ -234,121 +250,79 @@ export const BalanceModal: React.FC<BalanceModalProps> = ({ isOpen, onClose, scr
                 </div>
                 <button 
                   onClick={handleExportDocx}
-                  className="flex items-center gap-2 px-5 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-bold hover:bg-indigo-700 shadow-lg shadow-indigo-500/20 transition-all"
+                  className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-bold hover:bg-indigo-700 shadow-lg shadow-indigo-500/20 transition-all whitespace-nowrap"
                 >
-                  <FileDown size={18} /> Exportar
+                  <FileDown size={18} /> <span className="hidden sm:inline">Exportar</span>
                 </button>
               </div>
             </div>
 
-            {/* Grid de Resultados */}
+            {/* Navegación por Pestañas (Solo Móvil) */}
+            <div className="md:hidden flex border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 overflow-x-auto no-scrollbar">
+               <button 
+                 onClick={() => setActiveTab('total')}
+                 className={`flex-1 min-w-[80px] py-3 text-xs font-bold border-b-2 transition-colors ${activeTab === 'total' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-slate-500'}`}
+               >
+                 Total ({reportData.total.length})
+               </button>
+               <button 
+                 onClick={() => setActiveTab('writer')}
+                 className={`flex-1 min-w-[80px] py-3 text-xs font-bold border-b-2 transition-colors ${activeTab === 'writer' ? 'border-amber-500 text-amber-600' : 'border-transparent text-slate-500'}`}
+               >
+                 No Autor ({reportData.noWriter.length})
+               </button>
+               <button 
+                 onClick={() => setActiveTab('advisor')}
+                 className={`flex-1 min-w-[80px] py-3 text-xs font-bold border-b-2 transition-colors ${activeTab === 'advisor' ? 'border-orange-500 text-orange-600' : 'border-transparent text-slate-500'}`}
+               >
+                 No Asesor ({reportData.noAdvisor.length})
+               </button>
+               <button 
+                 onClick={() => setActiveTab('topic')}
+                 className={`flex-1 min-w-[80px] py-3 text-xs font-bold border-b-2 transition-colors ${activeTab === 'topic' ? 'border-red-500 text-red-600' : 'border-transparent text-slate-500'}`}
+               >
+                 No Tema ({reportData.noTopic.length})
+               </button>
+            </div>
+
+            {/* Contenido (Grid en Desktop / Único panel en Móvil) */}
             <div className="flex-1 overflow-y-auto custom-scrollbar p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 min-h-full">
                 
-                {/* Columna 1: Total */}
-                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col shadow-sm overflow-hidden h-fit max-h-full">
-                  <div className="p-4 border-b border-slate-100 dark:border-slate-800 bg-indigo-50/50 dark:bg-indigo-900/10">
-                    <h4 className="text-xs font-black text-indigo-500 uppercase tracking-widest">Total Guiones</h4>
-                    <p className="text-3xl font-black text-slate-800 dark:text-white mt-1">{reportData.total.length}</p>
+                {/* Panel Total */}
+                <div className={`bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col shadow-sm overflow-hidden h-fit max-h-full ${activeTab !== 'total' ? 'hidden md:flex' : 'flex'}`}>
+                  <div className="p-4 border-b border-slate-100 dark:border-slate-800 bg-indigo-50/50 dark:bg-indigo-900/10 flex items-center justify-between">
+                    <h4 className="text-xs font-black text-indigo-500 uppercase tracking-widest flex items-center gap-2"><List size={14}/> Total Guiones</h4>
+                    <span className="text-xl font-black text-slate-800 dark:text-white">{reportData.total.length}</span>
                   </div>
-                  <div className="flex-1 overflow-y-auto p-2 space-y-1 custom-scrollbar min-h-[200px]">
-                    {filterListBySearch(reportData.total).map(s => (
-                      <div key={s.id} className="p-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 border border-transparent hover:border-slate-100 dark:hover:border-slate-700 transition-all group">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-[10px] font-bold text-slate-400 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">
-                            {new Date(s.dateAdded).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: '2-digit' })}
-                          </span>
-                        </div>
-                        <p className="text-xs font-medium text-slate-700 dark:text-slate-300 line-clamp-2 leading-snug group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                            {s.title || <span className="italic text-slate-400">Sin título</span>}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
+                  {renderScriptList(reportData.total, "No hay guiones", "hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-slate-100 dark:hover:border-slate-700")}
                 </div>
 
-                {/* Columna 2: Sin Escritor */}
-                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col shadow-sm overflow-hidden h-fit max-h-full">
-                  <div className="p-4 border-b border-slate-100 dark:border-slate-800 bg-amber-50/50 dark:bg-amber-900/10">
-                    <h4 className="text-xs font-black text-amber-500 uppercase tracking-widest">Sin Escritor</h4>
-                    <p className="text-3xl font-black text-slate-800 dark:text-white mt-1">{reportData.noWriter.length}</p>
+                {/* Panel Sin Escritor */}
+                <div className={`bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col shadow-sm overflow-hidden h-fit max-h-full ${activeTab !== 'writer' ? 'hidden md:flex' : 'flex'}`}>
+                  <div className="p-4 border-b border-slate-100 dark:border-slate-800 bg-amber-50/50 dark:bg-amber-900/10 flex items-center justify-between">
+                    <h4 className="text-xs font-black text-amber-500 uppercase tracking-widest flex items-center gap-2"><UserX size={14}/> Sin Escritor</h4>
+                    <span className="text-xl font-black text-slate-800 dark:text-white">{reportData.noWriter.length}</span>
                   </div>
-                  <div className="flex-1 overflow-y-auto p-2 space-y-1 custom-scrollbar min-h-[200px]">
-                    {filterListBySearch(reportData.noWriter).map(s => (
-                      <div key={s.id} className="p-3 rounded-xl bg-amber-50/20 hover:bg-amber-50/50 dark:bg-amber-900/10 dark:hover:bg-amber-900/20 border border-transparent transition-all">
-                        <div className="flex items-center gap-2 mb-1">
-                           <span className="text-[10px] font-bold text-amber-600/70 dark:text-amber-400/70">
-                            {new Date(s.dateAdded).toLocaleDateString()}
-                          </span>
-                        </div>
-                        <p className="text-xs font-medium text-slate-700 dark:text-slate-300 line-clamp-2">
-                            {s.title}
-                        </p>
-                      </div>
-                    ))}
-                    {reportData.noWriter.length === 0 && (
-                      <div className="h-40 flex flex-col items-center justify-center text-slate-400 opacity-50">
-                        <CheckCircle size={32} className="text-emerald-500 mb-2" />
-                        <span className="text-xs font-bold">Todo correcto</span>
-                      </div>
-                    )}
-                  </div>
+                  {renderScriptList(reportData.noWriter, "Todo correcto", "bg-amber-50/20 hover:bg-amber-50/50 dark:bg-amber-900/10 dark:hover:bg-amber-900/20")}
                 </div>
 
-                {/* Columna 3: Sin Asesor */}
-                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col shadow-sm overflow-hidden h-fit max-h-full">
-                  <div className="p-4 border-b border-slate-100 dark:border-slate-800 bg-orange-50/50 dark:bg-orange-900/10">
-                    <h4 className="text-xs font-black text-orange-500 uppercase tracking-widest">Sin Asesor</h4>
-                    <p className="text-3xl font-black text-slate-800 dark:text-white mt-1">{reportData.noAdvisor.length}</p>
+                {/* Panel Sin Asesor */}
+                <div className={`bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col shadow-sm overflow-hidden h-fit max-h-full ${activeTab !== 'advisor' ? 'hidden md:flex' : 'flex'}`}>
+                  <div className="p-4 border-b border-slate-100 dark:border-slate-800 bg-orange-50/50 dark:bg-orange-900/10 flex items-center justify-between">
+                    <h4 className="text-xs font-black text-orange-500 uppercase tracking-widest flex items-center gap-2"><AlertOctagon size={14}/> Sin Asesor</h4>
+                    <span className="text-xl font-black text-slate-800 dark:text-white">{reportData.noAdvisor.length}</span>
                   </div>
-                  <div className="flex-1 overflow-y-auto p-2 space-y-1 custom-scrollbar min-h-[200px]">
-                    {filterListBySearch(reportData.noAdvisor).map(s => (
-                      <div key={s.id} className="p-3 rounded-xl bg-orange-50/20 hover:bg-orange-50/50 dark:bg-orange-900/10 dark:hover:bg-orange-900/20 border border-transparent transition-all">
-                        <div className="flex items-center gap-2 mb-1">
-                           <span className="text-[10px] font-bold text-orange-600/70 dark:text-orange-400/70">
-                            {new Date(s.dateAdded).toLocaleDateString()}
-                          </span>
-                        </div>
-                        <p className="text-xs font-medium text-slate-700 dark:text-slate-300 line-clamp-2">
-                            {s.title}
-                        </p>
-                      </div>
-                    ))}
-                    {reportData.noAdvisor.length === 0 && (
-                      <div className="h-40 flex flex-col items-center justify-center text-slate-400 opacity-50">
-                        <CheckCircle size={32} className="text-emerald-500 mb-2" />
-                        <span className="text-xs font-bold">Todo correcto</span>
-                      </div>
-                    )}
-                  </div>
+                  {renderScriptList(reportData.noAdvisor, "Todo correcto", "bg-orange-50/20 hover:bg-orange-50/50 dark:bg-orange-900/10 dark:hover:bg-orange-900/20")}
                 </div>
 
-                {/* Columna 4: Sin Tema */}
-                <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col shadow-sm overflow-hidden h-fit max-h-full">
-                  <div className="p-4 border-b border-slate-100 dark:border-slate-800 bg-red-50/50 dark:bg-red-900/10">
-                    <h4 className="text-xs font-black text-red-500 uppercase tracking-widest">Sin Tema</h4>
-                    <p className="text-3xl font-black text-slate-800 dark:text-white mt-1">{reportData.noTopic.length}</p>
+                {/* Panel Sin Tema */}
+                <div className={`bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col shadow-sm overflow-hidden h-fit max-h-full ${activeTab !== 'topic' ? 'hidden md:flex' : 'flex'}`}>
+                  <div className="p-4 border-b border-slate-100 dark:border-slate-800 bg-red-50/50 dark:bg-red-900/10 flex items-center justify-between">
+                    <h4 className="text-xs font-black text-red-500 uppercase tracking-widest flex items-center gap-2"><FileQuestion size={14}/> Sin Tema</h4>
+                    <span className="text-xl font-black text-slate-800 dark:text-white">{reportData.noTopic.length}</span>
                   </div>
-                  <div className="flex-1 overflow-y-auto p-2 space-y-1 custom-scrollbar min-h-[200px]">
-                    {filterListBySearch(reportData.noTopic).map(s => (
-                      <div key={s.id} className="p-3 rounded-xl bg-red-50/20 hover:bg-red-50/50 dark:bg-red-900/10 dark:hover:bg-red-900/20 border border-transparent transition-all">
-                        <div className="flex items-center gap-2 mb-1">
-                           <span className="text-[10px] font-bold text-red-600/70 dark:text-red-400/70">
-                            {new Date(s.dateAdded).toLocaleDateString()}
-                          </span>
-                        </div>
-                        <p className="text-xs font-medium text-slate-700 dark:text-slate-300 italic">
-                            Tema no especificado
-                        </p>
-                      </div>
-                    ))}
-                    {reportData.noTopic.length === 0 && (
-                      <div className="h-40 flex flex-col items-center justify-center text-slate-400 opacity-50">
-                        <CheckCircle size={32} className="text-emerald-500 mb-2" />
-                        <span className="text-xs font-bold">Todo correcto</span>
-                      </div>
-                    )}
-                  </div>
+                  {renderScriptList(reportData.noTopic, "Todo correcto", "bg-red-50/20 hover:bg-red-50/50 dark:bg-red-900/10 dark:hover:bg-red-900/20")}
                 </div>
 
               </div>
