@@ -19,7 +19,12 @@ export default function App() {
   useEffect(() => {
     const savedUser = localStorage.getItem('guionbd_session');
     if (savedUser) {
-      setCurrentUser(JSON.parse(savedUser));
+      try {
+        setCurrentUser(JSON.parse(savedUser));
+      } catch (e) {
+        console.error("Error parsing session:", e);
+        localStorage.removeItem('guionbd_session');
+      }
     }
     const savedTheme = localStorage.getItem('guionbd_theme');
     if (savedTheme === 'dark') setDarkMode(true);

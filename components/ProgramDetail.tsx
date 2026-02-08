@@ -61,11 +61,16 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
     return years;
   }, []);
 
-  // Carga inicial
+  // Carga inicial segura
   useEffect(() => {
     const saved = localStorage.getItem(storageKey);
     if (saved) {
-      setScripts(JSON.parse(saved));
+      try {
+        setScripts(JSON.parse(saved));
+      } catch (e) {
+        console.error("Error parsing script data:", e);
+        setScripts([]);
+      }
     } else {
       setScripts([]);
     }
@@ -159,7 +164,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
     });
 
     if (currentUser.role === 'Guionista') {
-        const normalizedUser = normalize(currentUser.fullName);
+        const normalizedUser = normalize(currentUser.fullName || "");
         result = result.filter(s => {
             if (!s.writer) return false;
             const normalizedWriter = normalize(s.writer);
@@ -195,7 +200,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
   const historicScripts = useMemo(() => {
     let baseScripts = scripts;
     if (currentUser.role === 'Guionista') {
-        const normalizedUser = normalize(currentUser.fullName);
+        const normalizedUser = normalize(currentUser.fullName || "");
         baseScripts = baseScripts.filter(s => {
             if (!s.writer) return false;
             const normalizedWriter = normalize(s.writer);

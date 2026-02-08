@@ -28,24 +28,35 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
     };
 
     // Verificar credenciales del Admin (Usuario o Móvil)
+    // El admin siempre tiene acceso de respaldo
     if ((identifier === adminUser.username || identifier === adminUser.mobile) && password === adminUser.password) {
-      const savedUsers = JSON.parse(localStorage.getItem('guionbd_users') || '[]');
-      const savedAdmin = savedUsers.find((u: User) => u.id === 'admin');
+      let savedAdmin = null;
+      try {
+        const savedUsers = JSON.parse(localStorage.getItem('guionbd_users') || '[]');
+        savedAdmin = savedUsers.find((u: User) => u.id === 'admin');
+      } catch (e) {
+        console.error("Error reading users", e);
+      }
       // Priorizar datos guardados pero permitir acceso si la contraseña hardcoded coincide
       onLogin(savedAdmin || adminUser);
       return;
     }
 
-    const savedUsers = JSON.parse(localStorage.getItem('guionbd_users') || '[]');
-    // Verificar credenciales de usuarios registrados (Usuario o Móvil)
-    const found = savedUsers.find((u: User) => 
-      (u.username === identifier || u.mobile === identifier) && u.password === password
-    );
-    
-    if (found) {
-      onLogin(found);
-    } else {
-      setError('Credenciales incorrectas. Verifica tu usuario/móvil y contraseña.');
+    try {
+      const savedUsers = JSON.parse(localStorage.getItem('guionbd_users') || '[]');
+      // Verificar credenciales de usuarios registrados (Usuario o Móvil)
+      const found = savedUsers.find((u: User) => 
+        (u.username === identifier || u.mobile === identifier) && u.password === password
+      );
+      
+      if (found) {
+        onLogin(found);
+      } else {
+        setError('Credenciales incorrectas. Verifica tu usuario/móvil y contraseña.');
+      }
+    } catch (e) {
+       console.error("Error reading users DB", e);
+       setError('Error al leer la base de datos de usuarios. Por favor actualice.');
     }
   };
 

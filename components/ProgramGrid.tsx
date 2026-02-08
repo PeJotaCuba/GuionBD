@@ -48,7 +48,13 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
   const getProgramScripts = (prog: typeof PROGRAMS[0]): Script[] => {
     const key = `guionbd_data_${prog.file}`;
     const saved = localStorage.getItem(key);
-    return saved ? JSON.parse(saved) : [];
+    if (!saved) return [];
+    try {
+      return JSON.parse(saved);
+    } catch (e) {
+      console.error(`Error parsing scripts for ${prog.name}:`, e);
+      return [];
+    }
   };
 
   // Determinar los programas disponibles para el usuario actual (para Informes y Filtrado)
@@ -60,7 +66,7 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
     
     // Guionistas: Solo ven programas donde su nombre aparece como escritor
     if (currentUser.role === 'Guionista') {
-      const normalizedUserName = normalize(currentUser.fullName);
+      const normalizedUserName = normalize(currentUser.fullName || "");
       
       return PROGRAMS.filter(p => {
         const scripts = getProgramScripts(p);
@@ -205,12 +211,15 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
       // 2. Procesar cada archivo de programa: Cargar, Merge (sobrescribir), Guardar
       Object.entries(groupedByProgram).forEach(([file, incomingScripts]) => {
         const key = `guionbd_data_${file}`;
-        const existing: Script[] = JSON.parse(localStorage.getItem(key) || '[]');
+        let existing: Script[] = [];
+        try {
+          const saved = localStorage.getItem(key);
+          existing = saved ? JSON.parse(saved) : [];
+        } catch(e) {
+          console.error("Error reading existing scripts", e);
+        }
         
         // Usar un Map para hacer el merge.
-        // ACTUALIZACIÓN: La clave de unicidad es Fecha + Tema (Título).
-        // Si ya existe un registro con la misma fecha y tema, el NUEVO sobrescribe al VIEJO.
-        // Esto permite corregir escritores o asesores subiendo el archivo de nuevo.
         const mergedMap = new Map<string, Script>();
 
         const generateKey = (s: Script) => {
@@ -236,9 +245,8 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
   const handleDownloadDatabase = () => {
     const allData: any[] = [];
     PROGRAMS.forEach(prog => {
-       const key = `guionbd_data_${prog.file}`;
-       const data: Script[] = JSON.parse(localStorage.getItem(key) || '[]');
-       allData.push(...data);
+       const scripts = getProgramScripts(prog);
+       allData.push(...scripts);
     });
 
     const blob = new Blob([JSON.stringify(allData, null, 2)], { type: "application/json" });

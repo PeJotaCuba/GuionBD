@@ -24,7 +24,14 @@ export const AdminSettings: React.FC = () => {
 
   useEffect(() => {
     const saved = localStorage.getItem('guionbd_users');
-    if (saved) setUsers(JSON.parse(saved));
+    if (saved) {
+      try {
+        setUsers(JSON.parse(saved));
+      } catch (e) {
+        console.error("Error parsing users:", e);
+        setUsers([]);
+      }
+    }
   }, []);
 
   const saveUsers = (updated: User[]) => {
