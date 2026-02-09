@@ -231,11 +231,22 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs, current
         return day >= startDay && day <= endDay;
     });
 
+    // Excluir guiones sin escritor o sin asesor
+    selectedScripts = selectedScripts.filter(s => {
+         const w = (s.writer || "").toUpperCase();
+         const a = (s.advisor || "").toUpperCase();
+         
+         const validWriter = w.trim().length > 0 && !w.includes("NO ESPECIFICADO") && !w.includes("PECIFICADO");
+         const validAdvisor = a.trim().length > 0 && !a.includes("NO ESPECIFICADO") && !a.includes("PECIFICADO");
+         
+         return validWriter && validAdvisor;
+    });
+
     // Ordenar por fecha
     selectedScripts.sort((a, b) => new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime());
 
     if (selectedScripts.length === 0) {
-        alert("No hay guiones para el período y programas seleccionados.");
+        alert("No hay guiones válidos (con escritor y asesor) para el período y programas seleccionados.");
         return;
     }
 
