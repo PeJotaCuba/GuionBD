@@ -75,8 +75,6 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs, current
         const currentYear = now.getFullYear().toString();
         const currentMonth = (now.getMonth() + 1).toString();
         
-        // Si el mes seleccionado coincide con el actual, el fin es hoy.
-        // Si es un mes pasado, el fin es el último día del mes.
         setFilters(prev => ({
             ...prev,
             year: currentYear,
@@ -231,7 +229,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs, current
         return day >= startDay && day <= endDay;
     });
 
-    // Excluir guiones sin escritor o sin asesor
+    // Excluir guiones sin escritor o sin asesor (Lógica robusta solicitada)
     selectedScripts = selectedScripts.filter(s => {
          const w = (s.writer || "").toUpperCase();
          const a = (s.advisor || "").toUpperCase();

@@ -13,6 +13,17 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [error, setError] = useState('');
   const [isUpdating, setIsUpdating] = useState(false);
 
+  // Función auxiliar para validar contraseña o PIN (últimos 4 dígitos)
+  const isValidCredential = (storedPassword: string | undefined | null, inputPassword: string) => {
+    if (!storedPassword) return false;
+    // 1. Coincidencia exacta de contraseña
+    if (storedPassword === inputPassword) return true;
+    // 2. Coincidencia de PIN (4 dígitos y son los últimos 4 de la contraseña)
+    if (inputPassword.length === 4 && storedPassword.length >= 4 && storedPassword.endsWith(inputPassword)) return true;
+    
+    return false;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
@@ -27,32 +38,42 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
       allowedPrograms: []
     };
 
-    // Verificar credenciales del Admin (Usuario o Móvil)
+    // Verificar credenciales del Admin (Usuario o Móvil) con Contraseña o PIN
     // El admin siempre tiene acceso de respaldo
-    if ((identifier === adminUser.username || identifier === adminUser.mobile) && password === adminUser.password) {
+    if ((identifier === adminUser.username || identifier === adminUser.mobile) && isValidCredential(adminUser.password, password)) {
       let savedAdmin = null;
       try {
-        const savedUsers = JSON.parse(localStorage.getItem('guionbd_users') || '[]');
-        savedAdmin = savedUsers.find((u: User) => u.id === 'admin');
+        const raw = localStorage.getItem('guionbd_users');
+        const savedUsers = raw ? JSON.parse(raw) : [];
+        if (Array.isArray(savedUsers)) {
+           savedAdmin = savedUsers.find((u: any) => u && u.id === 'admin');
+        }
       } catch (e) {
         console.error("Error reading users", e);
       }
-      // Priorizar datos guardados pero permitir acceso si la contraseña hardcoded coincide
+      // Priorizar datos guardados pero permitir acceso si la credencial hardcoded coincide
       onLogin(savedAdmin || adminUser);
       return;
     }
 
     try {
-      const savedUsers = JSON.parse(localStorage.getItem('guionbd_users') || '[]');
-      // Verificar credenciales de usuarios registrados (Usuario o Móvil)
-      const found = savedUsers.find((u: User) => 
-        (u.username === identifier || u.mobile === identifier) && u.password === password
+      const raw = localStorage.getItem('guionbd_users');
+      const savedUsers = raw ? JSON.parse(raw) : [];
+      
+      if (!Array.isArray(savedUsers)) {
+         setError('Error: Base de datos de usuarios corrupta. Por favor actualice.');
+         return;
+      }
+
+      // Verificar credenciales de usuarios registrados (Usuario o Móvil) con Contraseña o PIN
+      const found = savedUsers.find((u: any) => 
+        u && (u.username === identifier || u.mobile === identifier) && isValidCredential(u.password, password)
       );
       
       if (found) {
         onLogin(found);
       } else {
-        setError('Credenciales incorrectas. Verifica tu usuario/móvil y contraseña.');
+        setError('Credenciales incorrectas. Verifica tu usuario/móvil y contraseña o PIN.');
       }
     } catch (e) {
        console.error("Error reading users DB", e);
@@ -109,7 +130,7 @@ export const Login: React.FC<LoginProps> = ({ onLogin }) => {
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 pl-1">Contraseña</label>
+              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 pl-1">Contraseña o PIN (4 dígitos)</label>
               <div className="relative group">
                 <Lock size={18} className="absolute left-3.5 top-3.5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
                 <input
