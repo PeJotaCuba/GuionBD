@@ -22,7 +22,7 @@
   {
     "id": "7edb26d5-3e15-48d5-ae8a-08b0ff7e9699",
     "title": "LA TOMA DE DECISIONES",
-    "genre": "BUENOS DÍAS, BAYAMO",
+    "genre": "BUENOS DÍAS BAYAMO",
     "summary": "Escritor: ROSA ARECELIS CHI CEDEÑO | Asesor: LISELL FONTELO DANTA",
     "writer": "ROSA ARECELIS CHI CEDEÑO",
     "advisor": "LISELL FONTELO DANTA",
@@ -39,7 +39,7 @@
   {
     "id": "a1ef04ad-01ea-4dbb-b206-d1cedffefba3",
     "title": "El insomnio es un trastorno del sueño",
-    "genre": "BUENOS DÍAS, BAYAMO",
+    "genre": "BUENOS DÍAS BAYAMO",
     "summary": "Escritor: ROSA ARECELIS CHI CEDEÑO | Asesor: LISELL FONTELO DANTA",
     "writer": "ROSA ARECELIS CHI CEDEÑO",
     "advisor": "LISELL FONTELO DANTA",
@@ -57,7 +57,7 @@
   {
     "id": "3fc8c177-f005-4935-9882-ece9164c05ee",
     "title": "I OP: SACA TEMA DE IDENTIFICACIÓN DE LA PLANTA/ BAJA A…",
-    "genre": "BUENOS DÍAS, BAYAMO",
+    "genre": "BUENOS DÍAS BAYAMO",
     "summary": "Escritor: ROSA ARECELIS CHI CEDEÑO | Asesor: LISELL FONTELO DANTA",
     "writer": "ROSA ARECELIS CHI CEDEÑO",
     "advisor": "LISELL FONTELO DANTA",
@@ -77,7 +77,7 @@
   {
     "id": "cfbe71a5-b889-49aa-9c31-4ebeef627b5b",
     "title": "LA IMPORTANCIA DEL AGUA",
-    "genre": "BUENOS DÍAS, BAYAMO",
+    "genre": "BUENOS DÍAS BAYAMO",
     "summary": "Escritor: ROSA ARECELIS CHI CEDEÑO | Asesor: LISELL FONTELO DANTA",
     "writer": "ROSA ARECELIS CHI CEDEÑO",
     "advisor": "LISELL FONTELO DANTA",
@@ -94,7 +94,7 @@
   {
     "id": "8399bbdd-cc95-49c6-a97e-b50ca65a5135",
     "title": "ALTRUISMO Y COMPROMISO SOCIAL",
-    "genre": "BUENOS DÍAS, BAYAMO",
+    "genre": "BUENOS DÍAS BAYAMO",
     "summary": "Escritor: JORGE LUIS ROSALES SANCHEZ | Asesor: LISSEL FONTELO DANTA",
     "writer": "JORGE LUIS ROSALES SANCHEZ",
     "advisor": "LISSEL FONTELO DANTA",
@@ -108,38 +108,6 @@
     "dateAdded": "2025-12-16T17:00:00.000Z",
     "status": "active",
     "wordCount": 26
-  },
-  {
-    "id": "f62be34d-0bd8-4447-a3fb-9871189c3c37",
-    "title": "NO ESPECIFICADO",
-    "genre": "NO ESPECIFICADO",
-    "summary": "Escritor: NO ESPECIFICADO | Asesor: NO ESPECIFICADO",
-    "writer": "NO ESPECIFICADO",
-    "advisor": "NO ESPECIFICADO",
-    "content": "Programa: NO ESPECIFICADO\nFecha: NO ESPECIFICADA\nEscritor: NO ESPECIFICADO\nAsesor: NO ESPECIFICADO\nTema: NO ESPECIFICADO\n",
-    "themes": [
-      "ESPECIFICADO"
-    ],
-    "tone": "Informativo",
-    "dateAdded": "2026-02-03T19:18:51.892Z",
-    "status": "active",
-    "wordCount": 16
-  },
-  {
-    "id": "1b15e21b-0f24-4852-8795-02b7b70e27e6",
-    "title": "NO ESPECIFICADO",
-    "genre": "NO ESPECIFICADO",
-    "summary": "Escritor: NO ESPECIFICADO | Asesor: NO ESPECIFICADO",
-    "writer": "NO ESPECIFICADO",
-    "advisor": "NO ESPECIFICADO",
-    "content": "Programa: NO ESPECIFICADO\nFecha: NO ESPECIFICADA\nEscritor: NO ESPECIFICADO\nAsesor: NO ESPECIFICADO\nTema: NO ESPECIFICADO\n",
-    "themes": [
-      "ESPECIFICADO"
-    ],
-    "tone": "Informativo",
-    "dateAdded": "2026-02-03T19:18:51.893Z",
-    "status": "active",
-    "wordCount": 16
   },
   {
     "id": "09c991b7-490d-488c-ac1c-aa394d9e7fa5",
@@ -519,20 +487,20 @@
     "wordCount": 23
   },
   {
-    "id": "2763ff35-f0fc-4897-817f-25612762440e",
+    "id": "c3898f4b-d923-41fc-8659-67fd0842666d",
     "title": "EL DENGUE.",
     "genre": "BUENOS DÍAS BAYAMO",
     "summary": "Escritor: ARIADNA MORALES FERNANDEZ. | Asesor: LISELL FONTELO DANTA",
     "writer": "ARIADNA MORALES FERNANDEZ.",
     "advisor": "LISELL FONTELO DANTA",
-    "content": "Programa: BUENOS DÍAS, BAYAMO\nFecha: JUEVES CUATRO DE AGOSTO DE 2022\nEscritor: ARIADNA MORALES FERNANDEZ.\nAsesor: LISELL FONTELO DANTA.\nTema: EL DENGUE.\n",
+    "content": "Programa: BUENOS DÍAS, BAYAMO\nFecha: PRIMERO DE SEPTIEMBRE DE 2022\nEscritor: ARIADNA MORALES FERNANDEZ.\nAsesor: LISELL FONTELO DANTA.\nTema: EL DENGUE.\n",
     "themes": [
       "DENGUE"
     ],
     "tone": "Informativo",
-    "dateAdded": "2026-02-03T18:45:09.036Z",
+    "dateAdded": "2026-02-03T18:45:09.101Z",
     "status": "active",
-    "wordCount": 23
+    "wordCount": 22
   },
   {
     "id": "30519dff-e66b-425b-bc2b-cac9bc3cf4cd",
@@ -3805,22 +3773,6 @@
     "wordCount": 30
   },
   {
-    "id": "c3898f4b-d923-41fc-8659-67fd0842666d",
-    "title": "EL DENGUE.",
-    "genre": "BUENOS DÍAS BAYAMO",
-    "summary": "Escritor: ARIADNA MORALES FERNANDEZ. | Asesor: LISELL FONTELO DANTA",
-    "writer": "ARIADNA MORALES FERNANDEZ.",
-    "advisor": "LISELL FONTELO DANTA",
-    "content": "Programa: BUENOS DÍAS, BAYAMO\nFecha: PRIMERO DE SEPTIEMBRE DE 2022\nEscritor: ARIADNA MORALES FERNANDEZ.\nAsesor: LISELL FONTELO DANTA.\nTema: EL DENGUE.\n",
-    "themes": [
-      "DENGUE"
-    ],
-    "tone": "Informativo",
-    "dateAdded": "2026-02-03T18:45:09.101Z",
-    "status": "active",
-    "wordCount": 22
-  },
-  {
     "id": "48951690-c294-4fdd-9cdd-c98340d004f1",
     "title": "LA DEPRESION.",
     "genre": "BUENOS DÍAS BAYAMO",
@@ -4821,7 +4773,7 @@
     "wordCount": 24
   },
   {
-    "id": "508d8962-80d7-4032-bf02-eb308d3dc3f9",
+    "id": "cacfe81a-28ff-43cd-bb77-819094dbdefe",
     "title": "FIDEL. SUS IDEAS Y LA CONTINUIDAD DE LA REVOLUCON.",
     "genre": "BUENOS DÍAS BAYAMO",
     "summary": "Escritor: CARIDAD AMELIA ROSALES AGUILERA. | Asesor:",
@@ -4835,7 +4787,7 @@
       "REVOLUCON"
     ],
     "tone": "Informativo",
-    "dateAdded": "2026-02-03T18:45:09.124Z",
+    "dateAdded": "2026-02-03T18:45:09.139Z",
     "status": "active",
     "wordCount": 29
   },
@@ -5657,25 +5609,6 @@
     "dateAdded": "2024-07-08T16:00:00.000Z",
     "status": "active",
     "wordCount": 38
-  },
-  {
-    "id": "cacfe81a-28ff-43cd-bb77-819094dbdefe",
-    "title": "FIDEL. SUS IDEAS Y LA CONTINUIDAD DE LA REVOLUCON.",
-    "genre": "BUENOS DÍAS BAYAMO",
-    "summary": "Escritor: CARIDAD AMELIA ROSALES AGUILERA. | Asesor:",
-    "writer": "CARIDAD AMELIA ROSALES AGUILERA.",
-    "advisor": "",
-    "content": "Programa: BUENOS DÍAS, BAYAMO\nFecha: . .ARCHIVO.\nEscritor: CARIDAD AMELIA ROSALES AGUILERA.\nAsesor: . LISSELL FONTELO DANTA\nTema: .   FIDEL. SUS IDEAS  Y LA CONTINUIDAD DE LA REVOLUCON.\n",
-    "themes": [
-      "FIDEL",
-      "IDEAS",
-      "CONTINUIDAD",
-      "REVOLUCON"
-    ],
-    "tone": "Informativo",
-    "dateAdded": "2026-02-03T18:45:09.139Z",
-    "status": "active",
-    "wordCount": 29
   },
   {
     "id": "da743c6c-dcd3-473c-942b-25c90643ebe4",
@@ -8515,7 +8448,7 @@
     "wordCount": 53
   },
   {
-    "id": "f59d93ab-c706-49bb-88b9-8c3823c431e3",
+    "id": "efa1142f-89b2-4331-ac02-5f918a31246f",
     "title": "Sin Título",
     "genre": "BUENOS DÍAS BAYAMO",
     "summary": "Escritor: | Asesor:",
@@ -8526,7 +8459,7 @@
       "Título"
     ],
     "tone": "Informativo",
-    "dateAdded": "2026-02-03T18:45:09.216Z",
+    "dateAdded": "2026-02-03T18:45:09.224Z",
     "status": "active",
     "wordCount": 6
   },
@@ -9036,22 +8969,6 @@
     "dateAdded": "2025-05-06T16:00:00.000Z",
     "status": "active",
     "wordCount": 26
-  },
-  {
-    "id": "efa1142f-89b2-4331-ac02-5f918a31246f",
-    "title": "Sin Título",
-    "genre": "BUENOS DÍAS BAYAMO",
-    "summary": "Escritor: | Asesor:",
-    "writer": "",
-    "advisor": "",
-    "content": "Programa: BUENOS DÍAS, BAYAMO\nFecha:\n",
-    "themes": [
-      "Título"
-    ],
-    "tone": "Informativo",
-    "dateAdded": "2026-02-03T18:45:09.224Z",
-    "status": "active",
-    "wordCount": 6
   },
   {
     "id": "10bdbf00-b6d0-47c6-8834-da08b1b0809d",
@@ -12274,38 +12191,6 @@
     "wordCount": 30
   },
   {
-    "id": "aa25e093-1689-479c-8bb6-eb3bee5b222f",
-    "title": "NO ESPECIFICADO",
-    "genre": "ARTE BAYAMO",
-    "summary": "Escritor: NO ESPECIFICADO | Asesor: PECIFICADO",
-    "writer": "NO ESPECIFICADO",
-    "advisor": "PECIFICADO",
-    "content": "PARTICIPARON ESTE LUNES TRABAJADORES Y ESTUDIANTES BAYAMESES EN ACTOS DE REAFIRMACIÓN REVOLUCIONARIA.docx\r\nPrograma: NO ESPECIFICADO\r\nFecha: NO ESPECIFICADA\r\nEscritor: NO ESPECIFICADO\r\nAsesor: NO ESPECIFICADO\r\nTema: NO ESPECIFICADO",
-    "themes": [
-      "ESPECIFICADO"
-    ],
-    "tone": "Informativo",
-    "dateAdded": "2026-02-01T21:48:58.402Z",
-    "status": "active",
-    "wordCount": 27
-  },
-  {
-    "id": "9afced69-91b5-4bee-966b-7a8f68d1231a",
-    "title": "NO ESPECIFICADO",
-    "genre": "ARTE BAYAMO",
-    "summary": "Escritor: NO ESPECIFICADO | Asesor: PECIFICADO",
-    "writer": "NO ESPECIFICADO",
-    "advisor": "PECIFICADO",
-    "content": "efemerides 27 de abril 2022.doc\r\nPrograma: NO ESPECIFICADO\r\nFecha: de Mil 963: Primera visita oficial de Fidel a la URSS. Se emitió comunicado conjunto de las conversaciones y acuerdos. Moscú se compromete a defender a la isla en caso de ataque. Cinco meses después de concluida la Crisis de los misiles, las relaciones bilaterales y entre Kruschev y Fidel se restañan.\r\nEscritor: NO ESPECIFICADO\r\nAsesor: NO ESPECIFICADO\r\nTema: NO ESPECIFICADO",
-    "themes": [
-      "ESPECIFICADO"
-    ],
-    "tone": "Informativo",
-    "dateAdded": "2026-02-01T21:48:58.387Z",
-    "status": "active",
-    "wordCount": 70
-  },
-  {
     "id": "953d559e-2955-4f4e-bf48-c176452bee0c",
     "title": "NO ESPECIFICADO",
     "genre": "ARTE BAYAMO",
@@ -12901,22 +12786,6 @@
     "wordCount": 31
   },
   {
-    "id": "e8c3a1e5-54e4-4079-8557-b3e67298b0cd",
-    "title": "DE PRESENTACION.",
-    "genre": "del verano,  coincidiendo  con el Día internacional   de la juventud,  en todos los municipios granmenses.",
-    "summary": "Escritor: NO ESPECIFICADO | Asesor: NO ESPECIFICADO",
-    "writer": "NO ESPECIFICADO",
-    "advisor": "NO ESPECIFICADO",
-    "content": "Programa: del verano,  coincidiendo  con el Día internacional   de la juventud,  en todos los municipios granmenses.\nFecha: NO ESPECIFICADA\nEscritor: NO ESPECIFICADO\nAsesor: NO ESPECIFICADO\nTema: DE PRESENTACION.\n",
-    "themes": [
-      "PRESENTACION"
-    ],
-    "tone": "Informativo",
-    "dateAdded": "2026-02-03T19:38:24.990Z",
-    "status": "active",
-    "wordCount": 29
-  },
-  {
     "id": "8462151c-a898-439c-a26b-97e22989b642",
     "title": "LA SALUD DE LAS MUJERES",
     "genre": "HABLANDO CON JUANA",
@@ -13286,25 +13155,6 @@
     "wordCount": 23
   },
   {
-    "id": "f08825d0-919a-451e-84ea-2ddac76024a7",
-    "title": "Patrones de comportamiento que sabotean tu autoestima.",
-    "genre": "CÓMPLICES",
-    "summary": "Escritor: Johan Rey Escalona Naranjo. | Asesor: Caridad Aguilar Rosabal",
-    "writer": "Johan Rey Escalona Naranjo.",
-    "advisor": "Caridad Aguilar Rosabal",
-    "content": "Programa: CÓMPLICES\nFecha: 21 de julio de 2024\nEscritor: Johan Rey Escalona Naranjo.\nAsesor: Caridad Aguilar Rosabal.\nTema: Patrones de comportamiento que sabotean tu autoestima.\n",
-    "themes": [
-      "Patrones",
-      "comportamiento",
-      "sabotean",
-      "autoestima"
-    ],
-    "tone": "Informativo",
-    "dateAdded": "2024-07-21T16:00:00.000Z",
-    "status": "active",
-    "wordCount": 26
-  },
-  {
     "id": "cf7eecf7-00ca-43e5-b0b0-eab59f597c26",
     "title": "Relaciones de pareja su impacto en los hijos",
     "genre": "HABLANDO CON JUANA",
@@ -13627,26 +13477,6 @@
     "dateAdded": "2024-07-29T16:00:00.000Z",
     "status": "active",
     "wordCount": 27
-  },
-  {
-    "id": "4311d071-4281-4355-a5ff-14eee41e6162",
-    "title": "A fin de cuentas, todos vivimos en este mundo, también somos parte de la naturaleza. Nosotros deberíamos ser los primeros en cuidarla.",
-    "genre": "NO ESPECIFICADO",
-    "summary": "Escritor: NO ESPECIFICADO | Asesor: NO ESPECIFICADO",
-    "writer": "NO ESPECIFICADO",
-    "advisor": "NO ESPECIFICADO",
-    "content": "Programa: NO ESPECIFICADO\nFecha: NO ESPECIFICADA\nEscritor: NO ESPECIFICADO\nAsesor: NO ESPECIFICADO\nTema: . A fin de cuentas, todos vivimos en este mundo, también somos parte de la naturaleza. Nosotros deberíamos ser los primeros en cuidarla.\n",
-    "themes": [
-      "cuentas",
-      "todos",
-      "vivimos",
-      "mundo",
-      "también"
-    ],
-    "tone": "Informativo",
-    "dateAdded": "2026-02-03T19:38:24.995Z",
-    "status": "active",
-    "wordCount": 37
   },
   {
     "id": "a0f0b854-d038-4c58-90c9-fd39fe62491f",
@@ -14459,22 +14289,6 @@
     "wordCount": 26
   },
   {
-    "id": "62bca9f2-9cef-4f88-9384-13dc6b9d9c71",
-    "title": "NO ESPECIFICADO",
-    "genre": "NO ESPECIFICADO",
-    "summary": "Escritor: NO ESPECIFICADO | Asesor: NO ESPECIFICADO",
-    "writer": "NO ESPECIFICADO",
-    "advisor": "NO ESPECIFICADO",
-    "content": "Programa: NO ESPECIFICADO\nFecha: NO ESPECIFICADA\nEscritor: NO ESPECIFICADO\nAsesor: NO ESPECIFICADO\nTema: NO ESPECIFICADO\n",
-    "themes": [
-      "ESPECIFICADO"
-    ],
-    "tone": "Informativo",
-    "dateAdded": "2026-02-03T19:38:24.999Z",
-    "status": "active",
-    "wordCount": 16
-  },
-  {
     "id": "13e799ef-b98d-4951-a64a-076590c5a6d8",
     "title": "LA CRIANZA RESPETUOSA O POSITIVA",
     "genre": "HABLANDO CON JUANA",
@@ -14864,22 +14678,6 @@
     "dateAdded": "2024-09-30T16:00:00.000Z",
     "status": "active",
     "wordCount": 27
-  },
-  {
-    "id": "b5eff41b-a387-41c6-b959-4883b6dbed08",
-    "title": "NO ESPECIFICADO",
-    "genre": "NO ESPECIFICADO",
-    "summary": "Escritor: NO ESPECIFICADO | Asesor: NO ESPECIFICADO",
-    "writer": "NO ESPECIFICADO",
-    "advisor": "NO ESPECIFICADO",
-    "content": "Programa: NO ESPECIFICADO\nFecha: NO ESPECIFICADA\nEscritor: NO ESPECIFICADO\nAsesor: NO ESPECIFICADO\nTema: NO ESPECIFICADO\n",
-    "themes": [
-      "ESPECIFICADO"
-    ],
-    "tone": "Informativo",
-    "dateAdded": "2026-02-03T19:38:25.000Z",
-    "status": "active",
-    "wordCount": 16
   },
   {
     "id": "488b0888-52fe-4b8f-bfc7-61a0aa4e06a5",
@@ -15325,22 +15123,6 @@
     "dateAdded": "2025-01-27T17:00:00.000Z",
     "status": "active",
     "wordCount": 24
-  },
-  {
-    "id": "7b0db039-f8d8-421b-8aff-5fcdc44b6843",
-    "title": "NO ESPECIFICADO",
-    "genre": "Ailin Pérez Cortez, directora de la Unidad Empresarial de Base “El Alba”.",
-    "summary": "Escritor: NO ESPECIFICADO | Asesor: NO ESPECIFICADO",
-    "writer": "NO ESPECIFICADO",
-    "advisor": "NO ESPECIFICADO",
-    "content": "Programa: Ailin Pérez Cortez, directora de la Unidad Empresarial de Base “El Alba”.\nFecha: NO ESPECIFICADA\nEscritor: NO ESPECIFICADO\nAsesor: NO ESPECIFICADO\nTema: NO ESPECIFICADO\n",
-    "themes": [
-      "ESPECIFICADO"
-    ],
-    "tone": "Informativo",
-    "dateAdded": "2026-02-03T19:38:25.006Z",
-    "status": "active",
-    "wordCount": 26
   },
   {
     "id": "a09f7e43-cd22-410d-8577-946cad11d274",
@@ -17540,22 +17322,6 @@
     "wordCount": 31
   },
   {
-    "id": "566649a6-b948-49f7-8f60-2921ed09e164",
-    "title": "NO ESPECIFICADO",
-    "genre": "NO ESPECIFICADO",
-    "summary": "Escritor: NO ESPECIFICADO | Asesor: NO ESPECIFICADO",
-    "writer": "NO ESPECIFICADO",
-    "advisor": "NO ESPECIFICADO",
-    "content": "Programa: NO ESPECIFICADO\nFecha: NO ESPECIFICADA\nEscritor: NO ESPECIFICADO\nAsesor: NO ESPECIFICADO\nTema: NO ESPECIFICADO\n",
-    "themes": [
-      "ESPECIFICADO"
-    ],
-    "tone": "Informativo",
-    "dateAdded": "2026-02-03T19:38:25.049Z",
-    "status": "active",
-    "wordCount": 16
-  },
-  {
     "id": "0e04e83f-0ed9-43ed-9a84-3207d4cd4c12",
     "title": "ADICCIÓN A LAS TECNOLOGÍAS EN LOS NIÑOS",
     "genre": "HABLANDO CON JUANA",
@@ -18689,22 +18455,6 @@
     "wordCount": 25
   },
   {
-    "id": "0725fe47-f545-46cc-af99-3b9a1781ef1c",
-    "title": "NO ESPECIFICADO",
-    "genre": "NO ESPECIFICADO",
-    "summary": "Escritor: NO ESPECIFICADO | Asesor: NO ESPECIFICADO",
-    "writer": "NO ESPECIFICADO",
-    "advisor": "NO ESPECIFICADO",
-    "content": "Programa: NO ESPECIFICADO\nFecha: NO ESPECIFICADA\nEscritor: NO ESPECIFICADO\nAsesor: NO ESPECIFICADO\nTema: NO ESPECIFICADO\n",
-    "themes": [
-      "ESPECIFICADO"
-    ],
-    "tone": "Informativo",
-    "dateAdded": "2026-02-03T19:38:25.069Z",
-    "status": "active",
-    "wordCount": 16
-  },
-  {
     "id": "de76aa8a-0d65-4a8e-a994-3ecdf5879697",
     "title": "LAS PAREJAS INTERRACIALES, ENTRE EL AMOR Y LOS PREJUICIOS",
     "genre": "HABLANDO CON JUANA",
@@ -19072,22 +18822,6 @@
     "wordCount": 27
   },
   {
-    "id": "ca30ac45-af5c-47a1-b48f-77576c0bbe98",
-    "title": "NO ESPECIFICADO",
-    "genre": "ción nacional como el servicio Viazul.",
-    "summary": "Escritor: NO ESPECIFICADO | Asesor: NO ESPECIFICADO",
-    "writer": "NO ESPECIFICADO",
-    "advisor": "NO ESPECIFICADO",
-    "content": "Programa: ción nacional como el servicio Viazul.\nFecha: NO ESPECIFICADA\nEscritor: NO ESPECIFICADO\nAsesor: NO ESPECIFICADO\nTema: NO ESPECIFICADO\n",
-    "themes": [
-      "ESPECIFICADO"
-    ],
-    "tone": "Informativo",
-    "dateAdded": "2026-02-03T19:38:25.076Z",
-    "status": "active",
-    "wordCount": 20
-  },
-  {
     "id": "3db1dbe0-2e48-4a1d-a98f-e6e657ed3b1c",
     "title": "LA CRUZ ROJA EN CUBA Y BAYAMO",
     "genre": "HABLANDO CON JUANA",
@@ -19142,24 +18876,6 @@
     ],
     "tone": "Informativo",
     "dateAdded": "2026-01-27T17:00:00.000Z",
-    "status": "active",
-    "wordCount": 28
-  },
-  {
-    "id": "c377e0cd-69c2-41fb-81e1-7a713ea15256",
-    "title": "DE PRESENTACIÓN // RECREAS Y BAJAS A IIP",
-    "genre": "ESTACIÓN 95.3",
-    "summary": "Escritor: BEATRIZ GANADO ARIAS | Asesor: PEDRO JOSÉ REYES ACUÑA",
-    "writer": "BEATRIZ GANADO ARIAS",
-    "advisor": "PEDRO JOSÉ REYES ACUÑA",
-    "content": "Programa: ESTACIÓN 95.3\nFecha: 4 DE ENERO DE 2026\nEscritor: BEATRIZ GANADO ARIAS\nAsesor: PEDRO JOSÉ REYES ACUÑA\nTema: DE PRESENTACIÓN // RECREAS Y BAJAS A IIP\n",
-    "themes": [
-      "PRESENTACIÓN",
-      "RECREAS",
-      "BAJAS"
-    ],
-    "tone": "Informativo",
-    "dateAdded": "2026-01-04T17:00:00.000Z",
     "status": "active",
     "wordCount": 28
   },
@@ -19539,6 +19255,25 @@
     "wordCount": 31
   },
   {
+    "id": "f08825d0-919a-451e-84ea-2ddac76024a7",
+    "title": "Patrones de comportamiento que sabotean tu autoestima.",
+    "genre": "CÓMPLICES",
+    "summary": "Escritor: Johan Rey Escalona Naranjo. | Asesor: Caridad Aguilar Rosabal",
+    "writer": "Johan Rey Escalona Naranjo.",
+    "advisor": "Caridad Aguilar Rosabal",
+    "content": "Programa: CÓMPLICES\nFecha: 21 de julio de 2024\nEscritor: Johan Rey Escalona Naranjo.\nAsesor: Caridad Aguilar Rosabal.\nTema: Patrones de comportamiento que sabotean tu autoestima.\n",
+    "themes": [
+      "Patrones",
+      "comportamiento",
+      "sabotean",
+      "autoestima"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-07-21T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 26
+  },
+  {
     "id": "eb40d4cf-8a4a-42e8-8ab0-80a302dbc290",
     "title": "Día mundial de los humedales.",
     "genre": "CÓMPLICES",
@@ -19556,13 +19291,31 @@
     "wordCount": 32
   },
   {
-    "id": "cdb80bd5-4b6f-4ec8-806e-7342f75b250a",
+    "id": "c377e0cd-69c2-41fb-81e1-7a713ea15256",
+    "title": "DE PRESENTACIÓN // RECREAS Y BAJAS A IIP",
+    "genre": "ESTACIÓN 95.3",
+    "summary": "Escritor: BEATRIZ GANADO ARIAS | Asesor: PEDRO JOSÉ REYES ACUÑA",
+    "writer": "BEATRIZ GANADO ARIAS",
+    "advisor": "PEDRO JOSÉ REYES ACUÑA",
+    "content": "Programa: ESTACIÓN 95.3\nFecha: 4 DE ENERO DE 2026\nEscritor: BEATRIZ GANADO ARIAS\nAsesor: PEDRO JOSÉ REYES ACUÑA\nTema: DE PRESENTACIÓN // RECREAS Y BAJAS A IIP\n",
+    "themes": [
+      "PRESENTACIÓN",
+      "RECREAS",
+      "BAJAS"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2026-01-04T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "c2563117-57c0-46ee-81a6-02859cc4459f",
     "title": "JORNADA VILLANUEVA 2026 EN BAYAMO",
     "genre": "PALCO DE DOMINGO",
     "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
     "writer": "PEDRO JOSÉ REYES ACUÑA",
     "advisor": "LISSELL FONTELO DANTA",
-    "content": "PD 01 FEBRERO 2026.docx (Modif: 01/02/2026 12:42)\r\nPrograma: PALCO DE DOMINGO\r\nFecha: 01 DE FEBRERO DE 2026\r\nEscritor: PEDRO JOSÉ REYES ACUÑA\r\nAsesor: LISSELL FONTELO DANTA\r\nTema: JORNADA VILLANUEVA 2026 EN BAYAMO",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 01 DE FEBRERO DE 2026\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: JORNADA VILLANUEVA 2026 EN BAYAMO\n",
     "themes": [
       "JORNADA",
       "VILLANUEVA",
@@ -19570,8 +19323,2972 @@
       "BAYAMO"
     ],
     "tone": "Informativo",
-    "dateAdded": "2026-02-01T05:00:00.000Z",
+    "dateAdded": "2026-02-01T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 26
+  },
+  {
+    "id": "642d9832-d7cd-4866-8308-082863fc0dd8",
+    "title": "RIQUEZA ARTÍSTICA Y PATRIMONIAL DE LOS MUSEOS DE BAYAMO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSEL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSEL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 07 DE ABRIL DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSEL FONTELO DANTA\nTema: RIQUEZA ARTÍSTICA Y PATRIMONIAL DE LOS MUSEOS DE BAYAMO\n",
+    "themes": [
+      "RIQUEZA",
+      "ARTÍSTICA",
+      "PATRIMONIAL",
+      "MUSEOS",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-04-07T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "dd0c2f9f-ac44-48bb-8d32-cb6d1cbbef81",
+    "title": "LA MÚSICA TRADICIONAL CUBANA Y SU PROMOCIÓN EN BAYAMO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSEL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSEL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 14 DE ABRIL DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSEL FONTELO DANTA\nTema: LA MÚSICA TRADICIONAL CUBANA Y SU PROMOCIÓN EN BAYAMO\n",
+    "themes": [
+      "MÚSICA",
+      "TRADICIONAL",
+      "CUBANA",
+      "PROMOCIÓN",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-04-14T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "5ec1434c-9207-4a22-a36d-c0e982216720",
+    "title": "LA CONSERVACIÓN Y RESTAURACIÓN DE INMUEBLES PATRIMONIALES",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 21 DE ABRIL DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ANA MARGARITA GUTIÉRREZ MUSTELIER\nTema: LA CONSERVACIÓN Y RESTAURACIÓN DE INMUEBLES PATRIMONIALES\n",
+    "themes": [
+      "CONSERVACIÓN",
+      "RESTAURACIÓN",
+      "INMUEBLES",
+      "PATRIMONIALES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-04-21T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 29
+  },
+  {
+    "id": "073d279c-0b39-46db-96c7-22f69ade344c",
+    "title": "BAYAMO, ABRIL Y LA DANZA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 28 DE ABRIL DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: BAYAMO, ABRIL Y LA DANZA\n",
+    "themes": [
+      "BAYAMO",
+      "ABRIL",
+      "DANZA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-04-28T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 26
+  },
+  {
+    "id": "18a75ea7-7135-45b8-a3f7-a543f8546996",
+    "title": "LA ARQUITECTURA BAYAMESA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 04 DE AGOSTO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: LA ARQUITECTURA BAYAMESA\n",
+    "themes": [
+      "ARQUITECTURA",
+      "BAYAMESA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-08-04T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 24
+  },
+  {
+    "id": "2312656e-8343-44b1-857b-fc73d1b97d42",
+    "title": "EL DESARROLLO DEL ARTE EN LA REVOLUCIÓN CUBANA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 11 DE AGOSTO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: EL DESARROLLO DEL ARTE EN LA REVOLUCIÓN CUBANA\n",
+    "themes": [
+      "DESARROLLO",
+      "ARTE",
+      "REVOLUCIÓN",
+      "CUBANA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-08-11T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 29
+  },
+  {
+    "id": "9e93fadf-40c3-429e-8311-db6a2ea201f3",
+    "title": "LA RADIO: ACTUALIDAD EN EL MUNDO, CUBA Y BAYAMO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 18 DE AGOSTO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: LA RADIO: ACTUALIDAD EN EL MUNDO, CUBA Y BAYAMO\n",
+    "themes": [
+      "RADIO",
+      "ACTUALIDAD",
+      "MUNDO",
+      "CUBA",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-08-18T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "08e25498-8187-401f-a1f5-51894f7f24d0",
+    "title": "ARTESANÍAS Y ARTESANOS POPULARES EN BAYAMO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 01 DE DICIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: ARTESANÍAS Y ARTESANOS POPULARES EN BAYAMO\n",
+    "themes": [
+      "ARTESANÍAS",
+      "ARTESANOS",
+      "POPULARES",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-12-01T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 27
+  },
+  {
+    "id": "05833c38-65a0-43ae-a390-95c75c6d593c",
+    "title": "TROVA CUBANA Y SU ESENCIA BAYAMESA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 08 DE DICIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: TROVA CUBANA Y SU ESENCIA BAYAMESA\n",
+    "themes": [
+      "TROVA",
+      "CUBANA",
+      "ESENCIA",
+      "BAYAMESA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-12-08T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 27
+  },
+  {
+    "id": "1f314617-42a2-43af-a4dc-9217418a2fdc",
+    "title": "RECUENTO DE LA JORNADA LEER LA HISTORIA EN BAYAMO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 15 DE DICIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: RECUENTO DE LA JORNADA LEER LA HISTORIA EN BAYAMO\n",
+    "themes": [
+      "RECUENTO",
+      "JORNADA",
+      "LEER",
+      "HISTORIA",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-12-15T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "12310515-71ca-4611-be41-a4d000708709",
+    "title": "CONSUMOS CULTURALES",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ABEL GUERRERO CASTRO",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ABEL GUERRERO CASTRO",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 22 DE DICIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ABEL GUERRERO CASTRO\nTema: CONSUMOS CULTURALES\n",
+    "themes": [
+      "CONSUMOS",
+      "CULTURALES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-12-22T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 23
+  },
+  {
+    "id": "8d8a60b6-a4f9-487b-a740-4aaff12379ec",
+    "title": "LA CULTURA BAYAMESA EN EL AÑO 2024",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ABEL GUERRERO CASTRO",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ABEL GUERRERO CASTRO",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 29 DE DICIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ABEL GUERRERO CASTRO\nTema: LA CULTURA BAYAMESA EN EL AÑO 2024\n",
+    "themes": [
+      "CULTURA",
+      "BAYAMESA",
+      "2024"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-12-29T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "86f4057b-ecd7-4004-ab22-d74b9519d2d9",
+    "title": "ANIVERSARIO 20 DEL MUSEO DE CERA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: YANET DEL TORO ROSALES",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "YANET DEL TORO ROSALES",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 07 DE JULIO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: YANET DEL TORO ROSALES\nTema: ANIVERSARIO 20 DEL MUSEO DE CERA\n",
+    "themes": [
+      "ANIVERSARIO",
+      "MUSEO",
+      "CERA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-07-07T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "f480d0ab-6428-4869-8878-c6a7756a2296",
+    "title": "DISEÑO, ARTE E INDUSTRIA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 14 DE JULIO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: DISEÑO, ARTE E INDUSTRIA\n",
+    "themes": [
+      "DISEÑO",
+      "ARTE",
+      "INDUSTRIA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-07-14T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 25
+  },
+  {
+    "id": "d5051e37-3b20-4022-bb3f-5dd5363f0f2a",
+    "title": "DEVENIR DE LAS MUJERES EN LA LITERATURA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 21 DE JULIO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: DEVENIR DE LAS MUJERES EN LA LITERATURA\n",
+    "themes": [
+      "DEVENIR",
+      "MUJERES",
+      "LITERATURA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-07-21T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "11b6637d-969c-4fc5-b002-4692220589b3",
+    "title": "TRABAJO CON LOS ARTISTAS AFICIONADOS EN BAYAMO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 28 DE JULIO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: TRABAJO CON LOS ARTISTAS AFICIONADOS EN BAYAMO\n",
+    "themes": [
+      "TRABAJO",
+      "ARTISTAS",
+      "AFICIONADOS",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-07-28T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "08c802e8-48dc-462d-9048-f1479fcf5a96",
+    "title": "LITERATURA Y JÓVENES ESCRITORES EN BAYAMO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 02 DE JUNIO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ANA MARGARITA GUTIÉRREZ MUSTELIER\nTema: LITERATURA Y JÓVENES ESCRITORES EN BAYAMO\n",
+    "themes": [
+      "LITERATURA",
+      "JÓVENES",
+      "ESCRITORES",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-06-02T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "bd338168-0617-4755-8535-1c27639b13a5",
+    "title": "CREACIÓN AUDIOVISUAL Y CINEMATOGRÁFICA INDEPENDIENTE EN CUBA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 09 DE JUNIO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ANA MARGARITA GUTIÉRREZ MUSTELIER\nTema: CREACIÓN AUDIOVISUAL Y CINEMATOGRÁFICA INDEPENDIENTE EN CUBA\n",
+    "themes": [
+      "CREACIÓN",
+      "AUDIOVISUAL",
+      "CINEMATOGRÁFICA",
+      "INDEPENDIENTE",
+      "CUBA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-06-09T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 29
+  },
+  {
+    "id": "8960d3bc-f1ac-49ea-9a93-ab73d3c30daa",
+    "title": "PADRES E HIJOS ARTISTAS EN BAYAMO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 16 DE JUNIO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ANA MARGARITA GUTIÉRREZ MUSTELIER\nTema: PADRES E HIJOS ARTISTAS EN BAYAMO\n",
+    "themes": [
+      "PADRES",
+      "HIJOS",
+      "ARTISTAS",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-06-16T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "2fad5d4d-fd6e-4b1c-8d3c-9f2522b2085f",
+    "title": "FORMACIÓN DE ACTORES TITIRITEROS EN BAYAMO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: YANET DEL TORO ROSALES",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "YANET DEL TORO ROSALES",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 23 DE JUNIO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: YANET DEL TORO ROSALES\nTema: FORMACIÓN DE ACTORES TITIRITEROS EN BAYAMO\n",
+    "themes": [
+      "FORMACIÓN",
+      "ACTORES",
+      "TITIRITEROS",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-06-23T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "e3d7b1ac-e220-4d5c-b818-4cd0eee2a309",
+    "title": "LA HISTORIA DE CUBA EN EL ARTE BAYAMÉS",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: YANET DEL TORO ROSALES",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "YANET DEL TORO ROSALES",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 30 DE JUNIO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: YANET DEL TORO ROSALES\nTema: LA HISTORIA DE CUBA EN EL ARTE BAYAMÉS\n",
+    "themes": [
+      "HISTORIA",
+      "CUBA",
+      "ARTE",
+      "BAYAMÉS"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-06-30T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "789c2450-bef0-4fde-9b0a-3ba01f9634ef",
+    "title": "COMPROMISO SOCIAL DEL ARTE Y LOS ARTISTAS",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSEL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSEL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 10 DE MARZO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSEL FONTELO DANTA\nTema: COMPROMISO SOCIAL DEL ARTE Y LOS ARTISTAS\n",
+    "themes": [
+      "COMPROMISO",
+      "SOCIAL",
+      "ARTE",
+      "ARTISTAS"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-03-10T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "8c8f57d2-b046-4270-abf7-3174da73e9e3",
+    "title": "EDICIÓN 32 DE LA FERIA DEL LIBRO Y PRIMER FESTIVAL INTERNACIONAL DE POESÍA DE BAYAMO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSEL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSEL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 17 DE MARZO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSEL FONTELO DANTA\nTema: EDICIÓN 32 DE LA FERIA DEL LIBRO Y PRIMER FESTIVAL INTERNACIONAL DE POESÍA DE BAYAMO\n",
+    "themes": [
+      "EDICIÓN",
+      "FERIA",
+      "LIBRO",
+      "PRIMER",
+      "FESTIVAL"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-03-17T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 36
+  },
+  {
+    "id": "46bb5e42-4162-4534-9d13-e9e677f1e9f1",
+    "title": "VALORES DE LA CULTURA BAYAMESA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSEL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSEL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 24 DE MARZO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSEL FONTELO DANTA\nTema: VALORES DE LA CULTURA BAYAMESA\n",
+    "themes": [
+      "VALORES",
+      "CULTURA",
+      "BAYAMESA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-03-24T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 26
+  },
+  {
+    "id": "99d31ab1-dc39-4b64-bc1e-84404242845d",
+    "title": "EL ARTE COMO REALIZACIÓN HUMANA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSEL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSEL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 31 DE MARZO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSEL FONTELO DANTA\nTema: EL ARTE COMO REALIZACIÓN HUMANA\n",
+    "themes": [
+      "ARTE",
+      "REALIZACIÓN",
+      "HUMANA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-03-31T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 26
+  },
+  {
+    "id": "f0b4b47a-4463-4bcd-ae33-38b536f4a764",
+    "title": "ARTES VISUALES EN ESPACIOS PÚBLICOS DE BAYAMO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 5 DE MAYO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: ARTES VISUALES EN ESPACIOS PÚBLICOS DE BAYAMO\n",
+    "themes": [
+      "ARTES",
+      "VISUALES",
+      "ESPACIOS",
+      "PÚBLICOS",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-05-05T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "956be5eb-08a9-4fb9-9a92-d65e8f4aaa78",
+    "title": "EL TEATRO EN BAYAMO, MÁS ALLÁ DE LA PRIMAVERA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 19 DE MAYO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: EL TEATRO EN BAYAMO, MÁS ALLÁ DE LA PRIMAVERA\n",
+    "themes": [
+      "TEATRO",
+      "BAYAMO",
+      "ALLÁ",
+      "PRIMAVERA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-05-19T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "4fd651f9-43bf-493b-86b6-85bc24bd5666",
+    "title": "EL TEATRO EN BAYAMO, EPÍLOGO DE LA PRIMAVERA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 26 DE MAYO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: EL TEATRO EN BAYAMO, EPÍLOGO DE LA PRIMAVERA\n",
+    "themes": [
+      "TEATRO",
+      "BAYAMO",
+      "EPÍLOGO",
+      "PRIMAVERA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-05-26T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 29
+  },
+  {
+    "id": "cbd69d1a-cd00-44fb-b4eb-6177d3491f9b",
+    "title": "EL DÉCIMO CONGRESO DE LA UNEAC",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 03 DE NOVIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: EL DÉCIMO CONGRESO DE LA UNEAC\n",
+    "themes": [
+      "DÉCIMO",
+      "CONGRESO",
+      "UNEAC"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-11-03T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 27
+  },
+  {
+    "id": "3265f50e-8b7d-4959-8ad3-995c83c1917e",
+    "title": "ARTE COMPROMETIDO CON LA SOCIEDAD",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 10 DE NOVIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: ARTE COMPROMETIDO CON LA SOCIEDAD\n",
+    "themes": [
+      "ARTE",
+      "COMPROMETIDO",
+      "SOCIEDAD"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-11-10T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 26
+  },
+  {
+    "id": "0e66a7e3-ef02-4556-a520-0a6cb1eeb10b",
+    "title": "EL CORO PROFESIONAL DE BAYAMO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 17 DE NOVIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: EL CORO PROFESIONAL DE BAYAMO\n",
+    "themes": [
+      "CORO",
+      "PROFESIONAL",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-11-17T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 26
+  },
+  {
+    "id": "eb0757be-2df3-4f1c-bf5c-40e0058b1810",
+    "title": "BAYAMO Y SUS VALORES POTENCIALES COMO CIUDAD CREATIVA DE LA UNESCO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 24 DE NOVIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: BAYAMO Y SUS VALORES POTENCIALES COMO CIUDAD CREATIVA DE LA UNESCO\n",
+    "themes": [
+      "BAYAMO",
+      "VALORES",
+      "POTENCIALES",
+      "CIUDAD",
+      "CREATIVA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-11-24T17:00:00.000Z",
     "status": "active",
     "wordCount": 32
+  },
+  {
+    "id": "9cd18ea5-f3af-4b93-879b-0c69155c64fd",
+    "title": "PROGRAMA DE SALAS DE TELEVISIÓN EN BAYAMO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 06 DE OCTUBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: PROGRAMA DE SALAS DE TELEVISIÓN EN BAYAMO\n",
+    "themes": [
+      "PROGRAMA",
+      "SALAS",
+      "TELEVISIÓN",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-10-06T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "3831bea4-c2c3-4bcb-90eb-26fb39a06b8b",
+    "title": "LAS SALAS DE TEATRO DE BAYAMO EN LA ACTUALIDAD",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 13 DE OCTUBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: LAS SALAS DE TEATRO DE BAYAMO EN LA ACTUALIDAD\n",
+    "themes": [
+      "SALAS",
+      "TEATRO",
+      "BAYAMO",
+      "ACTUALIDAD"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-10-13T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "4d2a2695-e457-4fea-b1ad-871a8fbd2da3",
+    "title": "CULTURA BAYAMESA: VALORES, TRADICIÓN E IDENTIDAD",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 20 DE OCTUBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: CULTURA BAYAMESA: VALORES, TRADICIÓN E IDENTIDAD\n",
+    "themes": [
+      "CULTURA",
+      "BAYAMESA",
+      "VALORES",
+      "TRADICIÓN",
+      "IDENTIDAD"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-10-20T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 27
+  },
+  {
+    "id": "1e9fac63-7c2e-434f-bc8c-ca3dc11ffee1",
+    "title": "LA NUEVA CANCIÓN LATINOAMERICANA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 27 DE OCTUBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: LA NUEVA CANCIÓN LATINOAMERICANA\n",
+    "themes": [
+      "NUEVA",
+      "CANCIÓN",
+      "LATINOAMERICANA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-10-27T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 25
+  },
+  {
+    "id": "7083dae5-023a-4910-b175-769ef72ea5f5",
+    "title": "EL SISTEMA DE CINES Y SALAS DE VIDEO EN BAYAMO: HISTORIA Y ACTUALIDAD",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 01 DE SEPTIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: EL SISTEMA DE CINES Y SALAS DE VIDEO EN BAYAMO: HISTORIA Y ACTUALIDAD\n",
+    "themes": [
+      "SISTEMA",
+      "CINES",
+      "SALAS",
+      "VIDEO",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-09-01T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 34
+  },
+  {
+    "id": "463bc311-73ae-4ab4-b776-597a69af34f5",
+    "title": "JERARQUIZACIÓN DE LOS VALORES DE LA MÚSICA TRADICIONAL CUBANA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 08 DE SEPTIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: JERARQUIZACIÓN DE LOS VALORES DE LA MÚSICA TRADICIONAL CUBANA\n",
+    "themes": [
+      "JERARQUIZACIÓN",
+      "VALORES",
+      "MÚSICA",
+      "TRADICIONAL",
+      "CUBANA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-09-08T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "7f0524b7-3453-4614-8ff5-e2e8fed4adf6",
+    "title": "LA APRECIACIÓN DE LAS ARTES PLÁSTICAS",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 15 DE SEPTIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: LA APRECIACIÓN DE LAS ARTES PLÁSTICAS\n",
+    "themes": [
+      "APRECIACIÓN",
+      "ARTES",
+      "PLÁSTICAS"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-09-15T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 27
+  },
+  {
+    "id": "99ec9dcf-e6c7-42b5-a6d1-8619c703d883",
+    "title": "VALORES CULTURALES DE LAS BANDAS DE CONCIERTO EN CUBA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 22 DE SEPTIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: VALORES CULTURALES DE LAS BANDAS DE CONCIERTO EN CUBA\n",
+    "themes": [
+      "VALORES",
+      "CULTURALES",
+      "BANDAS",
+      "CONCIERTO",
+      "CUBA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-09-22T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "ab4c094d-6a58-434f-afab-86775da820e0",
+    "title": "POESÍA ROMÁNTICA Y PATRIÓTICA BAYAMESA EN EL SIGLO XIX",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 29 DE SEPTIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: POESÍA ROMÁNTICA Y PATRIÓTICA BAYAMESA EN EL SIGLO XIX\n",
+    "themes": [
+      "POESÍA",
+      "ROMÁNTICA",
+      "PATRIÓTICA",
+      "BAYAMESA",
+      "SIGLO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-09-29T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "c33eb36f-3396-4b06-ba21-71675f22275e",
+    "title": "LOS CINES DE BAYAMO Y EL ONCENO FESTIVAL INTERNACIONAL ITINERANTE DE CINE COMUNITARIO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 06 DE ABRIL DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: LOS CINES DE BAYAMO Y EL ONCENO FESTIVAL INTERNACIONAL ITINERANTE DE CINE COMUNITARIO\n",
+    "themes": [
+      "CINES",
+      "BAYAMO",
+      "ONCENO",
+      "FESTIVAL",
+      "INTERNACIONAL"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-04-06T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 34
+  },
+  {
+    "id": "287e2e4c-cd36-40f9-9750-12cff9ef8b57",
+    "title": "INMUEBLES PATRIMONIALES Y SU CONSERVACIÓN",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 13 DE ABRIL DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: INMUEBLES PATRIMONIALES Y SU CONSERVACIÓN\n",
+    "themes": [
+      "INMUEBLES",
+      "PATRIMONIALES",
+      "CONSERVACIÓN"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-04-13T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 26
+  },
+  {
+    "id": "20263e67-7fb0-4692-853d-28f5a7a94132",
+    "title": "CULTURA, TRADICIONES POPULARES Y CREATIVIDAD EN BAYAMO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 20 DE ABRIL DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: CULTURA, TRADICIONES POPULARES Y CREATIVIDAD EN BAYAMO\n",
+    "themes": [
+      "CULTURA",
+      "TRADICIONES",
+      "POPULARES",
+      "CREATIVIDAD",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-04-20T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "06507cb7-7224-4fdb-bdc0-4a53092e8106",
+    "title": "BAYAMO, ABRIL Y LA DANZA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 27 DE ABRIL DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: BAYAMO, ABRIL Y LA DANZA\n",
+    "themes": [
+      "BAYAMO",
+      "ABRIL",
+      "DANZA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-04-27T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 26
+  },
+  {
+    "id": "96bb5b2b-6212-492c-90af-28de30c1b37b",
+    "title": "EL TEATRO CUBANO Y SU COMPROMISO SOCIAL",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 03 DE AGOSTO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: EL TEATRO CUBANO Y SU COMPROMISO SOCIAL\n",
+    "themes": [
+      "TEATRO",
+      "CUBANO",
+      "COMPROMISO",
+      "SOCIAL"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-08-03T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "d6292b19-f21c-44ce-b664-ad7aab4514fd",
+    "title": "EL BOLERO: PATRIMONIO DE CUBA Y DEL MUNDO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: DIRECTOR: RAFAEL TRABA BORDÓN",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "DIRECTOR: RAFAEL TRABA BORDÓN",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 24 DE AGOSTO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: DIRECTOR: RAFAEL TRABA BORDÓN\nTema: EL BOLERO: PATRIMONIO DE CUBA Y DEL MUNDO\n",
+    "themes": [
+      "BOLERO",
+      "PATRIMONIO",
+      "CUBA",
+      "MUNDO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-08-24T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "90b9e9c6-3942-464b-b8ae-157756fc6fed",
+    "title": "EL ARTE EN TIEMPO DE VERANO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ABEL GUERRERO CASTRO",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ABEL GUERRERO CASTRO",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 31 DE AGOSTO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ABEL GUERRERO CASTRO\nTema: EL ARTE EN TIEMPO DE VERANO\n",
+    "themes": [
+      "ARTE",
+      "TIEMPO",
+      "VERANO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-08-31T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 27
+  },
+  {
+    "id": "2c59c120-1367-4202-8fec-105ab54649f5",
+    "title": "APORTE DEL ARTE A LA REALIZACIÓN PLENA DEL SER HUMANO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSEL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSEL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 05 DE ENERO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSEL FONTELO DANTA\nTema: APORTE DEL ARTE A LA REALIZACIÓN PLENA DEL SER HUMANO\n",
+    "themes": [
+      "APORTE",
+      "ARTE",
+      "REALIZACIÓN",
+      "PLENA",
+      "HUMANO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-01-05T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 31
+  },
+  {
+    "id": "fff7e4c8-52f3-415d-8cde-ef350407b066",
+    "title": "SISTEMA DE BIBLIOTECAS PÚBLICAS EN BAYAMO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 12 DE ENERO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: SISTEMA DE BIBLIOTECAS PÚBLICAS EN BAYAMO\n",
+    "themes": [
+      "SISTEMA",
+      "BIBLIOTECAS",
+      "PÚBLICAS",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-01-12T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 27
+  },
+  {
+    "id": "b15a2921-1a6c-45ce-9923-6334ed3da710",
+    "title": "LAS JORNADAS VILLANUEVA, POR EL DÍA DEL TEATRO CUBANO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 19 DE ENERO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: LAS JORNADAS VILLANUEVA, POR EL DÍA DEL TEATRO CUBANO\n",
+    "themes": [
+      "JORNADAS",
+      "VILLANUEVA",
+      "TEATRO",
+      "CUBANO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-01-19T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "cc645498-2e61-4386-ae52-9d5c43ac9bc2",
+    "title": "ARTE AFICIONADO DEDICADO A JOSÉ MARTÍ, EN BAYAMO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 26 DE ENERO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: ARTE AFICIONADO DEDICADO A JOSÉ MARTÍ, EN BAYAMO\n",
+    "themes": [
+      "ARTE",
+      "AFICIONADO",
+      "DEDICADO",
+      "JOSÉ",
+      "MARTÍ"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-01-26T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 29
+  },
+  {
+    "id": "a6bf3992-62e3-45c3-8ec6-e1717c6b1543",
+    "title": "UNA MIRADA A EVENTOS Y ESPACIOS CULTURALES PARA EL MES DE FEBRERO EN BAYAMO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 02 DE FEBRERO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: UNA MIRADA A EVENTOS Y ESPACIOS CULTURALES PARA EL MES DE FEBRERO EN BAYAMO\n",
+    "themes": [
+      "MIRADA",
+      "EVENTOS",
+      "ESPACIOS",
+      "CULTURALES",
+      "FEBRERO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-02-02T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 35
+  },
+  {
+    "id": "0437b624-8640-4e65-86fd-2334dc16ca96",
+    "title": "DEVENIR DE LA CREACIÓN AUDIOVISUAL Y CINEMATOGRÁFICA INDEPENDIENTE EN CUBA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 16 DE FEBRERO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: DEVENIR DE LA CREACIÓN AUDIOVISUAL Y CINEMATOGRÁFICA INDEPENDIENTE EN CUBA\n",
+    "themes": [
+      "DEVENIR",
+      "CREACIÓN",
+      "AUDIOVISUAL",
+      "CINEMATOGRÁFICA",
+      "INDEPENDIENTE"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-02-16T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 31
+  },
+  {
+    "id": "aadb3150-ed0d-4422-add2-8294ebdd8c59",
+    "title": "EL EVENTO NACIONAL DE PROMOTORES DEL ROCK, “ROCK DE LA LOMA”",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 23 DE FEBRERO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: EL EVENTO NACIONAL DE PROMOTORES DEL ROCK, “ROCK DE LA LOMA”\n",
+    "themes": [
+      "EVENTO",
+      "NACIONAL",
+      "PROMOTORES",
+      "ROCK",
+      "“ROCK"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-02-23T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 32
+  },
+  {
+    "id": "5ba4478b-6189-496d-9499-6ad0088ff971",
+    "title": "LAS MUJERES EN LA LITERATURA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 06 DE JULIO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: LAS MUJERES EN LA LITERATURA\n",
+    "themes": [
+      "MUJERES",
+      "LITERATURA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-07-06T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 26
+  },
+  {
+    "id": "b818718f-f046-4b07-9e79-1786e60feff6",
+    "title": "ARTES PLÁSTICAS EN EL VERANO BAYAMÉS",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 13 DE JULIO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: ARTES PLÁSTICAS EN EL VERANO BAYAMÉS\n",
+    "themes": [
+      "ARTES",
+      "PLÁSTICAS",
+      "VERANO",
+      "BAYAMÉS"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-07-13T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 27
+  },
+  {
+    "id": "63915d86-4926-414e-bf8c-fa0e2319ba88",
+    "title": "BALUARTES INICIADORES DE LA MÚSICA PARA NIÑOS EN CUBA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 20 DE JULIO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: BALUARTES INICIADORES DE LA MÚSICA PARA NIÑOS EN CUBA\n",
+    "themes": [
+      "BALUARTES",
+      "INICIADORES",
+      "MÚSICA",
+      "NIÑOS",
+      "CUBA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-07-20T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "197503df-d135-4133-a336-c9cf0fd1fb54",
+    "title": "IMPORTANCIA DEL ARTE PARA LA INFANCIA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 01 DE JUNIO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: IMPORTANCIA DEL ARTE PARA LA INFANCIA\n",
+    "themes": [
+      "IMPORTANCIA",
+      "ARTE",
+      "INFANCIA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-06-01T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 27
+  },
+  {
+    "id": "a356fb12-b678-4b1c-8834-db68783e2953",
+    "title": "IMPORTANCIA DE LA LECTURA COMO FENÓMENO SOCIOCULTURAL",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 22 DE JUNIO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: IMPORTANCIA DE LA LECTURA COMO FENÓMENO SOCIOCULTURAL\n",
+    "themes": [
+      "IMPORTANCIA",
+      "LECTURA",
+      "FENÓMENO",
+      "SOCIOCULTURAL"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-06-22T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "24093e0c-864d-4067-a376-5f90323d541c",
+    "title": "JORNADA POR EL DÍA DEL HISTORIADOR Y COLOQUIO PROVINCIAL DE HISTORIA GRANMA CORAZÓN DE LA PATRIA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 29 DE JUNIO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: JORNADA POR EL DÍA DEL HISTORIADOR Y COLOQUIO PROVINCIAL DE HISTORIA GRANMA CORAZÓN DE LA PATRIA\n",
+    "themes": [
+      "JORNADA",
+      "HISTORIADOR",
+      "COLOQUIO",
+      "PROVINCIAL",
+      "HISTORIA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-06-29T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 37
+  },
+  {
+    "id": "005e82b4-714c-405c-916e-9098409c8944",
+    "title": "VALORES DE LA CULTURA BAYAMESA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSEL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSEL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 02 DE MARZO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSEL FONTELO DANTA\nTema: VALORES DE LA CULTURA BAYAMESA\n",
+    "themes": [
+      "VALORES",
+      "CULTURA",
+      "BAYAMESA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-03-02T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 26
+  },
+  {
+    "id": "42e788f8-5128-4980-8489-2aa85e70e52b",
+    "title": "LA HISTORIA DE CUBA EN EL ARTE BAYAMÉS",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 16 DE MARZO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: LA HISTORIA DE CUBA EN EL ARTE BAYAMÉS\n",
+    "themes": [
+      "HISTORIA",
+      "CUBA",
+      "ARTE",
+      "BAYAMÉS"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-03-16T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 29
+  },
+  {
+    "id": "7c2f00a7-fea0-4a09-9667-680d3966e115",
+    "title": "EDICIÓN 33 DE LA FERIA DEL LIBRO EN BAYAMO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSEL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSEL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 23 DE MARZO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSEL FONTELO DANTA\nTema: EDICIÓN 33 DE LA FERIA DEL LIBRO EN BAYAMO\n",
+    "themes": [
+      "EDICIÓN",
+      "FERIA",
+      "LIBRO",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-03-23T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "8c4ae8bc-2828-4215-9608-9d094995b307",
+    "title": "RECUENTO DE LA JORNADA DE LA CULTURA BAYAMESA 2025",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSEL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSEL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 30 DE MARZO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSEL FONTELO DANTA\nTema: RECUENTO DE LA JORNADA DE LA CULTURA BAYAMESA 2025\n",
+    "themes": [
+      "RECUENTO",
+      "JORNADA",
+      "CULTURA",
+      "BAYAMESA",
+      "2025"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-03-30T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "d2f154b9-1906-4dc7-b68d-1acf8a261c8d",
+    "title": "MADRES Y MATERNIDAD COMO INSPIRACIÓN EN EL ARTE",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 11 DE MAYO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: MADRES Y MATERNIDAD COMO INSPIRACIÓN EN EL ARTE\n",
+    "themes": [
+      "MADRES",
+      "MATERNIDAD",
+      "INSPIRACIÓN",
+      "ARTE"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-05-11T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 29
+  },
+  {
+    "id": "a85815fe-d26d-4f8b-80a5-799ffd0c4fa5",
+    "title": "PRIMAVERA TEATRAL EN BAYAMO. PARTE I",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 18 DE MAYO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: PRIMAVERA TEATRAL EN BAYAMO. PARTE I\n",
+    "themes": [
+      "PRIMAVERA",
+      "TEATRAL",
+      "BAYAMO",
+      "PARTE"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-05-18T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 27
+  },
+  {
+    "id": "ec988ec2-da05-4fa5-809f-5ee70fa52282",
+    "title": "EL TEATRO EN BAYAMO, EPÍLOGO DE LA PRIMAVERA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 25 DE MAYO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: EL TEATRO EN BAYAMO, EPÍLOGO DE LA PRIMAVERA\n",
+    "themes": [
+      "TEATRO",
+      "BAYAMO",
+      "EPÍLOGO",
+      "PRIMAVERA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-05-25T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 29
+  },
+  {
+    "id": "1f017040-83ff-4809-88c3-66a9930c4db8",
+    "title": "RECUENTO DE LA TRIGÉSIMA EDICIÓN DE LA FIESTA DE LA CUBANÍA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 12 DE OCTUBRE DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: RECUENTO DE LA TRIGÉSIMA EDICIÓN DE LA FIESTA DE LA CUBANÍA\n",
+    "themes": [
+      "RECUENTO",
+      "TRIGÉSIMA",
+      "EDICIÓN",
+      "FIESTA",
+      "CUBANÍA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-10-12T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 32
+  },
+  {
+    "id": "bea77964-2b9d-4f39-a7c1-0374048581d1",
+    "title": "RECUENTO DE LA TRIGÉSIMA PRIMERA EDICIÓN DE LA FIESTA DE LA CUBANÍA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 26 DE OCTUBRE DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: RECUENTO DE LA TRIGÉSIMA PRIMERA EDICIÓN DE LA FIESTA DE LA CUBANÍA\n",
+    "themes": [
+      "RECUENTO",
+      "TRIGÉSIMA",
+      "PRIMERA",
+      "EDICIÓN",
+      "FIESTA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-10-26T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 33
+  },
+  {
+    "id": "76c30bc1-af19-4de2-8a79-52fc0404bafa",
+    "title": "SALONES PROVINCIALES DE ARTES PLÁSTICAS EN BAYAMO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 14 DE SEPTIEMBRE DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: SALONES PROVINCIALES DE ARTES PLÁSTICAS EN BAYAMO\n",
+    "themes": [
+      "SALONES",
+      "PROVINCIALES",
+      "ARTES",
+      "PLÁSTICAS",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-09-14T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "9923fc57-8511-4614-9f46-7efc2f5c2899",
+    "title": "LOS CONCURSOS EN EL ARTE",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 28 DE SEPTIEMBRE DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: LOS CONCURSOS EN EL ARTE\n",
+    "themes": [
+      "CONCURSOS",
+      "ARTE"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-09-28T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 26
+  },
+  {
+    "id": "fe105086-9341-405c-8450-e1f905aed90a",
+    "title": "LA OBRA LITERARIA DE LUIS CARLOS SUÁREZ, ESCRITOR GRANMENSE",
+    "genre": "PALCO DE DOMINGO\u000bESCRIBE: PEDRO JOSÉ REYES ACUÑA\u000bASESORA: LISSELL FONTELO DANTA\u000bDIRECTOR: RAFAEL TRABA BORDÓN\u000bREALIZADOR DE SONIDO: JOSÉ GONZÁLEZ COBO\u000bLOCUTOR: LUIS YERO PLA\u000bFECHA: 7 DE DICIEMBRE\u000bTEMA: LA OBRA LITERARIA DE LUIS CARLOS SUÁREZ, ESCRITOR GRANMENSE",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA\u000bASESORA: LISSELL FONTELO DANTA\u000bDIRECTOR: RAFAEL TRABA BORDÓN\u000bREALIZADOR DE SONIDO: JOSÉ GONZÁLEZ COBO\u000bLOCUTOR: LUIS YERO PLA\u000bFECHA: 7 DE DICIEMBRE\u000bTEMA: LA OBRA LITERARIA DE LUIS CARLOS SUÁREZ, ESCRITOR GRANMENSE | Asesor: LISSELL FONTELO DANTA\u000bDIRECTOR: RAFAEL TRABA BORDÓN\u000bREALIZADOR DE SONIDO: JOSÉ GONZÁLEZ COBO\u000bLOCUTOR: LUIS YERO PLA\u000bFECHA: 7 DE DICIEMBRE\u000bTEMA: LA OBRA LITERARIA DE LUIS CARLOS SUÁREZ",
+    "writer": "PEDRO JOSÉ REYES ACUÑA\u000bASESORA: LISSELL FONTELO DANTA\u000bDIRECTOR: RAFAEL TRABA BORDÓN\u000bREALIZADOR DE SONIDO: JOSÉ GONZÁLEZ COBO\u000bLOCUTOR: LUIS YERO PLA\u000bFECHA: 7 DE DICIEMBRE\u000bTEMA: LA OBRA LITERARIA DE LUIS CARLOS SUÁREZ, ESCRITOR GRANMENSE",
+    "advisor": "LISSELL FONTELO DANTA\u000bDIRECTOR: RAFAEL TRABA BORDÓN\u000bREALIZADOR DE SONIDO: JOSÉ GONZÁLEZ COBO\u000bLOCUTOR: LUIS YERO PLA\u000bFECHA: 7 DE DICIEMBRE\u000bTEMA: LA OBRA LITERARIA DE LUIS CARLOS SUÁREZ",
+    "content": "Programa: PALCO DE DOMINGO\u000bESCRIBE: PEDRO JOSÉ REYES ACUÑA\u000bASESORA: LISSELL FONTELO DANTA\u000bDIRECTOR: RAFAEL TRABA BORDÓN\u000bREALIZADOR DE SONIDO: JOSÉ GONZÁLEZ COBO\u000bLOCUTOR: LUIS YERO PLA\u000bFECHA: 7 DE DICIEMBRE\u000bTEMA: LA OBRA LITERARIA DE LUIS CARLOS SUÁREZ, ESCRITOR GRANMENSE\nFecha: 7 DE DICIEMBRE\u000bTEMA: LA OBRA LITERARIA DE LUIS CARLOS SUÁREZ, ESCRITOR GRANMENSE\nEscritor: PEDRO JOSÉ REYES ACUÑA\u000bASESORA: LISSELL FONTELO DANTA\u000bDIRECTOR: RAFAEL TRABA BORDÓN\u000bREALIZADOR DE SONIDO: JOSÉ GONZÁLEZ COBO\u000bLOCUTOR: LUIS YERO PLA\u000bFECHA: 7 DE DICIEMBRE\u000bTEMA: LA OBRA LITERARIA DE LUIS CARLOS SUÁREZ, ESCRITOR GRANMENSE\nAsesor: LISSELL FONTELO DANTA\u000bDIRECTOR: RAFAEL TRABA BORDÓN\u000bREALIZADOR DE SONIDO: JOSÉ GONZÁLEZ COBO\u000bLOCUTOR: LUIS YERO PLA\u000bFECHA: 7 DE DICIEMBRE\u000bTEMA: LA OBRA LITERARIA DE LUIS CARLOS SUÁREZ, ESCRITOR GRANMENSE\nTema: LA OBRA LITERARIA DE LUIS CARLOS SUÁREZ, ESCRITOR GRANMENSE\n",
+    "themes": [
+      "OBRA",
+      "LITERARIA",
+      "LUIS",
+      "CARLOS",
+      "SUÁREZ"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2026-02-16T16:31:32.051Z",
+    "status": "active",
+    "wordCount": 135
+  },
+  {
+    "id": "58dfc712-1d3e-4bf8-8a51-15de44213e55",
+    "title": "ARTE Y LITERATURA PARA LOS BUENOS MOMENTOS EN FAMILIA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 21 DE DICIEMBRE DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: ARTE Y LITERATURA PARA LOS BUENOS MOMENTOS EN FAMILIA\n",
+    "themes": [
+      "ARTE",
+      "LITERATURA",
+      "BUENOS",
+      "MOMENTOS",
+      "FAMILIA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-12-21T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "5be26967-344a-4d5e-8bc4-ddb1931e8e39",
+    "title": "BAYAMO Y EL ESPÍRITU DE LA DANZA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 30 DE NOVIEMBRE DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: BAYAMO Y EL ESPÍRITU DE LA DANZA\n",
+    "themes": [
+      "BAYAMO",
+      "ESPÍRITU",
+      "DANZA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-11-30T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "92c34c18-5ed2-4ef1-b4c2-c2b9e16208ac",
+    "title": "BALANCE DE LOS TEMAS TRATADOS EN EL AÑO 2025",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 4 DE ENERO DE 2026\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: BALANCE DE LOS TEMAS TRATADOS EN EL AÑO 2025\n",
+    "themes": [
+      "BALANCE",
+      "TEMAS",
+      "TRATADOS",
+      "2025"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2026-01-04T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "52a6b129-2707-4c63-9e7c-8cf1d6280d51",
+    "title": "ARTE Y TECNOLOGÍA EN LA CONTEMPORANEIDAD",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 11 DE ENERO DE 2026\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: ARTE Y TECNOLOGÍA EN LA CONTEMPORANEIDAD\n",
+    "themes": [
+      "ARTE",
+      "TECNOLOGÍA",
+      "CONTEMPORANEIDAD"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2026-01-11T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 27
+  },
+  {
+    "id": "f1edafad-44ce-40e4-a385-c82630d86221",
+    "title": "LAS JORNADAS VILLANUEVA EN GRANMA",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 18 DE ENERO DE 2026\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: LAS JORNADAS VILLANUEVA EN GRANMA\n",
+    "themes": [
+      "JORNADAS",
+      "VILLANUEVA",
+      "GRANMA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2026-01-18T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 26
+  },
+  {
+    "id": "e3c86e35-059b-40ce-99c7-8cad37281d6f",
+    "title": "DESARROLLO DE LA JORNADA VILLANUEVA dos mil 26 EN BAYAMO",
+    "genre": "PALCO DE DOMINGO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: PALCO DE DOMINGO\nFecha: 25 DE ENERO DE dos mil 26\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: DESARROLLO DE LA JORNADA VILLANUEVA dos mil 26 EN BAYAMO\n",
+    "themes": [
+      "DESARROLLO",
+      "JORNADA",
+      "VILLANUEVA",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2026-02-16T16:31:32.053Z",
+    "status": "active",
+    "wordCount": 33
+  },
+  {
+    "id": "340acd0f-8017-465b-8a51-a8650d470bff",
+    "title": "CENTRAL:",
+    "genre": ", ESCRIBA, etc.)",
+    "summary": "Escritor: [NOMBRE COMPLETO] | Asesor: LISSELL FONTELO DANTA",
+    "writer": "[NOMBRE COMPLETO]",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: , ESCRIBA, etc.)\nFecha: [DÍA] DE [MES] DE [AÑO]\nEscritor: [NOMBRE COMPLETO]\nAsesor: LISSELL FONTELO DANTA\nTema: CENTRAL:\n",
+    "themes": [
+      "CENTRAL"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2026-02-16T16:31:32.053Z",
+    "status": "active",
+    "wordCount": 20
+  },
+  {
+    "id": "ec67a8b2-a274-472d-a5db-ea0c732d6603",
+    "title": "EL CONSEJO POPULAR CAMILO CIENFUEGOS",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 12 DE AGOSTO DE 2023\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ANA MARGARITA GUTIÉRREZ MUSTELIER\nTema: EL CONSEJO POPULAR CAMILO CIENFUEGOS\n",
+    "themes": [
+      "CONSEJO",
+      "POPULAR",
+      "CAMILO",
+      "CIENFUEGOS"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2023-08-12T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "021b33c6-c2be-4833-b947-93c52f836277",
+    "title": "EL PROYECTO SOCIOCULTURAL COMUNITARIO DOCE DE ENERO",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 15 DE JULIO DE 2023\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: EL PROYECTO SOCIOCULTURAL COMUNITARIO DOCE DE ENERO\n",
+    "themes": [
+      "PROYECTO",
+      "SOCIOCULTURAL",
+      "COMUNITARIO",
+      "DOCE",
+      "ENERO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2023-07-15T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 29
+  },
+  {
+    "id": "e2ee805b-81b5-45fa-af99-a1353af4292f",
+    "title": "LABOR DE LA FMC EN LAS COMUNIDADES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 19 DE AGOSTO DE 2023\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ANA MARGARITA GUTIÉRREZ MUSTELIER\nTema: LABOR DE LA FMC EN LAS COMUNIDADES\n",
+    "themes": [
+      "LABOR",
+      "COMUNIDADES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2023-08-19T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "9f75a158-f913-464e-9edb-cd1b88f1c92b",
+    "title": "RESUMEN DE ACTIVIDADES VERANIEGAS EN LOS BARRIOS",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 2 DE SEPTIEMBRE DE 2023\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ANA MARGARITA GUTIÉRREZ MUSTELIER\nTema: RESUMEN DE ACTIVIDADES VERANIEGAS EN LOS BARRIOS\n",
+    "themes": [
+      "RESUMEN",
+      "ACTIVIDADES",
+      "VERANIEGAS",
+      "BARRIOS"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2023-09-02T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "8f2040bb-9af1-4dc4-a09a-48a0164ddd69",
+    "title": "LA LABOR DE LOS DELEGADOS DE CIRCUNSCRIPCIÓN EN LAS COMUNIDADES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 22 DE JULIO DE 2023\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ANA MARGARITA GUTIÉRREZ MUSTELIER\nTema: LA LABOR DE LOS DELEGADOS DE CIRCUNSCRIPCIÓN EN LAS COMUNIDADES\n",
+    "themes": [
+      "LABOR",
+      "DELEGADOS",
+      "CIRCUNSCRIPCIÓN",
+      "COMUNIDADES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2023-07-22T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 33
+  },
+  {
+    "id": "cefba237-6945-468a-bccb-776d7ff8911c",
+    "title": "LA BUENA CONVIVENCIA ENTRE VECINOS",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 26 DE AGOSTO DE 2023\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ANA MARGARITA GUTIÉRREZ MUSTELIER\nTema: LA BUENA CONVIVENCIA ENTRE VECINOS\n",
+    "themes": [
+      "BUENA",
+      "CONVIVENCIA",
+      "ENTRE",
+      "VECINOS"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2023-08-26T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "1fdf4a29-723c-4847-ba30-bc315f5bf72b",
+    "title": "LABOR COMUNITARIA DEL MONUMENTO PLAZA DE LA PATRIA",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 29 DE JULIO DE 2023\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ANA MARGARITA GUTIÉRREZ MUSTELIER\nTema: LABOR COMUNITARIA DEL MONUMENTO PLAZA DE LA PATRIA\n",
+    "themes": [
+      "LABOR",
+      "COMUNITARIA",
+      "MONUMENTO",
+      "PLAZA",
+      "PATRIA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2023-07-29T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 31
+  },
+  {
+    "id": "d2abd18f-fea2-44ef-b84f-d9d0005c53da",
+    "title": "AGRICULTURA URBANA, SUBURBANA Y FAMILIAR EN NUESTROS BARRIOS",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 5 DE AGOSTO DE 2023\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ANA MARGARITA GUTIÉRREZ MUSTELIER\nTema: AGRICULTURA URBANA, SUBURBANA Y FAMILIAR EN NUESTROS BARRIOS\n",
+    "themes": [
+      "AGRICULTURA",
+      "URBANA",
+      "SUBURBANA",
+      "FAMILIAR",
+      "NUESTROS"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2023-08-05T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 31
+  },
+  {
+    "id": "ef1b29bf-3871-4ce1-aaf0-1b6948b6e0e0",
+    "title": "EL BARRIO LA OLLÁ",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "LISSELL FONTELO DANTA",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 8 DE JULIO DE 2023\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: LISSELL FONTELO DANTA\nTema: EL BARRIO LA OLLÁ\n",
+    "themes": [
+      "BARRIO",
+      "OLLÁ"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2023-07-08T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 26
+  },
+  {
+    "id": "5c4292bc-f695-4a9a-b1f2-3f5ec8ff2880",
+    "title": "PROYECTO SOCIOCULTURAL MANOS MÁGICAS, DE ARTESANAS BAYAMESAS",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 06 DE ABRIL DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: PROYECTO SOCIOCULTURAL MANOS MÁGICAS, DE ARTESANAS BAYAMESAS\n",
+    "themes": [
+      "PROYECTO",
+      "SOCIOCULTURAL",
+      "MANOS",
+      "MÁGICAS",
+      "ARTESANAS"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-04-06T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 29
+  },
+  {
+    "id": "7f29bd73-1a85-48bf-8198-946a0edeb88e",
+    "title": "PROYECTO “ALMAS CALLEJERAS”, EN FAVOR DE LOS ANIMALES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ABEL GUERRERO CASTRO",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ABEL GUERRERO CASTRO",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 13 DE ABRIL DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ABEL GUERRERO CASTRO\nTema: PROYECTO “ALMAS CALLEJERAS”, EN FAVOR DE LOS ANIMALES\n",
+    "themes": [
+      "PROYECTO",
+      "“ALMAS",
+      "CALLEJERAS”",
+      "FAVOR",
+      "ANIMALES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-04-13T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "f1d6e8a6-5ad9-4dab-9bc1-80dc2bcc8c67",
+    "title": "LABOR DE LOS TRABAJADORES SOCIALES EN EL CONSEJO POPULAR JESÚS MENÉNDEZ",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ABEL GUERRERO CASTRO",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ABEL GUERRERO CASTRO",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 20 DE ABRIL DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ABEL GUERRERO CASTRO\nTema: LABOR DE LOS TRABAJADORES SOCIALES EN EL CONSEJO POPULAR JESÚS MENÉNDEZ\n",
+    "themes": [
+      "LABOR",
+      "TRABAJADORES",
+      "SOCIALES",
+      "CONSEJO",
+      "POPULAR"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-04-20T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 33
+  },
+  {
+    "id": "2fd36115-47bb-4055-9caa-bf067259c517",
+    "title": "IMPACTO DEL PROYECTO SOCIOCULTURAL “CUBA MODELA” EN LAS COMUNIDADES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ABEL GUERRERO CASTRO",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ABEL GUERRERO CASTRO",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 27 DE ABRIL DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ABEL GUERRERO CASTRO\nTema: IMPACTO DEL PROYECTO SOCIOCULTURAL “CUBA MODELA” EN LAS COMUNIDADES\n",
+    "themes": [
+      "IMPACTO",
+      "PROYECTO",
+      "SOCIOCULTURAL",
+      "“CUBA",
+      "MODELA”"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-04-27T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 31
+  },
+  {
+    "id": "f7651808-8ac7-41c1-81a5-9ed969bcd2e4",
+    "title": "IMPACTO SOCIAL DE LA SOCIEDAD DE EMPRENDEDORES “AYUDA A CRECER”",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 03 DE AGOSTO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: IMPACTO SOCIAL DE LA SOCIEDAD DE EMPRENDEDORES “AYUDA A CRECER”\n",
+    "themes": [
+      "IMPACTO",
+      "SOCIAL",
+      "SOCIEDAD",
+      "EMPRENDEDORES",
+      "“AYUDA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-08-03T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 32
+  },
+  {
+    "id": "34b59062-52dd-4008-ad69-9f3de204a753",
+    "title": "LABOR COMUNITARIA DE LOS PROMOTORES DE SALUD DE LA RED HSH EN BAYAMO",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 10 DE AGOSTO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: LABOR COMUNITARIA DE LOS PROMOTORES DE SALUD DE LA RED HSH EN BAYAMO\n",
+    "themes": [
+      "LABOR",
+      "COMUNITARIA",
+      "PROMOTORES",
+      "SALUD",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-08-10T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 35
+  },
+  {
+    "id": "bc1e724c-0c20-4341-aee4-bc4e70f1c36e",
+    "title": "LABOR DEL MÉDICO Y LA ENFERMERA DE LA FAMILIA EN LAS COMUNIDADES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 17 DE AGOSTO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: LABOR DEL MÉDICO Y LA ENFERMERA DE LA FAMILIA EN LAS COMUNIDADES\n",
+    "themes": [
+      "LABOR",
+      "MÉDICO",
+      "ENFERMERA",
+      "FAMILIA",
+      "COMUNIDADES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-08-17T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 34
+  },
+  {
+    "id": "7ded9da8-87d8-4222-9d98-ed620cd41913",
+    "title": "LABOR DE LA CASA DE ORIENTACIÓN A LA MUJER Y LA FAMILIA EN BAYAMO",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 31 DE AGOSTO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: LABOR DE LA CASA DE ORIENTACIÓN A LA MUJER Y LA FAMILIA EN BAYAMO\n",
+    "themes": [
+      "LABOR",
+      "CASA",
+      "ORIENTACIÓN",
+      "MUJER",
+      "FAMILIA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-08-31T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 36
+  },
+  {
+    "id": "f6a3246a-1354-48da-81fe-d14ee29d9edb",
+    "title": "LABOR COMUNITARIA DEL PROYECTO DE DESARROLLO LOCAL “PA´LANTE RECORDS”",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 07 DE DICIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: LABOR COMUNITARIA DEL PROYECTO DE DESARROLLO LOCAL “PA´LANTE RECORDS”\n",
+    "themes": [
+      "LABOR",
+      "COMUNITARIA",
+      "PROYECTO",
+      "DESARROLLO",
+      "LOCAL"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-12-07T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 31
+  },
+  {
+    "id": "183806ba-4a1e-416e-a711-44cf1d5013f8",
+    "title": "EL TRABAJO DEL COORDINADOR POLÍTICO DEL PCC Y SUS ESTRUCTURAS SUBORDINADAS EN EL CONSEJO POPULAR DE JESÚS MENÉNDEZ",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 14 DE DICIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: EL TRABAJO DEL COORDINADOR POLÍTICO DEL PCC Y SUS ESTRUCTURAS SUBORDINADAS EN EL CONSEJO POPULAR DE JESÚS MENÉNDEZ\n",
+    "themes": [
+      "TRABAJO",
+      "COORDINADOR",
+      "POLÍTICO",
+      "ESTRUCTURAS",
+      "SUBORDINADAS"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-12-14T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 40
+  },
+  {
+    "id": "9fa409e6-097b-4a1b-8bbe-b6033b93c9b3",
+    "title": "LOS MUSEOS DE BAYAMO EN LAS COMUNIDADES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 21 DE DICIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: LOS MUSEOS DE BAYAMO EN LAS COMUNIDADES\n",
+    "themes": [
+      "MUSEOS",
+      "BAYAMO",
+      "COMUNIDADES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-12-21T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 29
+  },
+  {
+    "id": "b7e386a4-9823-4431-9228-ec795fb0c1a7",
+    "title": "INICIATIVAS BAYAMESAS EN FAVOR DE LAS COMUNIDADES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 28 DE DICIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: INICIATIVAS BAYAMESAS EN FAVOR DE LAS COMUNIDADES\n",
+    "themes": [
+      "INICIATIVAS",
+      "BAYAMESAS",
+      "FAVOR",
+      "COMUNIDADES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-12-28T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 29
+  },
+  {
+    "id": "a4e513c5-05de-44ea-9440-1671f3de15f5",
+    "title": "COLECTIVO DE ARTESANAS “JUANA MORENO”",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: YANET DEL TORO ROSALES",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "YANET DEL TORO ROSALES",
+    "content": "Programa: DESDE EL BARRIO\nFecha: 06 DE JULIO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: YANET DEL TORO ROSALES\nTema: COLECTIVO DE ARTESANAS “JUANA MORENO”\n",
+    "themes": [
+      "COLECTIVO",
+      "ARTESANAS",
+      "“JUANA",
+      "MORENO”"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-07-06T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 27
+  },
+  {
+    "id": "13217752-3f0f-44cf-a709-4eeab649a4ab",
+    "title": "ARTE JOVEN EN LAS COMUNIDADES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: YANET DEL TORO ROSALES",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "YANET DEL TORO ROSALES",
+    "content": "Programa: DESDE EL BARRIO\nFecha: 13 DE JULIO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: YANET DEL TORO ROSALES\nTema: ARTE JOVEN EN LAS COMUNIDADES\n",
+    "themes": [
+      "ARTE",
+      "JOVEN",
+      "COMUNIDADES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-07-13T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 27
+  },
+  {
+    "id": "f010b047-0c33-4b93-a1a9-d9fb41ba9744",
+    "title": "TRABAJO COMUNITARIO DE LA CASA DE CULTURA 20 DE OCTUBRE",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 20 DE JULIO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: TRABAJO COMUNITARIO DE LA CASA DE CULTURA 20 DE OCTUBRE\n",
+    "themes": [
+      "TRABAJO",
+      "COMUNITARIO",
+      "CASA",
+      "CULTURA",
+      "OCTUBRE"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-07-20T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 32
+  },
+  {
+    "id": "37a31957-1863-4cd4-9274-8e9c3a015ca3",
+    "title": "IMPORTANCIA DE LAS CELEBRACIONES FAMILIARES Y EN LOS BARRIOS",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: 27 DE JULIO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: IMPORTANCIA DE LAS CELEBRACIONES FAMILIARES Y EN LOS BARRIOS\n",
+    "themes": [
+      "IMPORTANCIA",
+      "CELEBRACIONES",
+      "FAMILIARES",
+      "BARRIOS"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-07-27T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "21dc6991-8e9b-42be-8a95-15f11c25f529",
+    "title": "LABOR COMUNITARIA DE LOS GRUPOS TEATRALES “ANDANTE” Y “GUERRILLA DE TEATREROS”.",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 01 DE JUNIO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ANA MARGARITA GUTIÉRREZ MUSTELIER\nTema: LABOR COMUNITARIA DE LOS GRUPOS TEATRALES “ANDANTE” Y “GUERRILLA DE TEATREROS”.\n",
+    "themes": [
+      "LABOR",
+      "COMUNITARIA",
+      "GRUPOS",
+      "TEATRALES",
+      "“ANDANTE”"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-06-01T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 34
+  },
+  {
+    "id": "e8ca8e35-de26-43ea-9350-7fe6c0d865a5",
+    "title": "LABOR DE LOS PROMOTORES CULTURALES EN EL CONSEJO POPULAR MABAY.",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 08 DE JUNIO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ANA MARGARITA GUTIÉRREZ MUSTELIER\nTema: LABOR DE LOS PROMOTORES CULTURALES EN EL CONSEJO POPULAR MABAY.\n",
+    "themes": [
+      "LABOR",
+      "PROMOTORES",
+      "CULTURALES",
+      "CONSEJO",
+      "POPULAR"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-06-08T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 33
+  },
+  {
+    "id": "d1cf7bc7-9536-4630-81ec-c23252cb1109",
+    "title": "TRADICIONES POPULARES DE MABAY",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ANA MARGARITA GUTIÉRREZ MUSTELIER",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 15 DE JUNIO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ANA MARGARITA GUTIÉRREZ MUSTELIER\nTema: TRADICIONES POPULARES DE MABAY\n",
+    "themes": [
+      "TRADICIONES",
+      "POPULARES",
+      "MABAY"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-06-15T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 27
+  },
+  {
+    "id": "d9c763da-9c44-4cfd-aaa4-7e754af9badb",
+    "title": "LABOR COMUNITARIA DE LOS MUSEOS DE BAYAMO",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: YANET DEL TORO ROSALES",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "YANET DEL TORO ROSALES",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 22 DE JUNIO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: YANET DEL TORO ROSALES\nTema: LABOR COMUNITARIA DE LOS MUSEOS DE BAYAMO\n",
+    "themes": [
+      "LABOR",
+      "COMUNITARIA",
+      "MUSEOS",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-06-22T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "b31092fd-cc9f-4ff8-b8b7-aa75d8aeee9d",
+    "title": "TRABAJO SOCIAL COMUNITARIO EN LA CIRCUNSCRIPCIÓN 153 DE PEDRO POMPA",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: YANET DEL TORO ROSALES",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "YANET DEL TORO ROSALES",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 29 DE JUNIO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: YANET DEL TORO ROSALES\nTema: TRABAJO SOCIAL COMUNITARIO EN LA CIRCUNSCRIPCIÓN 153 DE PEDRO POMPA\n",
+    "themes": [
+      "TRABAJO",
+      "SOCIAL",
+      "COMUNITARIO",
+      "CIRCUNSCRIPCIÓN",
+      "PEDRO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-06-29T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 33
+  },
+  {
+    "id": "1060b8ba-21fc-49aa-9b4e-3ec1be38c77a",
+    "title": "CONSEJO POPULAR MABAY",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ABEL GUERRERO CASTRO",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ABEL GUERRERO CASTRO",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 16 DE MARZO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ABEL GUERRERO CASTRO\nTema: CONSEJO POPULAR MABAY\n",
+    "themes": [
+      "CONSEJO",
+      "POPULAR",
+      "MABAY"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-03-16T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 25
+  },
+  {
+    "id": "e5d916b8-cf4e-4135-b618-2a95fe4d6028",
+    "title": "LABOR DE LA CASA DE CULTURA 20 DE OCTUBRE EN LAS COMUNIDADES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ABEL GUERRERO CASTRO",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ABEL GUERRERO CASTRO",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 23 DE MARZO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ABEL GUERRERO CASTRO\nTema: LABOR DE LA CASA DE CULTURA 20 DE OCTUBRE EN LAS COMUNIDADES\n",
+    "themes": [
+      "LABOR",
+      "CASA",
+      "CULTURA",
+      "OCTUBRE",
+      "COMUNIDADES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-03-23T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 34
+  },
+  {
+    "id": "27243edc-8a4f-4b3b-9f35-dd2051dd037c",
+    "title": "COMUNIDAD ROBERTO REYES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ABEL GUERRERO CASTRO",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ABEL GUERRERO CASTRO",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 30 DE MARZO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ABEL GUERRERO CASTRO\nTema: COMUNIDAD ROBERTO REYES\n",
+    "themes": [
+      "COMUNIDAD",
+      "ROBERTO",
+      "REYES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-03-30T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 25
+  },
+  {
+    "id": "bb9c10de-8920-44f3-ae94-50c820815e65",
+    "title": "LABOR DE LA FMC EN LAS COMUNIDADES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: DIRECTOR: LISSELL FONTELO DANTA",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "DIRECTOR: LISSELL FONTELO DANTA",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 9 DE MARZO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: DIRECTOR: LISSELL FONTELO DANTA\nTema: LABOR DE LA FMC EN LAS COMUNIDADES\n",
+    "themes": [
+      "LABOR",
+      "COMUNIDADES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-03-09T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "c93ddba5-5c0c-42c2-b327-63f343d13826",
+    "title": "LA COMUNIDAD DE VIVIENDAS CAMPESINAS",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ABEL GUERRERO CASTRO",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ABEL GUERRERO CASTRO",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 11 DE MAYO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ABEL GUERRERO CASTRO\nTema: LA COMUNIDAD DE VIVIENDAS CAMPESINAS\n",
+    "themes": [
+      "COMUNIDAD",
+      "VIVIENDAS",
+      "CAMPESINAS"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-05-11T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 27
+  },
+  {
+    "id": "1b9ce5d3-362b-4248-ae6c-2bde81668759",
+    "title": "LABOR DE LOS DELEGADOS EN LAS COMUNIDADES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ABEL GUERRERO CASTRO",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ABEL GUERRERO CASTRO",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 18 DE MAYO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ABEL GUERRERO CASTRO\nTema: LABOR DE LOS DELEGADOS EN LAS COMUNIDADES\n",
+    "themes": [
+      "LABOR",
+      "DELEGADOS",
+      "COMUNIDADES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-05-18T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 29
+  },
+  {
+    "id": "b237940d-e1e5-4062-a32d-5083e29a4bf5",
+    "title": "TRABAJO SOCIAL Y SOCIOCULTURAL EN EL CONSEJO POPULAR CAMILO CIENFUEGOS GORRIARÁN",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 25 DE MAYO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: TRABAJO SOCIAL Y SOCIOCULTURAL EN EL CONSEJO POPULAR CAMILO CIENFUEGOS GORRIARÁN\n",
+    "themes": [
+      "TRABAJO",
+      "SOCIAL",
+      "SOCIOCULTURAL",
+      "CONSEJO",
+      "POPULAR"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-05-25T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 33
+  },
+  {
+    "id": "e62cdf13-80ba-461d-b7d7-c826285574a7",
+    "title": "PRODUCCIÓN DE ALIMENTOS EN LAS COMUNIDADES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: ABEL GUERRERO CASTRO",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "ABEL GUERRERO CASTRO",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 4 DE MAYO DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: ABEL GUERRERO CASTRO\nTema: PRODUCCIÓN DE ALIMENTOS EN LAS COMUNIDADES\n",
+    "themes": [
+      "PRODUCCIÓN",
+      "ALIMENTOS",
+      "COMUNIDADES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-05-04T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "e7a05cb0-6e40-43ff-98d8-fb36eb0c0e88",
+    "title": "LABOR DE LA BRIGADA ARTÍSTICA “POR GUANTÁNAMO, MI CORAZÓN”",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 02 DE NOVIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: LABOR DE LA BRIGADA ARTÍSTICA “POR GUANTÁNAMO, MI CORAZÓN”\n",
+    "themes": [
+      "LABOR",
+      "BRIGADA",
+      "ARTÍSTICA",
+      "“POR",
+      "GUANTÁNAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-11-02T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 31
+  },
+  {
+    "id": "f94c8fd3-2955-4162-919c-d91abe8f8441",
+    "title": "PRINCIPALES PROBLEMÁTICAS Y TRABAJO SOCIAL EN LA CIRCUNSCRIPCIÓN 153 DE PEDRO POMPA",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 09 DE NOVIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: PRINCIPALES PROBLEMÁTICAS Y TRABAJO SOCIAL EN LA CIRCUNSCRIPCIÓN 153 DE PEDRO POMPA\n",
+    "themes": [
+      "PRINCIPALES",
+      "PROBLEMÁTICAS",
+      "TRABAJO",
+      "SOCIAL",
+      "CIRCUNSCRIPCIÓN"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-11-09T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 34
+  },
+  {
+    "id": "b1e9c642-edf2-482d-8c15-84ada491963b",
+    "title": "LA COMUNICACIÓN COMUNITARIA",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 16 DE NOVIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: LA COMUNICACIÓN COMUNITARIA\n",
+    "themes": [
+      "COMUNICACIÓN",
+      "COMUNITARIA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-11-16T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 25
+  },
+  {
+    "id": "b9f71431-e2e4-4fba-8452-45894fdf6185",
+    "title": "EL TRABAJO SOCIAL Y CULTURAL EN LAS COMUNIDADES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 23 DE NOVIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: EL TRABAJO SOCIAL Y CULTURAL EN LAS COMUNIDADES\n",
+    "themes": [
+      "TRABAJO",
+      "SOCIAL",
+      "CULTURAL",
+      "COMUNIDADES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-11-23T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "d522c9ec-02a9-411e-a545-08391943a580",
+    "title": "DEPORTE PARA TODOS EN LAS COMUNIDADES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 30 DE NOVIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: DEPORTE PARA TODOS EN LAS COMUNIDADES\n",
+    "themes": [
+      "DEPORTE",
+      "TODOS",
+      "COMUNIDADES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-11-30T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "9cfb394b-33fb-47d6-b3bd-ef24e04b85d8",
+    "title": "VIOLENCIA EN LAS COMUNIDADES: IMPACTOS Y FORMAS DE CONTRARRESTARLA",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 12 DE OCTUBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: VIOLENCIA EN LAS COMUNIDADES: IMPACTOS Y FORMAS DE CONTRARRESTARLA\n",
+    "themes": [
+      "VIOLENCIA",
+      "COMUNIDADES",
+      "IMPACTOS",
+      "FORMAS",
+      "CONTRARRESTARLA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-10-12T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 31
+  },
+  {
+    "id": "d7d28e1f-a6b3-4b9a-9838-324596db55db",
+    "title": "LABOR COMUNITARIA DE LOS GRUPOS TEATRALES “ANDANTE” Y “GUERRILLA DE TEATREROS”.",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 19 DE OCTUBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: LABOR COMUNITARIA DE LOS GRUPOS TEATRALES “ANDANTE” Y “GUERRILLA DE TEATREROS”.\n",
+    "themes": [
+      "LABOR",
+      "COMUNITARIA",
+      "GRUPOS",
+      "TEATRALES",
+      "“ANDANTE”"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-10-19T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 33
+  },
+  {
+    "id": "5802742d-236c-45e4-8447-cb1fcb9a9df7",
+    "title": "LABOR DEL COMBINADO DEPORTIVO “SIBONEY”",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: 26 DE OCTUBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: LABOR DEL COMBINADO DEPORTIVO “SIBONEY”\n",
+    "themes": [
+      "LABOR",
+      "COMBINADO",
+      "DEPORTIVO",
+      "“SIBONEY”"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-10-26T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 26
+  },
+  {
+    "id": "39fc5ab9-3eab-49c6-b61d-6c1bca436754",
+    "title": "LAS COMUNIDADES EN LA PRODUCCIÓN DE ALIMENTOS",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 5 DE OCTUBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: LAS COMUNIDADES EN LA PRODUCCIÓN DE ALIMENTOS\n",
+    "themes": [
+      "COMUNIDADES",
+      "PRODUCCIÓN",
+      "ALIMENTOS"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-10-05T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 29
+  },
+  {
+    "id": "4cd4c17f-a0a5-46eb-bede-5a932b20dbda",
+    "title": "LA RESILIENCIA COMUNITARIA",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: 07 DE SEPTIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: LA RESILIENCIA COMUNITARIA\n",
+    "themes": [
+      "RESILIENCIA",
+      "COMUNITARIA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-09-07T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 24
+  },
+  {
+    "id": "242240eb-0a9f-4ae0-87ab-c8acf2f38658",
+    "title": "LABOR DEL COMBINADO DEPORTIVO “CAMILO CIENFUEGOS GORRIARÁN”",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: 14 DE SEPTIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: LABOR DEL COMBINADO DEPORTIVO “CAMILO CIENFUEGOS GORRIARÁN”\n",
+    "themes": [
+      "LABOR",
+      "COMBINADO",
+      "DEPORTIVO",
+      "“CAMILO",
+      "CIENFUEGOS"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-09-14T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "f0081819-146a-4e38-a849-d431b90563d0",
+    "title": "ESPACIOS PARA LA PARTICIPACIÓN EN LAS COMUNIDADES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: 21 DE SEPTIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: ESPACIOS PARA LA PARTICIPACIÓN EN LAS COMUNIDADES\n",
+    "themes": [
+      "ESPACIOS",
+      "PARTICIPACIÓN",
+      "COMUNIDADES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-09-21T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "e86c3b3f-dad7-48c0-9bbf-9a7edba51afe",
+    "title": "LABOR DE LOS COMITÉS DE DEFENSA DE LA REVOLUCIÓN",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: 28 DE SEPTIEMBRE DE 2024\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: LABOR DE LOS COMITÉS DE DEFENSA DE LA REVOLUCIÓN\n",
+    "themes": [
+      "LABOR",
+      "COMITÉS",
+      "DEFENSA",
+      "REVOLUCIÓN"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2024-09-28T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "adc4ade4-cd23-4db1-88b0-280b4e5cd7a7",
+    "title": "PROMOCIÓN DE SALUD EN LAS COMUNIDADES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 05 DE ABRIL DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: PROMOCIÓN DE SALUD EN LAS COMUNIDADES\n",
+    "themes": [
+      "PROMOCIÓN",
+      "SALUD",
+      "COMUNIDADES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-04-05T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "9ec3a4be-2604-417e-a65c-4280396a716b",
+    "title": "TRADICIÓN Y CREATIVIDAD EN LOS BARRIOS DE BAYAMO",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 12 DE ABRIL DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: TRADICIÓN Y CREATIVIDAD EN LOS BARRIOS DE BAYAMO\n",
+    "themes": [
+      "TRADICIÓN",
+      "CREATIVIDAD",
+      "BARRIOS",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-04-12T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "f6c4e92f-7dce-43bf-ae28-4ba5fdac3ab0",
+    "title": "Sin Título",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: DIRECTOR:",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "DIRECTOR:",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 19 DE ABRIL DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: DIRECTOR:\n",
+    "themes": [
+      "Título"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-04-19T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 19
+  },
+  {
+    "id": "0fd51548-0882-4d69-8634-7f6bbb417cf2",
+    "title": "IMPACTO DE LAS CASAS DE ORIENTACIÓN A LA MUJER Y LA FAMILIA EN BAYAMO",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 16 DE AGOSTO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: IMPACTO DE LAS CASAS DE ORIENTACIÓN A LA MUJER Y LA FAMILIA EN BAYAMO\n",
+    "themes": [
+      "IMPACTO",
+      "CASAS",
+      "ORIENTACIÓN",
+      "MUJER",
+      "FAMILIA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-08-16T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 36
+  },
+  {
+    "id": "eb36995e-cf9c-4302-8f55-1e225aaa3e57",
+    "title": "LABOR EN LAS COMUNIDADES DEL MÉDICO Y LA ENFERMERA DE LA FAMILIA",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 30 DE AGOSTO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: LABOR EN LAS COMUNIDADES DEL MÉDICO Y LA ENFERMERA DE LA FAMILIA\n",
+    "themes": [
+      "LABOR",
+      "COMUNIDADES",
+      "MÉDICO",
+      "ENFERMERA",
+      "FAMILIA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-08-30T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 34
+  },
+  {
+    "id": "553053f4-5477-4d2e-b1e7-79da719e9a20",
+    "title": "TRADICIONES POPULARES Y PROMOCIÓN CULTURAL EN EL CONSEJO POPULAR MABAY.",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 04 DE ENERO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: TRADICIONES POPULARES Y PROMOCIÓN CULTURAL EN EL CONSEJO POPULAR MABAY.\n",
+    "themes": [
+      "TRADICIONES",
+      "POPULARES",
+      "PROMOCIÓN",
+      "CULTURAL",
+      "CONSEJO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-01-04T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 32
+  },
+  {
+    "id": "d1829858-bfc8-4714-a640-aa34d99598e4",
+    "title": "ACTIVISMO COMUNITARIO DE ORGANIZACIONES DE LA SOCIEDAD CIVIL EN BAYAMO",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 11 DE ENERO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: ACTIVISMO COMUNITARIO DE ORGANIZACIONES DE LA SOCIEDAD CIVIL EN BAYAMO\n",
+    "themes": [
+      "ACTIVISMO",
+      "COMUNITARIO",
+      "ORGANIZACIONES",
+      "SOCIEDAD",
+      "CIVIL"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-01-11T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 32
+  },
+  {
+    "id": "2a759325-2088-409e-8edf-4f86566a86cb",
+    "title": "LABOR DEL COMBINADO DEPORTIVO “JESÚS MENÉNDEZ LARRONDO”",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: 18 DE ENERO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: LABOR DEL COMBINADO DEPORTIVO “JESÚS MENÉNDEZ LARRONDO”\n",
+    "themes": [
+      "LABOR",
+      "COMBINADO",
+      "DEPORTIVO",
+      "“JESÚS",
+      "MENÉNDEZ"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-01-18T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "f7a35241-f124-491a-a36d-3687894abe14",
+    "title": "DEPORTE PARA DISCAPACITADOS, UNA EXPERIENCIA BAYAMESA",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: 25 DE ENERO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: DEPORTE PARA DISCAPACITADOS, UNA EXPERIENCIA BAYAMESA\n",
+    "themes": [
+      "DEPORTE",
+      "DISCAPACITADOS",
+      "EXPERIENCIA",
+      "BAYAMESA"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-01-25T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 27
+  },
+  {
+    "id": "5220cd6c-8b28-4e9d-aba3-624337261356",
+    "title": "LABOR DE LOS DONANTES DE SANGRE EN BAYAMO",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: 01 DE FEBRERO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: LABOR DE LOS DONANTES DE SANGRE EN BAYAMO\n",
+    "themes": [
+      "LABOR",
+      "DONANTES",
+      "SANGRE",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-02-01T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 29
+  },
+  {
+    "id": "fe932614-2632-4866-b3fa-6395a1d36823",
+    "title": "LABOR DE LOS PROMOTORES CULTURALES EN COMUNIDADES BAYAMESAS",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: 08 DE FEBRERO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: LABOR DE LOS PROMOTORES CULTURALES EN COMUNIDADES BAYAMESAS\n",
+    "themes": [
+      "LABOR",
+      "PROMOTORES",
+      "CULTURALES",
+      "COMUNIDADES",
+      "BAYAMESAS"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-02-08T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 29
+  },
+  {
+    "id": "940d89a4-2698-4ac5-b6f9-35bf68167b56",
+    "title": "LA COMUNIDAD DE VIVIENDAS CAMPESINAS",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 15 DE FEBRERO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: LA COMUNIDAD DE VIVIENDAS CAMPESINAS\n",
+    "themes": [
+      "COMUNIDAD",
+      "VIVIENDAS",
+      "CAMPESINAS"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-02-15T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 27
+  },
+  {
+    "id": "fec18880-129f-4b68-83b4-f31d2d5fd059",
+    "title": "ACTIVIDADES DEPORTIVAS EN LOS BARRIOS DE BAYAMO",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 22 DE FEBRERO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: ACTIVIDADES DEPORTIVAS EN LOS BARRIOS DE BAYAMO\n",
+    "themes": [
+      "ACTIVIDADES",
+      "DEPORTIVAS",
+      "BARRIOS",
+      "BAYAMO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-02-22T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 29
+  },
+  {
+    "id": "2ee114e9-5797-4d1a-bad1-c6e117bdc52b",
+    "title": "DEPORTE EN VERANO",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 05 DE JULIO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: DEPORTE EN VERANO\n",
+    "themes": [
+      "DEPORTE",
+      "VERANO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-07-05T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 25
+  },
+  {
+    "id": "78e99855-d901-46f8-8707-66a4c6ed6063",
+    "title": "PROMOTORES CULTURALES EN VERANO",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 19 DE JULIO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: PROMOTORES CULTURALES EN VERANO\n",
+    "themes": [
+      "PROMOTORES",
+      "CULTURALES",
+      "VERANO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-07-19T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 26
+  },
+  {
+    "id": "99798389-c8c3-40d1-b016-a58d4af24150",
+    "title": "EL PROGRAMA DE PREVENCIÓN DE LAS ITS, VIH-SIDA EN LAS COMUNIDADES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 07 DE JUNIO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: EL PROGRAMA DE PREVENCIÓN DE LAS ITS, VIH-SIDA EN LAS COMUNIDADES\n",
+    "themes": [
+      "PROGRAMA",
+      "PREVENCIÓN",
+      "VIH-SIDA",
+      "COMUNIDADES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-06-07T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 33
+  },
+  {
+    "id": "4024b618-e9b8-4796-b917-cf00e1371cb3",
+    "title": "DEPORTE PARA TODOS EN LAS COMUNIDADES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 14 DE JUNIO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: DEPORTE PARA TODOS EN LAS COMUNIDADES\n",
+    "themes": [
+      "DEPORTE",
+      "TODOS",
+      "COMUNIDADES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-06-14T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 28
+  },
+  {
+    "id": "3abd8840-0230-455b-9210-e6736c1e301b",
+    "title": "PROYECTO NACIDOS EN EL ASFALTO",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 21 DE JUNIO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: PROYECTO NACIDOS EN EL ASFALTO\n",
+    "themes": [
+      "PROYECTO",
+      "NACIDOS",
+      "ASFALTO"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-06-21T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 27
+  },
+  {
+    "id": "954d0b60-9b38-4cfc-b301-7e97c577af22",
+    "title": "IMPACTOS Y FORMAS DE CONTRARRESTAR LA VIOLENCIA EN LAS COMUNIDADES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 28 DE JUNIO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: IMPACTOS Y FORMAS DE CONTRARRESTAR LA VIOLENCIA EN LAS COMUNIDADES\n",
+    "themes": [
+      "IMPACTOS",
+      "FORMAS",
+      "CONTRARRESTAR",
+      "VIOLENCIA",
+      "COMUNIDADES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-06-28T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 32
+  },
+  {
+    "id": "6d49bdd4-962e-49db-b6f6-15a8da0bbeb9",
+    "title": "ACTIVISMO DE LAS FEDERADAS EN LAS COMUNIDADES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 08 DE MARZO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: ACTIVISMO DE LAS FEDERADAS EN LAS COMUNIDADES\n",
+    "themes": [
+      "ACTIVISMO",
+      "FEDERADAS",
+      "COMUNIDADES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-03-08T17:00:00.000Z",
+    "status": "active",
+    "wordCount": 29
+  },
+  {
+    "id": "b42f3847-cfa4-4a80-a70c-e8e99b270b56",
+    "title": "ATENCIÓN A NIÑOS EN SITUACIÓN DE DISCAPACIDAD Y MENORES SIN AMPARO FAMILIAR EN EL CONSEJO POPULAR JESÚS MENÉNDEZ LARRONDO",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 22 DE MARZO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: ATENCIÓN A NIÑOS EN SITUACIÓN DE DISCAPACIDAD Y MENORES SIN AMPARO FAMILIAR EN EL CONSEJO POPULAR JESÚS MENÉNDEZ LARRONDO\n",
+    "themes": [
+      "ATENCIÓN",
+      "NIÑOS",
+      "SITUACIÓN",
+      "DISCAPACIDAD",
+      "MENORES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-03-22T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 41
+  },
+  {
+    "id": "c79c5f34-19fa-4d8b-8904-f727b46d472b",
+    "title": "EL TRABAJO SOCIAL Y CULTURAL EN LAS COMUNIDADES",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 29 DE MARZO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: EL TRABAJO SOCIAL Y CULTURAL EN LAS COMUNIDADES\n",
+    "themes": [
+      "TRABAJO",
+      "SOCIAL",
+      "CULTURAL",
+      "COMUNIDADES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-03-29T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "88671ea9-8954-419d-8318-bdb46a87fa9b",
+    "title": "LAS MADRES CUBANAS, SOSTÉN DE LAS FAMILIAS Y LA COMUNIDAD",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 10 DE MAYO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: LAS MADRES CUBANAS, SOSTÉN DE LAS FAMILIAS Y LA COMUNIDAD\n",
+    "themes": [
+      "MADRES",
+      "CUBANAS",
+      "SOSTÉN",
+      "FAMILIAS",
+      "COMUNIDAD"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-05-10T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 32
+  },
+  {
+    "id": "86337be6-fabb-4419-900d-e0fa5a6efaa6",
+    "title": "JÓVENES PRACTICANTES DE DEPORTES AMATEURS EN COMUNIDADES BAYAMESAS",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 17 DE MAYO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: JÓVENES PRACTICANTES DE DEPORTES AMATEURS EN COMUNIDADES BAYAMESAS\n",
+    "themes": [
+      "JÓVENES",
+      "PRACTICANTES",
+      "DEPORTES",
+      "AMATEURS",
+      "COMUNIDADES"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-05-17T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 30
+  },
+  {
+    "id": "bb23834c-72c6-4c18-ada3-58224b727b5c",
+    "title": "LABOR COMUNITARIA DE LOS GRUPOS TEATRALES “ANDANTE” Y “GUERRILLA DE TEATREROS”.",
+    "genre": "DESDE EL BARRIO",
+    "summary": "Escritor: PEDRO JOSÉ REYES ACUÑA | Asesor: CARIDAD AGUILAR ROSABAL",
+    "writer": "PEDRO JOSÉ REYES ACUÑA",
+    "advisor": "CARIDAD AGUILAR ROSABAL",
+    "content": "Programa: DESDE EL BARRIO\nFecha: SÁBADO 31 DE MAYO DE 2025\nEscritor: PEDRO JOSÉ REYES ACUÑA\nAsesor: CARIDAD AGUILAR ROSABAL\nTema: LABOR COMUNITARIA DE LOS GRUPOS TEATRALES “ANDANTE” Y “GUERRILLA DE TEATREROS”.\n",
+    "themes": [
+      "LABOR",
+      "COMUNITARIA",
+      "GRUPOS",
+      "TEATRALES",
+      "“ANDANTE”"
+    ],
+    "tone": "Informativo",
+    "dateAdded": "2025-05-31T16:00:00.000Z",
+    "status": "active",
+    "wordCount": 33
   }
 ]
