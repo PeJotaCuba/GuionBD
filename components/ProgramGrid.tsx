@@ -1,34 +1,34 @@
 import React, { useState, useMemo, useRef } from 'react';
-import { Search, Radio, Music, BookOpen, Users, Leaf, Newspaper, Home, Activity, Palette, Upload, RefreshCw, Database, FileText, X } from 'lucide-react';
-import { User, Script } from '../types';
+import { Search, Radio, Music, BookOpen, Users, Leaf, Home, Activity, Palette, Upload, RefreshCw, Database, FileText, X } from 'lucide-react';
+import { Script } from '../types';
 import { parseRawEntry } from '../services/parserService';
 import { StatsView } from './StatsView';
 import { LoadingOverlay } from './LoadingOverlay';
 
 export const PROGRAMS = [
-  { name: "BUENOS DÍAS BAYAMO", file: "bdias.json", color: "bg-amber-500", icon: <Activity size={32} /> },
-  { name: "TODOS EN CASA", file: "casa.json", color: "bg-indigo-500", icon: <Home size={32} /> },
-  { name: "RCM NOTICIAS", file: "noticias.json", color: "bg-red-600", icon: <Newspaper size={32} /> },
-  { name: "ARTE BAYAMO", file: "arte.json", color: "bg-teal-500", icon: <Palette size={32} /> },
-  { name: "PARADA JOVEN", file: "joven.json", color: "bg-cyan-500", icon: <Radio size={32} /> },
-  { name: "HABLANDO CON JUANA", file: "juana.json", color: "bg-rose-500", icon: <Users size={32} /> },
-  { name: "SIGUE A TU RITMO", file: "ritmo.json", color: "bg-orange-500", icon: <Music size={32} /> },
-  { name: "AL SON DE LA RADIO", file: "son.json", color: "bg-violet-500", icon: <Music size={32} /> },
-  { name: "CÓMPLICES", file: "complices.json", color: "bg-pink-500", icon: <Users size={32} /> },
-  { name: "ESTACIÓN 95.3", file: "estacion.json", color: "bg-blue-600", icon: <Radio size={32} /> },
-  { name: "PALCO DE DOMINGO", file: "domingo.json", color: "bg-fuchsia-500", icon: <BookOpen size={32} /> },
-  { name: "COLOREANDO MELODÍAS", file: "melodias.json", color: "bg-lime-500", icon: <Palette size={32} /> },
-  { name: "ALBA Y CRISOL", file: "alba.json", color: "bg-emerald-500", icon: <Leaf size={32} /> },
+  { name: "BUENOS DÍAS, BAYAMO", file: "bdias.json", color: "bg-amber-500", icon: <Activity size={32} /> },
   { name: "DESDE EL BARRIO", file: "barrio.json", color: "bg-slate-600", icon: <Home size={32} /> },
-  { name: "MÚSICA DESDE MI CIUDAD", file: "musica.json", color: "bg-indigo-600", icon: <Music size={32} /> },
+  { name: "ARTE BAYAMO", file: "arte.json", color: "bg-teal-500", icon: <Palette size={32} /> },
+  { name: "HABLANDO CON JUANA", file: "juana.json", color: "bg-rose-500", icon: <Users size={32} /> },
+  { name: "AL SON DE LA RADIO", file: "son.json", color: "bg-violet-500", icon: <Music size={32} /> },
+  { name: "PALCO DE DOMINGO", file: "domingo.json", color: "bg-fuchsia-500", icon: <BookOpen size={32} /> },
+  { name: "COMBINACIÓN SONORA", file: "combinacion.json", color: "bg-blue-500", icon: <Music size={32} /> },
+  { name: "CRECIENDO", file: "creciendo.json", color: "bg-green-500", icon: <Users size={32} /> },
+  { name: "PARADA JOVEN", file: "joven.json", color: "bg-cyan-500", icon: <Radio size={32} /> },
+  { name: "PANORAMA CAMPESINO", file: "campesino.json", color: "bg-lime-600", icon: <Leaf size={32} /> },
+  { name: "LOS HOMBRES DE LA CASA", file: "hombres.json", color: "bg-orange-600", icon: <Users size={32} /> },
+  { name: "REMANSO DEL CANTOR", file: "remanso.json", color: "bg-indigo-400", icon: <Music size={32} /> },
+  { name: "TODO EN BOLEROS", file: "boleros.json", color: "bg-pink-600", icon: <Music size={32} /> },
+  { name: "CON CADENCIA", file: "cadencia.json", color: "bg-purple-500", icon: <Music size={32} /> },
+  { name: "REVELACIONES", file: "revelaciones.json", color: "bg-red-500", icon: <Radio size={32} /> },
+  { name: "LEYENDO Y CANTANDO", file: "leyendo.json", color: "bg-yellow-500", icon: <BookOpen size={32} /> },
 ];
 
 interface ProgramGridProps {
   onSelectProgram: (name: string) => void;
-  currentUser: User;
 }
 
-export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, currentUser }) => {
+export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showStats, setShowStats] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
@@ -57,34 +57,8 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
     }
   };
 
-  // Determinar los programas disponibles para el usuario actual (para Informes y Filtrado)
-  const availablePrograms = useMemo(() => {
-    // Admin, Directores y Asesores ven todo
-    if (['Administrador', 'Director', 'Asesor'].includes(currentUser.role)) {
-      return PROGRAMS;
-    }
-    
-    // Guionistas: Solo ven programas donde su nombre aparece como escritor
-    if (currentUser.role === 'Guionista') {
-      const normalizedUserName = normalize(currentUser.fullName || "");
-      
-      return PROGRAMS.filter(p => {
-        const scripts = getProgramScripts(p);
-        // Verificar si existe al menos un guion donde el escritor coincida parcialmente con el nombre del usuario
-        return scripts.some(s => {
-           if (!s.writer) return false;
-           const normalizedWriter = normalize(s.writer);
-           // Comprobación flexible: si el nombre del escritor contiene el nombre del usuario o viceversa
-           return normalizedWriter.includes(normalizedUserName) || normalizedUserName.includes(normalizedWriter);
-        });
-      });
-    }
-    
-    return [];
-  }, [currentUser]);
-
   const filteredPrograms = useMemo(() => {
-    let allowed = availablePrograms;
+    let allowed = PROGRAMS;
 
     const q = searchQuery.toLowerCase().trim();
     if (!q) return allowed;
@@ -101,7 +75,7 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
         new Date(s.dateAdded).toLocaleDateString('es-ES').includes(q)
       );
     });
-  }, [searchQuery, availablePrograms]);
+  }, [searchQuery]);
 
   const handleGlobalUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -267,7 +241,7 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
           <X size={20} /> Cerrar Informes
         </button>
         <div className="pt-10">
-           <StatsView programs={availablePrograms} onClose={() => setShowStats(false)} currentUser={currentUser} />
+           <StatsView programs={PROGRAMS} onClose={() => setShowStats(false)} />
         </div>
       </div>
     );
@@ -308,41 +282,35 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
                <span className="hidden sm:inline text-sm font-bold">Actualizar</span>
             </button>
 
-            {['Administrador', 'Director', 'Asesor', 'Guionista'].includes(currentUser.role) && (
-              <button
-                onClick={() => setShowStats(true)}
-                className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-5 py-3.5 rounded-2xl text-sm font-bold shadow-sm transition-all"
-                title="Ver Informes Globales"
+            <button
+              onClick={() => setShowStats(true)}
+              className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-5 py-3.5 rounded-2xl text-sm font-bold shadow-sm transition-all"
+              title="Ver Informes Globales"
+            >
+              <FileText size={18} />
+              <span className="hidden sm:inline">Informes</span>
+            </button>
+
+            <button
+              onClick={handleDownloadDatabase}
+              className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-5 py-3.5 rounded-2xl text-sm font-bold shadow-sm transition-all"
+              title="Descargar base de datos completa"
+            >
+              <Database size={18} />
+              <span className="hidden sm:inline">BD Global</span>
+            </button>
+
+            <div className="shrink-0 relative">
+              <button 
+                onClick={() => globalUploadRef.current?.click()}
+                disabled={isProcessing}
+                className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3.5 rounded-2xl text-sm font-bold shadow-lg shadow-indigo-500/20 transition-all disabled:opacity-50 h-full"
               >
-                <FileText size={18} />
-                <span className="hidden sm:inline">Informes</span>
+                <Upload size={18} />
+                <span className="hidden sm:inline">Carga Global</span>
               </button>
-            )}
-
-            {currentUser.role === 'Administrador' && (
-              <>
-                <button
-                  onClick={handleDownloadDatabase}
-                  className="flex items-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-5 py-3.5 rounded-2xl text-sm font-bold shadow-sm transition-all"
-                  title="Descargar base de datos completa"
-                >
-                  <Database size={18} />
-                  <span className="hidden sm:inline">BD Global</span>
-                </button>
-
-                <div className="shrink-0 relative">
-                  <button 
-                    onClick={() => globalUploadRef.current?.click()}
-                    disabled={isProcessing}
-                    className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3.5 rounded-2xl text-sm font-bold shadow-lg shadow-indigo-500/20 transition-all disabled:opacity-50 h-full"
-                  >
-                    <Upload size={18} />
-                    <span className="hidden sm:inline">Carga Global</span>
-                  </button>
-                  <input type="file" ref={globalUploadRef} className="hidden" accept=".txt" onChange={handleGlobalUpload} />
-                </div>
-              </>
-            )}
+              <input type="file" ref={globalUploadRef} className="hidden" accept=".txt" onChange={handleGlobalUpload} />
+            </div>
           </div>
         </div>
       </div>
@@ -374,9 +342,7 @@ export const ProgramGrid: React.FC<ProgramGridProps> = ({ onSelectProgram, curre
         <div className="text-center py-20 bg-slate-100/50 dark:bg-slate-900/50 rounded-[3rem] border-2 border-dashed border-slate-200 dark:border-slate-800">
            <Search size={48} className="mx-auto mb-4 text-slate-300" />
            <p className="text-slate-500 font-medium">
-             {currentUser.role === 'Guionista' 
-               ? "No tienes guiones asignados en los programas o no coinciden con la búsqueda." 
-               : "No se encontraron programas o guiones con los términos buscados."}
+             No se encontraron programas o guiones con los términos buscados.
            </p>
         </div>
       )}

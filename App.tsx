@@ -1,33 +1,25 @@
 import { useState, useEffect } from 'react';
-import { User } from './types';
-import { Login } from './components/Login';
 import { ProgramGrid } from './components/ProgramGrid';
 import { ProgramDetail } from './components/ProgramDetail';
-import { AdminSettings } from './components/AdminSettings';
+import { Login } from './components/Login';
 import { 
-  FileStack, Moon, Sun, LogOut, Settings, ChevronLeft 
+  FileStack, Moon, Sun, ChevronLeft, LogOut
 } from 'lucide-react';
 
 export default function App() {
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [selectedProgram, setSelectedProgram] = useState<string | null>(null);
-  const [showSettings, setShowSettings] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Cargar sesión y tema
+  // Cargar tema
   useEffect(() => {
-    const savedUser = localStorage.getItem('guionbd_session');
-    if (savedUser) {
-      try {
-        setCurrentUser(JSON.parse(savedUser));
-      } catch (e) {
-        console.error("Error parsing session:", e);
-        localStorage.removeItem('guionbd_session');
-      }
-    }
     const savedTheme = localStorage.getItem('guionbd_theme');
     if (savedTheme === 'dark') setDarkMode(true);
+    
+    const auth = localStorage.getItem('guionbd_auth');
+    if (auth === 'true') setIsAuthenticated(true);
+    
     setIsLoaded(true);
   }, []);
 
@@ -37,13 +29,8 @@ export default function App() {
       // Si el estado tiene un programa, lo seleccionamos, si no, volvemos al grid
       if (event.state && event.state.program) {
         setSelectedProgram(event.state.program);
-        setShowSettings(false);
-      } else if (event.state && event.state.settings) {
-        setShowSettings(true);
-        setSelectedProgram(null);
       } else {
         setSelectedProgram(null);
-        setShowSettings(false);
       }
     };
 
@@ -61,47 +48,49 @@ export default function App() {
     }
   }, [darkMode]);
 
-  const handleLogin = (user: User) => {
-    setCurrentUser(user);
-    localStorage.setItem('guionbd_session', JSON.stringify(user));
-  };
-
-  const handleLogout = () => {
-    setCurrentUser(null);
-    setSelectedProgram(null);
-    setShowSettings(false);
-    localStorage.removeItem('guionbd_session');
-    // Limpiar historial al salir
-    window.history.pushState(null, '', window.location.pathname);
-  };
-
   const navigateToProgram = (programName: string) => {
     setSelectedProgram(programName);
-    setShowSettings(false);
     window.history.pushState({ program: programName }, '', `#${programName.replace(/\s+/g, '-')}`);
-  };
-
-  const navigateToSettings = () => {
-    setShowSettings(true);
-    setSelectedProgram(null);
-    window.history.pushState({ settings: true }, '', '#ajustes');
   };
 
   const navigateHome = () => {
     setSelectedProgram(null);
-    setShowSettings(false);
     // Si hay historial, volvemos atrás, si no, reemplazamos estado
-    if (window.history.state && (window.history.state.program || window.history.state.settings)) {
+    if (window.history.state && window.history.state.program) {
       window.history.back();
     } else {
       window.history.pushState(null, '', window.location.pathname);
     }
   };
 
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+    localStorage.setItem('guionbd_auth', 'true');
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem('guionbd_auth');
+    setSelectedProgram(null);
+  };
+
   if (!isLoaded) return null;
 
-  if (!currentUser) {
-    return <Login onLogin={handleLogin} />;
+  if (!isAuthenticated) {
+    return (
+      <div className={`min-h-screen font-sans transition-colors duration-300 ${darkMode ? 'dark:bg-slate-950 text-slate-100' : 'bg-slate-50 text-slate-900'}`}>
+        <div className="absolute top-4 right-4 z-50">
+          <button 
+            onClick={() => setDarkMode(!darkMode)}
+            className="p-2 text-slate-600 hover:bg-slate-200 dark:text-slate-400 dark:hover:bg-slate-800 rounded-lg transition-colors"
+            title={darkMode ? "Modo Claro" : "Modo Oscuro"}
+          >
+            {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+        </div>
+        <Login onLogin={handleLogin} />
+      </div>
+    );
   }
 
   return (
@@ -127,7 +116,7 @@ export default function App() {
                 </div>
               </div>
 
-              {(selectedProgram || showSettings) && (
+              {selectedProgram && (
                 <button 
                   onClick={navigateHome}
                   className="hidden md:flex items-center gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
@@ -140,20 +129,6 @@ export default function App() {
             
             {/* Acciones de Usuario */}
             <div className="flex items-center gap-2">
-              <span className="hidden sm:block text-xs font-bold px-2 py-1 bg-slate-100 dark:bg-slate-800 rounded-full text-slate-500 dark:text-slate-400">
-                {currentUser.role}: {currentUser.username}
-              </span>
-
-              {currentUser.role === 'Administrador' && (
-                <button 
-                  onClick={() => showSettings ? navigateHome() : navigateToSettings()}
-                  className={`p-2 rounded-lg transition-colors ${showSettings ? 'bg-indigo-100 text-indigo-600 dark:bg-indigo-900/40 dark:text-indigo-400' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'}`}
-                  title="Ajustes de Usuario"
-                >
-                  <Settings size={20} />
-                </button>
-              )}
-
               <button 
                 onClick={() => setDarkMode(!darkMode)}
                 className="p-2 text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800 rounded-lg transition-colors"
@@ -161,10 +136,9 @@ export default function App() {
               >
                 {darkMode ? <Sun size={20} /> : <Moon size={20} />}
               </button>
-
               <button 
                 onClick={handleLogout}
-                className="p-2 text-slate-600 hover:text-red-600 hover:bg-red-50 dark:text-slate-400 dark:hover:text-red-400 dark:hover:bg-slate-800/50 rounded-lg transition-all"
+                className="p-2 text-slate-600 hover:bg-red-50 hover:text-red-600 dark:text-slate-400 dark:hover:bg-red-900/20 dark:hover:text-red-400 rounded-lg transition-colors"
                 title="Cerrar Sesión"
               >
                 <LogOut size={20} />
@@ -175,18 +149,14 @@ export default function App() {
       </nav>
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-        {showSettings ? (
-          <AdminSettings />
-        ) : selectedProgram ? (
+        {selectedProgram ? (
           <ProgramDetail 
             programName={selectedProgram} 
-            currentUser={currentUser} 
             onBack={navigateHome}
           />
         ) : (
           <ProgramGrid 
             onSelectProgram={navigateToProgram} 
-            currentUser={currentUser} 
           />
         )}
       </main>

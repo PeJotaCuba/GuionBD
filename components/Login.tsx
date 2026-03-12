@@ -1,187 +1,75 @@
 import React, { useState } from 'react';
-import { User } from '../types';
-import { FileStack, Lock, User as UserIcon, AlertCircle, RefreshCw, Eye, EyeOff } from 'lucide-react';
+import { Lock, User, KeyRound } from 'lucide-react';
 
 interface LoginProps {
-  onLogin: (user: User) => void;
+  onLogin: () => void;
 }
 
 export const Login: React.FC<LoginProps> = ({ onLogin }) => {
-  const [identifier, setIdentifier] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
-  const [isUpdating, setIsUpdating] = useState(false);
-
-  // Función auxiliar para validar contraseña o PIN (últimos 4 dígitos)
-  const isValidCredential = (storedPassword: string | undefined | null, inputPassword: string) => {
-    if (!storedPassword) return false;
-    // 1. Coincidencia exacta de contraseña
-    if (storedPassword === inputPassword) return true;
-    // 2. Coincidencia de PIN (4 dígitos y son los últimos 4 de la contraseña)
-    if (inputPassword.length === 4 && storedPassword.length >= 4 && storedPassword.endsWith(inputPassword)) return true;
-    
-    return false;
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-
-    const adminUser: User = { 
-      id: 'admin', 
-      username: 'admin', 
-      password: 'RadioCiudad0026', 
-      role: 'Administrador',
-      fullName: 'Pedro José Reyes Acuña',
-      mobile: '54413935',
-      allowedPrograms: []
-    };
-
-    // Verificar credenciales del Admin (Usuario o Móvil) con Contraseña o PIN
-    // El admin siempre tiene acceso de respaldo
-    if ((identifier === adminUser.username || identifier === adminUser.mobile) && isValidCredential(adminUser.password, password)) {
-      let savedAdmin = null;
-      try {
-        const raw = localStorage.getItem('guionbd_users');
-        const savedUsers = raw ? JSON.parse(raw) : [];
-        if (Array.isArray(savedUsers)) {
-           savedAdmin = savedUsers.find((u: any) => u && u.id === 'admin');
-        }
-      } catch (e) {
-        console.error("Error reading users", e);
-      }
-      // Priorizar datos guardados pero permitir acceso si la credencial hardcoded coincide
-      onLogin(savedAdmin || adminUser);
-      return;
-    }
-
-    try {
-      const raw = localStorage.getItem('guionbd_users');
-      const savedUsers = raw ? JSON.parse(raw) : [];
-      
-      if (!Array.isArray(savedUsers)) {
-         setError('Error: Base de datos de usuarios corrupta. Por favor actualice.');
-         return;
-      }
-
-      // Verificar credenciales de usuarios registrados (Usuario o Móvil) con Contraseña o PIN
-      const found = savedUsers.find((u: any) => 
-        u && (u.username === identifier || u.mobile === identifier) && isValidCredential(u.password, password)
-      );
-      
-      if (found) {
-        onLogin(found);
-      } else {
-        setError('Credenciales incorrectas. Verifica tu usuario/móvil y contraseña o PIN.');
-      }
-    } catch (e) {
-       console.error("Error reading users DB", e);
-       setError('Error al leer la base de datos de usuarios. Por favor actualice.');
-    }
-  };
-
-  const handleRemoteUpdate = async () => {
-    setIsUpdating(true);
-    try {
-      const response = await fetch('https://raw.githubusercontent.com/PeJotaCuba/GuionBD/refs/heads/main/gusuario.json');
-      if (!response.ok) throw new Error('Error de conexión con el servidor');
-      
-      const uploaded = await response.json();
-      if (Array.isArray(uploaded)) {
-        localStorage.setItem('guionbd_users', JSON.stringify(uploaded));
-        alert('Base de datos de usuarios actualizada correctamente.');
-      } else {
-        throw new Error('Formato incorrecto');
-      }
-    } catch (err) {
-      alert('Error al actualizar usuarios: ' + (err instanceof Error ? err.message : 'Desconocido'));
-    } finally {
-      setIsUpdating(false);
+    if ((username === 'PeJota' || username === '54413935') && password === 'GuionP26') {
+      onLogin();
+    } else {
+      setError('Credenciales incorrectas');
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 p-4 transition-colors duration-300">
-      <div className="w-full max-w-md">
-        <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800 p-8">
-          <div className="flex flex-col items-center mb-8">
-            <div className="bg-gradient-to-br from-indigo-500 to-violet-600 p-4 rounded-2xl shadow-xl shadow-indigo-500/20 mb-4">
-              <FileStack className="text-white h-8 w-8" />
-            </div>
-            <h1 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Bienvenido</h1>
-            <p className="text-slate-500 dark:text-slate-400 mt-1">Ingresa con tu Usuario o Móvil</p>
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 p-4">
+      <div className="max-w-md w-full bg-white dark:bg-slate-900 rounded-[2rem] shadow-xl border border-slate-200 dark:border-slate-800 p-8">
+        <div className="text-center mb-8">
+          <div className="bg-indigo-100 dark:bg-indigo-900/30 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 text-indigo-600 dark:text-indigo-400">
+            <Lock size={32} />
           </div>
-
-          <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="space-y-1.5">
-              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 pl-1">Usuario o Móvil</label>
-              <div className="relative group">
-                <UserIcon size={18} className="absolute left-3.5 top-3.5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
-                <input
-                  type="text"
-                  required
-                  value={identifier}
-                  onChange={(e) => setIdentifier(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all placeholder:text-slate-400"
-                  placeholder=""
-                />
-              </div>
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300 pl-1">Contraseña o PIN (4 dígitos)</label>
-              <div className="relative group">
-                <Lock size={18} className="absolute left-3.5 top-3.5 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
-                <input
-                  type={showPassword ? "text" : "password"}
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full pl-11 pr-12 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-900 dark:text-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all placeholder:text-slate-400"
-                  placeholder=""
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 top-3.5 text-slate-400 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-                  tabIndex={-1}
-                >
-                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                </button>
-              </div>
-            </div>
-
-            {error && (
-              <div className="flex items-center gap-2 p-3 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm">
-                <AlertCircle size={16} />
-                <span>{error}</span>
-              </div>
-            )}
-
-            <button
-              type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 rounded-xl shadow-lg shadow-indigo-500/20 active:scale-95 transition-all"
-            >
-              Iniciar Sesión
-            </button>
-          </form>
-
-          <div className="mt-6 flex flex-col items-center gap-4">
-             <button 
-                onClick={handleRemoteUpdate}
-                disabled={isUpdating}
-                className="flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-indigo-600 transition-colors bg-slate-50 dark:bg-slate-800 px-4 py-2 rounded-full border border-slate-200 dark:border-slate-700 disabled:opacity-50 cursor-pointer"
-              >
-                <RefreshCw size={14} className={isUpdating ? "animate-spin" : ""} />
-                Actualizar
-              </button>
-          </div>
-          
-          <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800 text-center">
-            <p className="text-xs text-slate-400 dark:text-slate-500 uppercase tracking-widest font-medium">GuionBD v2.3</p>
-          </div>
+          <h2 className="text-2xl font-black text-slate-900 dark:text-white">Iniciar Sesión</h2>
+          <p className="text-slate-500 dark:text-slate-400 mt-2">Acceso exclusivo al gestor de guiones</p>
         </div>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {error && (
+            <div className="p-4 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-xl text-sm font-bold text-center border border-red-100 dark:border-red-800">
+              {error}
+            </div>
+          )}
+
+          <div className="space-y-4">
+            <div className="relative">
+              <User className="absolute left-4 top-3.5 text-slate-400" size={20} />
+              <input
+                type="text"
+                placeholder="Usuario o Teléfono"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-900 dark:text-white"
+                required
+              />
+            </div>
+
+            <div className="relative">
+              <KeyRound className="absolute left-4 top-3.5 text-slate-400" size={20} />
+              <input
+                type="password"
+                placeholder="Contraseña"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full pl-12 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all text-slate-900 dark:text-white"
+                required
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-lg shadow-indigo-500/20 transition-all active:scale-[0.98]"
+          >
+            Entrar
+          </button>
+        </form>
       </div>
     </div>
   );

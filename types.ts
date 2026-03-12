@@ -1,15 +1,4 @@
 export type ScriptStatus = 'active' | 'inactive';
-export type UserRole = 'Administrador' | 'Guionista' | 'Asesor' | 'Director';
-
-export interface User {
-  id: string;
-  username: string;
-  password: string;
-  role: UserRole;
-  fullName: string;
-  mobile: string;
-  allowedPrograms?: string[]; // Solo para Guionistas
-}
 
 export interface ScriptAnalysis {
   title: string;

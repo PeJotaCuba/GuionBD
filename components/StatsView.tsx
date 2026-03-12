@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Script, User } from '../types';
+import { Script } from '../types';
 import { 
   FileDown, Calendar, Layers, Repeat, BarChart3, X, Check, Filter, FileText
 } from 'lucide-react';
@@ -7,7 +7,6 @@ import {
 interface StatsViewProps {
   onClose?: () => void;
   programs: Array<{ name: string; file: string }>;
-  currentUser: User;
 }
 
 // Tipos de informes
@@ -21,7 +20,7 @@ interface FilterConfig {
   week: string;
 }
 
-export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs, currentUser }) => {
+export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs }) => {
   const [allScripts, setAllScripts] = useState<Script[]>([]);
   const [activeReport, setActiveReport] = useState<ReportType>(null);
   
@@ -38,7 +37,7 @@ export const StatsView: React.FC<StatsViewProps> = ({ onClose, programs, current
   const [startDay, setStartDay] = useState<number>(1);
   const [endDay, setEndDay] = useState<number>(new Date().getDate());
 
-  const canAccessMonthlyReport = ['Administrador', 'Director', 'Asesor'].includes(currentUser.role);
+  const canAccessMonthlyReport = true;
 
   // Manejo de tecla Escape para cerrar
   useEffect(() => {

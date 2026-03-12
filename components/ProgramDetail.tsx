@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Script, User } from '../types';
+import { Script } from '../types';
 import { ScriptCard } from './ScriptCard';
 import { UploadModal } from './UploadModal';
 import { EditScriptModal } from './EditScriptModal';
@@ -14,11 +14,10 @@ import {
 
 interface ProgramDetailProps {
   programName: string;
-  currentUser: User;
   onBack: () => void;
 }
 
-export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, currentUser, onBack }) => {
+export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, onBack }) => {
   const [scripts, setScripts] = useState<Script[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedYear, setSelectedYear] = useState<string | null>(null);
@@ -35,8 +34,6 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
   // Estado para el botón flotante
   const [selectionPos, setSelectionPos] = useState<{ x: number, y: number } | null>(null);
   const [tempSelection, setTempSelection] = useState('');
-
-  const isAdmin = currentUser.role === 'Administrador';
 
   const programInfo = PROGRAMS.find(p => p.name === programName);
   const fileName = programInfo?.file || `${programName.replace(/\s+/g, '_').toLowerCase()}.json`;
@@ -90,8 +87,6 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
 
   // Efecto para detectar selección de texto (Mouse y Touch)
   useEffect(() => {
-    if (!isAdmin) return;
-
     const handleSelection = () => {
       setTimeout(() => {
         const selection = window.getSelection();
@@ -144,7 +139,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
       document.removeEventListener('mousedown', handleInteractionStart);
       document.removeEventListener('touchstart', handleInteractionStart);
     };
-  }, [isAdmin]);
+  }, []);
 
   // Filtro PRINCIPAL para la lista visual:
   const filteredScripts = useMemo(() => {
@@ -163,15 +158,6 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
       return !isUnspecified;
     });
 
-    if (currentUser.role === 'Guionista') {
-        const normalizedUser = normalize(currentUser.fullName || "");
-        result = result.filter(s => {
-            if (!s.writer) return false;
-            const normalizedWriter = normalize(s.writer);
-            return normalizedWriter.includes(normalizedUser) || normalizedUser.includes(normalizedWriter);
-        });
-    }
-
     if (selectedYear) {
       result = result.filter(s => new Date(s.dateAdded).getFullYear().toString() === selectedYear);
     }
@@ -186,7 +172,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
       );
     }
     return result.sort((a, b) => new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime());
-  }, [scripts, searchQuery, selectedYear, currentUser]);
+  }, [scripts, searchQuery, selectedYear]);
 
   // Scripts visibles para renderizar
   const displayedScripts = useMemo(() => {
@@ -199,14 +185,6 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
 
   const historicScripts = useMemo(() => {
     let baseScripts = scripts;
-    if (currentUser.role === 'Guionista') {
-        const normalizedUser = normalize(currentUser.fullName || "");
-        baseScripts = baseScripts.filter(s => {
-            if (!s.writer) return false;
-            const normalizedWriter = normalize(s.writer);
-            return normalizedWriter.includes(normalizedUser) || normalizedUser.includes(normalizedWriter);
-        });
-    }
 
     const today = new Date();
     const targetDate = new Date(today.getFullYear() - 1, today.getMonth(), today.getDate());
@@ -225,7 +203,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
       const isValid = !w.includes("NO ESPECIFICADO") && !w.includes("PECIFICADO");
       return isValid && scriptDate >= startRange && scriptDate <= endRange;
     }).sort((a, b) => new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime());
-  }, [scripts, currentUser]);
+  }, [scripts]);
 
   // Lógica de carga: Sobrescribir si existe Fecha + Tema
   const handleAddScripts = (newScripts: Script[]) => {
@@ -309,7 +287,6 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
   };
 
   const clearData = () => {
-    if (!isAdmin) return;
     if (window.confirm('¿Eliminar toda la base de datos de este programa? Esta acción no se puede deshacer.')) {
       setScripts([]);
       localStorage.removeItem(storageKey);
@@ -393,16 +370,13 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
           </div>
 
           <div className="flex flex-wrap gap-2 w-full md:w-auto">
-            {currentUser.role !== 'Guionista' && (
               <button 
                 onClick={() => setIsBalanceOpen(true)}
                 className="flex-1 md:flex-none flex items-center justify-center gap-2 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow-sm border border-slate-200 dark:border-slate-700"
               >
                 <ClipboardList size={18} className="text-indigo-500" /> <span>Balance</span>
               </button>
-            )}
 
-            {isAdmin && (
               <>
                 <button 
                   onClick={openNewScriptModal} 
@@ -434,7 +408,6 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
                   <Trash2 size={18} />
                 </button>
               </>
-            )}
           </div>
         </div>
 
@@ -479,9 +452,8 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
                   <ScriptCard 
                     key={script.id} 
                     script={script} 
-                    isAdmin={isAdmin}
                     onDelete={(id) => {
-                      if(isAdmin && window.confirm('¿Eliminar guion?')) {
+                      if(window.confirm('¿Eliminar guion?')) {
                         setScripts(prev => prev.filter(s => s.id !== id))
                       }
                     }}
@@ -505,9 +477,7 @@ export const ProgramDetail: React.FC<ProgramDetailProps> = ({ programName, curre
             <div className="flex flex-col items-center justify-center py-20 text-center opacity-50">
                <FileText size={48} className="mb-4 text-slate-300" />
                <p className="text-xl font-medium text-slate-400">
-                 {currentUser.role === 'Guionista' 
-                   ? "No hay guiones registrados bajo tu nombre en este programa o no coinciden con los filtros." 
-                   : "No hay guiones registrados para este programa o filtros."}
+                 No hay guiones registrados para este programa o filtros.
                </p>
             </div>
           )}

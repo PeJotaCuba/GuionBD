@@ -1,4 +1,4 @@
-import { Script, ScriptStatus, User } from "../types";
+import { Script, ScriptStatus } from "../types";
 
 const MONTHS: Record<string, number> = {
   ENERO: 0, FEBRERO: 1, MARZO: 2, ABRIL: 3, MAYO: 4, JUNIO: 5,
@@ -138,25 +138,4 @@ export const parseScriptsFromText = (text: string, status: ScriptStatus): Script
   }
   
   return scripts;
-};
-
-export const parseUsersFromText = (text: string): User[] => {
-  const lines = text.split('\n').map(l => l.trim()).filter(l => l && l.includes(':'));
-  
-  return lines.map(line => {
-    const fullName = line.match(/Nombre completo:\s*([^,]+)/)?.[1]?.trim() || "";
-    const username = line.match(/Nombre de usuario:\s*([^,]+)/)?.[1]?.trim() || "";
-    const mobile = line.match(/Número de móvil:\s*([^,]+)/)?.[1]?.trim() || "";
-    const password = line.match(/Contraseña:\s*(.+)/)?.[1]?.trim() || "";
-
-    return {
-      id: username === 'admin' ? 'admin' : crypto.randomUUID(),
-      fullName,
-      username,
-      mobile,
-      password,
-      role: username === 'admin' ? 'Administrador' : 'Guionista',
-      allowedPrograms: []
-    };
-  });
 };
